@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentation - Audience View</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #000;
+        }
+
+        iframe {
+            width: 100vw;
+            height: 100vh;
+            border: none;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <iframe id="presentationFrame" src="demo_dashboard.html"></iframe>
+
+    <script>
+        // BroadcastChannel for syncing with presenter window
+        const channel = new BroadcastChannel('presentation-sync');
+        const iframe = document.getElementById('presentationFrame');
+
+        // Listen for slide changes from presenter
+        channel.onmessage = (event) => {
+            if (event.data.type === 'goto-slide') {
+                iframe.contentWindow.postMessage({
+                    type: 'goto-slide',
+                    slideIndex: event.data.slideIndex
+                }, '*');
+            }
+        };
+
+        // Forward slide changes from iframe to presenter
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'slide-changed') {
+                channel.postMessage({
+                    type: 'slide-changed',
+                    slideIndex: event.data.slideIndex
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

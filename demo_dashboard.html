@@ -303,6 +303,25 @@
             border-color: var(--red)
         }
 
+        .presenter-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--green);
+            border: 1px solid var(--green);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            z-index: 100;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .presenter-btn:hover {
+            filter: brightness(1.1);
+        }
+
         ul {
             margin-left: 20px;
             color: var(--muted)
@@ -348,6 +367,7 @@
 <body>
     <div class="laser" id="laser"></div>
     <button class="laser-btn" id="laserBtn">🔴 Laser</button>
+    <button class="presenter-btn" onclick="openPresenterMode()">🎤 Presenter Mode</button>
 
 
     <!-- SLIDE 1: Title -->
@@ -1631,6 +1651,92 @@
                 if (ep >= 15) { clearInterval(iv); document.querySelector('#s17 .btn').disabled = false; }
             }, 280);
         }
+
+        // Presenter Mode Functions with sync loop prevention
+        let isSyncing = false;
+        let syncTimeout = null;
+        const syncChannel = new BroadcastChannel('presentation-sync');
+
+        function openPresenterMode() {
+            // Switch this window to presentation-only mode
+            document.body.classList.add('presentation-mode');
+            document.querySelector('.presenter-btn').style.display = 'none';
+            document.querySelector('.laser-btn').style.display = 'none';
+
+            // Open presenter control window
+            const presenterWindow = window.open('presenter.html', 'presenter', 'width=1600,height=900');
+
+            // Listen for control commands from presenter
+            syncChannel.onmessage = (event) => {
+                if (event.data.type === 'goto-slide' && !isSyncing) {
+                    isSyncing = true;
+                    clearTimeout(syncTimeout);
+
+                    const targetSlide = event.data.slideIndex;
+                    if (targetSlide >= 0 && targetSlide < total) {
+                        go(targetSlide);
+                    }
+
+                    // Reset sync flag after delay
+                    syncTimeout = setTimeout(() => {
+                        isSyncing = false;
+                    }, 150);
+                }
+            };
+
+            // Send initial slide state to presenter
+            setTimeout(() => {
+                syncChannel.postMessage({
+                    type: 'slide-changed',
+                    slideIndex: cur
+                });
+            }, 500);
+        }
+
+        // Listen for navigation commands from presenter/presentation windows via postMessage
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'goto-slide' && !isSyncing) {
+                isSyncing = true;
+                clearTimeout(syncTimeout);
+
+                const targetSlide = event.data.slideIndex;
+                if (targetSlide >= 0 && targetSlide < total) {
+                    go(targetSlide);
+                }
+
+                syncTimeout = setTimeout(() => {
+                    isSyncing = false;
+                }, 150);
+            }
+        });
+
+        // Notify other windows of slide changes (but only if not syncing)
+        function notifySlideChange() {
+            if (!isSyncing && window.parent !== window) {
+                window.parent.postMessage({
+                    type: 'slide-changed',
+                    slideIndex: cur
+                }, '*');
+            }
+
+            // Also broadcast to presenter via channel
+            if (!isSyncing) {
+                syncChannel.postMessage({
+                    type: 'slide-changed',
+                    slideIndex: cur
+                });
+            }
+        }
+
+        // Wrap existing navigation to notify other windows
+        const originalGo = go;
+        go = function (n) {
+            originalGo(n);
+            // Only notify if this navigation wasn't triggered by sync
+            if (!isSyncing) {
+                notifySlideChange();
+            }
+        };
     </script>
 </body>
 

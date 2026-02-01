@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presenter View</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --accent: #3b82f6;
+            --green: #22c55e;
+            --text: #f1f5f9;
+            --muted: #94a3b8;
+            --border: #334155;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow: hidden;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 3fr 1fr;
+            gap: 16px;
+            padding: 16px;
+            height: 100vh;
+        }
+
+        .panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            overflow: auto;
+        }
+
+        .panel h3 {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        #currentSlide iframe {
+            width: 1920px;
+            height: 1080px;
+            border: none;
+            border-radius: 8px;
+            background: #fff;
+            transform-origin: top left;
+            pointer-events: none;
+        }
+
+        #currentSlide {
+            grid-column: 1;
+            grid-row: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #currentSlide iframe {
+            /* Dynamic scale calculated by JavaScript - will be set inline */
+            transform: scale(0.5);
+        }
+
+        #nextSlide {
+            grid-column: 2;
+            grid-row: 1;
+            overflow: hidden;
+        }
+
+        #nextSlide iframe {
+            width: 1920px;
+            height: 1080px;
+            border: none;
+            border-radius: 8px;
+            background: #fff;
+            opacity: 0.7;
+            /* Dynamic scale calculated by JavaScript - will be set inline */
+            transform: scale(0.5);
+            transform-origin: top left;
+            pointer-events: none;
+        }
+
+        #speakerNotes {
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        #speakerNotes .notes-content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        #speakerNotes ul {
+            margin-left: 20px;
+            margin-top: 8px;
+        }
+
+        #speakerNotes li {
+            margin-bottom: 6px;
+        }
+
+        #timer {
+            grid-column: 2;
+            grid-row: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #timer .time {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        #timer .slide-counter {
+            font-size: 1.5rem;
+            color: var(--muted);
+            margin-bottom: 20px;
+        }
+
+        #timer .controls button {
+            padding: 8px 16px;
+            margin: 4px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        #timer .controls button:hover {
+            filter: brightness(1.1);
+        }
+
+        #timer .controls button.reset {
+            background: #64748b;
+        }
+
+        #controls {
+            grid-column: 1 / -1;
+            grid-row: 3;
+            display: grid;
+            grid-template-columns: 120px 1fr 120px auto;
+            gap: 20px;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #controls button {
+            padding: 12px 24px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        #controls button:hover {
+            filter: brightness(1.1);
+        }
+
+        #controls button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-info {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--muted);
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #navigationPanel {
+            grid-column: 2;
+            grid-row: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            justify-content: center;
+            align-items: stretch;
+        }
+
+        #navigationPanel button {
+            padding: 14px 24px;
+            background: var(--accent);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        #navigationPanel button:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        #navigationPanel button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #navigationPanel .slide-counter {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.3rem;
+            color: var(--text);
+            text-align: center;
+            font-weight: 600;
+            padding: 4px;
+        }
+
+        .open-presentation {
+            background: var(--green) !important;
+        }
+
+        /* CRITICAL: Hide ALL scrollbars in previews */
+        .panel::-webkit-scrollbar,
+        #currentSlide::-webkit-scrollbar,
+        #nextSlide::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        .panel,
+        #currentSlide,
+        #nextSlide {
+            -ms-overflow-style: none !important;
+            scrollbar-width: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="panel" id="currentSlide">
+            <h3>Current Slide</h3>
+            <iframe id="currentFrame" src="demo_dashboard.html" scrolling="no"></iframe>
+        </div>
+
+        <div class="panel" id="nextSlide">
+            <h3>Next Slide</h3>
+            <iframe id="nextFrame" src="demo_dashboard.html" scrolling="no"></iframe>
+        </div>
+
+        <div class="panel" id="speakerNotes">
+            <h3>Speaker Notes</h3>
+            <div class="notes-content" id="notesContent">
+                <p>Notes will appear here...</p>
+            </div>
+        </div>
+
+        <div class="panel" id="navigationPanel">
+            <div class="slide-counter" id="slideCounter">1 / 21</div>
+            <button onclick="prevSlide()" id="prevBtn">← Previous</button>
+            <span class="slide-info" id="slideInfo">Slide 1: Title</span>
+            <button onclick="nextSlide()" id="nextBtn">Next →</button>
+            <button class="open-presentation" onclick="openPresentation()">🖥️ Open Presentation Window</button>
+        </div>
+    </div>
+
+    <script>
+        // Slide data with speaker notes
+        const slideNotes = [
+            {
+                title: "Title",
+                notes: "<strong>Welcome!</strong><ul><li>Introduce yourself</li><li>Brief overview: 3 papers bridging RF and AI</li><li>Total time: ~20-25 minutes</li></ul>"
+            },
+            {
+                title: "About Me",
+                notes: "<strong>Professional Background:</strong><ul><li>Current: AI Architecture Engineer at Homee.AI</li><li>Previous: MediaTek (EDA Software), Broadcom (Impedance Engineer)</li><li>M.S. in AI Innovation from NYCU</li><li>Strong intersection of RF hardware experience and modern AI/ML skills</li></ul>"
+            },
+            {
+                title: "Research Overview",
+                notes: "<strong>Three Papers Strategy:</strong><ul><li>Paper 1: Physics-informed optimization (Chu limit)</li><li>Paper 2: Zero-data learning (PINN)</li><li>Paper 3: Cutting-edge LLM application in 6G</li><li>Pattern: Progressively moving from traditional optimization → physics-ML hybrid → pure deep learning</li></ul>"
+            },
+            {
+                title: "RF Fundamentals: Q Factor & Chu Limit",
+                notes: "<strong>Key Teaching Points:</strong><ul><li>Q factor is NOT just an academic metric - it's fundamental to antenna design</li><li>Chu limit comes directly from Maxwell's equations, not empirical</li><li>High Q = narrow bandwidth is a physics constraint, not engineering limitation</li><li>Innovation: Using Chu limit as a GUIDE during optimization, not just validation afterward</li></ul>"
+            },
+            {
+                title: "The ESA Bandwidth Problem",
+                notes: "<strong>Physics Explanation:</strong><ul><li>Walk through the 4-step physics chain slowly</li><li>Emphasize: This is NOT a design flaw, it's fundamental physics</li><li>Wheeler's radiansphere (1947) is well-tested theory</li><li>Key insight: When ka < 0.5, antenna is inside its own reactive near-field</li></ul>"
+            },
+            {
+                title: "Solution: Generative Antenna Design",
+                notes: "<strong>GAD Paradigm Shift:</strong><ul><li>Traditional: Start with known geometry (patch, dipole) → optimize parameters</li><li>GAD: Start with high degrees of freedom structure → let optimizer discover geometry</li><li>27 rods × 5 params = 135 dimensions is genuinely large-scale</li><li>MOEA/D with Chu limit = physics-informed search space reduction</li></ul>"
+            },
+            {
+                title: "Live Demo: Pareto Front Evolution",
+                notes: "<strong>Demo Talking Points:</strong><ul><li>Watch dots evolve toward red line (Chu limit)</li><li>None can cross - that's physics!</li><li>Green dots = within 8% of theoretical limit</li><li>In real paper: 10x faster convergence vs. blind search</li><li>Let demo run, explain Pareto optimality while it runs</li></ul>"
+            },
+            {
+                title: "Key Takeaways & Fabricated Results",
+                notes: "<strong>Impact:</strong><ul><li>50.3% bandwidth is exceptional for electrically small antenna</li><li>Fabricated via metal 3D printing proves manufacturability</li><li>BW-Efficiency product 0.402 vs limit 0.389 = actually beating limit slightly</li><li>Why? Chu limit assumes lossless sphere - real antennas have different constraints</li></ul>"
+            },
+            {
+                title: "The FSS Inverse Design Problem",
+                notes: "<strong>Problem Definition:</strong><ul><li>Forward problem: geometry → S21 (easy, deterministic)</li><li>Inverse problem: S21 → geometry (hard, ill-posed)</li><li>Traditional: Generate thousands of random geometries, simulate all</li><li>Months of computation for one design!</li><li>PINN solution: Use Maxwell's equations AS the loss function</li></ul>"
+            },
+            {
+                title: "RF Fundamentals: FSS Structure & Mode Matching",
+                notes: "<strong>Mode Matching Method:</strong><ul><li>100-1000x faster than FDTD/FEM simulation</li><li>Key: Periodic structure allows Floquet mode expansion</li><li>Solve linear system of equations instead of full-wave simulation</li><li>Fast enough to use in gradient descent during PINN training</li><li>This speed is WHY PINN is feasible here</li></ul>"
+            },
+            {
+                title: "Solution: Physics-Informed Neural Network",
+                notes: "<strong>PINN Innovation:</strong><ul><li>Dual loss: Physics residual + Design objective</li><li>NO training data needed - physics is free supervision</li><li>Maxwell's equations embedded in backpropagation</li><li>Network learns to satisfy both physics AND design goal</li><li>First time PINN applied to metal-loaded FSS inverse design</li></ul>"
+            },
+            {
+                title: "Live Demo: PINN Training",
+                notes: "<strong>Demo Observations:</strong><ul><li>Pattern evolves from random to structured</li><li>Low freq → large cross, High freq → dense grid</li><li>S21 curve shows notch forming at target frequency</li><li>Physics loss + Design loss both decreasing = convergence</li><li>~1 hour training vs months of traditional simulation</li></ul>"
+            },
+            {
+                title: "Key Takeaways & Results",
+                notes: "<strong>Achievements:</strong><ul><li>Target 15 GHz, achieved 15.288 GHz (1.92% error)</li><li>10,000 training steps, ~1 hour total time</li><li>Zero training data required</li><li>Mode matching in backprop is novel contribution</li><li>Shows PINN can handle dual-diaphragm complex structure</li></ul>"
+            },
+            {
+                title: "The 6G Real-Time Control Problem",
+                notes: "<strong>6G Context:</strong><ul><li>mmWave: 30-300 GHz bands for massive bandwidth</li><li>Problem: High path loss, blockage, narrow beams</li><li>RIS: Passive reflector can redirect signals around obstacles</li><li>Control challenge: 256+ elements, each needs optimal phase, channel changes every few ms</li><li>Traditional optimization: too slow for real-time</li></ul>"
+            },
+            {
+                title: "RF Fundamentals: RIS, Beamforming, SINR",
+                notes: "<strong>RIS Architecture:</strong><ul><li>Each element: patch antenna + varactor diode</li><li>Varactor bias voltage → phase shift 0 to 2π</li><li>Low power vs. active relays</li><li>Beamforming: Phase gradient creates directional beam</li><li>Sum-rate objective: Maximize total throughput for all users</li><li>Trade-off: Helping one user may interfere with others</li></ul>"
+            },
+            {
+                title: "Solution: LLM-RIMSA Architecture",
+                notes: "<strong>Why LLM/Transformer?</strong><ul><li>Self-attention captures spatial correlations across RIS elements</li><li>Single forward pass vs. iterative optimization (100x speedup)</li><li>GPT-2 backbone with 6 transformer layers, 8-head attention</li><li>SE channel attention for feature refinement</li><li>One-shot inference: <1ms vs ~100ms for traditional methods</li><li>Generalizes to unseen channel conditions</li></ul>"
+            },
+            {
+                title: "Live Demo: RIS Beamforming",
+                notes: "<strong>Demo Visualization:</strong><ul><li>Left: RIS phase configuration (color = phase angle)</li><li>Right: Users with beam cones</li><li>Watch phases organize to focus beams on each user</li><li>Beam width narrows as training progresses</li><li>Note: Demo uses 256 elements, paper uses 1024 for scalability demonstration</li></ul>"
+            },
+            {
+                title: "Key Takeaways & Benchmark",
+                notes: "<strong>Performance Analysis:</strong><ul><li>Sum-rate 9.79 bps/Hz: Best among learning-based methods</li><li>Traditional SDR: 17.2 but O(N³) complexity - infeasible for real-time</li><li>LLM-RIMSA: O(1) inference complexity</li><li><1ms inference enables symbol-level control at 28 GHz</li><li>First application of LLM/Transformer to metasurface control</li></ul>"
+            },
+            {
+                title: "Formulas Cheat Sheet",
+                notes: "<strong>Quick Reference:</strong><ul><li>Have these ready for Q&A</li><li>Wavelength λ = c/f is basis for all RF calculations</li><li>Chu limit formula comes from 1948 paper</li><li>S-parameters measured with Vector Network Analyzer (VNA)</li><li>Shannon capacity sets theoretical max for any wireless system</li></ul>"
+            },
+            {
+                title: "Why This Combination Matters",
+                notes: "<strong>Unique Value Proposition:</strong><ul><li>RF expertise: Not just software - real hardware understanding</li><li>AI/ML expertise: Modern tools (PyTorch, Transformers, PINN)</li><li>Bridge: Can speak both languages, understand both constraints</li><li>Future: 6G will need this hybrid skillset - pure RF engineers won't understand ML, pure ML engineers won't understand physics constraints</li></ul>"
+            },
+            {
+                title: "Thank You / Q&A",
+                notes: "<strong>Closing Points:</strong><ul><li>Open for questions on any of the three papers</li><li>Can dive deeper into physics, implementation, or results</li><li>Contact info ready for follow-up discussions</li><li>Thank interviewer for their time</li></ul>"
+            }
+        ];
+
+        let currentSlideIndex = 0;
+        let presentationWindow = null;
+
+        // BroadcastChannel for window sync
+        const channel = new BroadcastChannel('presentation-sync');
+
+        // Calculate and apply dynamic scaling for preview iframes
+        function updatePreviewScale() {
+            const currentPanel = document.getElementById('currentSlide');
+            const nextPanel = document.getElementById('nextSlide');
+            const currentFrame = document.getElementById('currentFrame');
+            const nextFrame = document.getElementById('nextFrame');
+
+            if (!currentPanel || !nextPanel) return;
+
+            // Get available space in the panel (minus padding and header)
+            const panelRect = currentPanel.getBoundingClientRect();
+            const availableWidth = panelRect.width - 32; // 16px padding on each side
+            const availableHeight = panelRect.height - 60; // Account for header and padding
+
+            // Full screen dimensions that present mode uses
+            const fullWidth = 1920;
+            const fullHeight = 1080;
+
+            // Calculate scale to fit both width and height
+            const scaleX = availableWidth / fullWidth;
+            const scaleY = availableHeight / fullHeight;
+            const scale = Math.min(scaleX, scaleY);
+
+            // Apply the calculated scale
+            if (currentFrame) {
+                currentFrame.style.transform = `scale(${scale})`;
+            }
+            if (nextFrame) {
+                nextFrame.style.transform = `scale(${scale})`;
+            }
+        }
+
+        // Initialize
+        window.onload = () => {
+            updateSlides();
+            updateNotes();
+            updatePreviewScale();
+
+            // Listen for slide changes from presentation window
+            channel.onmessage = (event) => {
+                if (event.data.type === 'slide-changed') {
+                    currentSlideIndex = event.data.slideIndex;
+                    updateSlides();
+                    updateNotes();
+                }
+            };
+
+            // Update scale on window resize
+            window.addEventListener('resize', updatePreviewScale);
+        };
+
+        function updateSlides() {
+            const currentFrame = document.getElementById('currentFrame');
+            const nextFrame = document.getElementById('nextFrame');
+
+            // Navigate current slide iframe
+            if (currentFrame && currentFrame.contentWindow) {
+                currentFrame.contentWindow.postMessage({
+                    type: 'goto-slide',
+                    slideIndex: currentSlideIndex
+                }, '*');
+
+                // CRITICAL: Force iframe to scroll to top after navigation
+                setTimeout(() => {
+                    try {
+                        currentFrame.contentWindow.scrollTo(0, 0);
+                    } catch (e) {
+                        // Cross-origin restriction, ignore
+                    }
+                }, 100);
+            }
+
+            // Navigate next slide iframe
+            if (currentSlideIndex < 20 && nextFrame && nextFrame.contentWindow) {
+                nextFrame.contentWindow.postMessage({
+                    type: 'goto-slide',
+                    slideIndex: currentSlideIndex + 1
+                }, '*');
+
+                // CRITICAL: Force iframe to scroll to top after navigation
+                setTimeout(() => {
+                    try {
+                        nextFrame.contentWindow.scrollTo(0, 0);
+                    } catch (e) {
+                        // Cross-origin restriction, ignore
+                    }
+                }, 100);
+            }
+
+            // Update counter and info
+            document.getElementById('slideCounter').textContent = `${currentSlideIndex + 1} / 21`;
+            document.getElementById('slideInfo').textContent = `Slide ${currentSlideIndex + 1}: ${slideNotes[currentSlideIndex].title}`;
+
+            // Update button states
+            document.getElementById('prevBtn').disabled = currentSlideIndex === 0;
+            document.getElementById('nextBtn').disabled = currentSlideIndex === 20;
+
+            // DO NOT send channel message here - prevents loop!
+        }
+
+        function updateNotes() {
+            document.getElementById('notesContent').innerHTML = slideNotes[currentSlideIndex].notes;
+        }
+
+        function nextSlide() {
+            if (currentSlideIndex < 20) {
+                currentSlideIndex++;
+                updateSlides();
+                updateNotes();
+
+                // Send command to control presentation windows
+                channel.postMessage({
+                    type: 'goto-slide',
+                    slideIndex: currentSlideIndex
+                });
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlideIndex > 0) {
+                currentSlideIndex--;
+                updateSlides();
+                updateNotes();
+
+                // Send command to control presentation windows
+                channel.postMessage({
+                    type: 'goto-slide',
+                    slideIndex: currentSlideIndex
+                });
+            }
+        }
+
+        function openPresentation() {
+            if (!presentationWindow || presentationWindow.closed) {
+                presentationWindow = window.open('presentation.html', 'presentation', 'width=1920,height=1080');
+            } else {
+                presentationWindow.focus();
+            }
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                currentSlideIndex = 0;
+                updateSlides();
+                updateNotes();
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                currentSlideIndex = 20;
+                updateSlides();
+                updateNotes();
+            }
+        });
+    </script>
+</body>
+
+</html>
