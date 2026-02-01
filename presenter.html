@@ -226,6 +226,10 @@
                 notes: "<strong>6G Context:</strong><ul><li>mmWave: 30-300 GHz bands for massive bandwidth</li><li>Problem: High path loss, blockage, narrow beams</li><li>RIS: Passive reflector can redirect signals around obstacles</li><li>Control challenge: 256+ elements, each needs optimal phase, channel changes every few ms</li><li>Traditional optimization: too slow for real-time</li></ul>"
             },
             {
+                title: "Old DMA vs New RIMSA",
+                notes: "<strong>Interactive Demo:</strong><ul><li>Click 'Send Signal Pulse' to see the difference in action</li><li>DMA (Serial Feed): Signal packet travels sequentially down the line - watch the green traveling wave with ~1.5ns delay per element</li><li>RIMSA (Parallel Feed): All elements light up instantly - no cumulative delay</li><li>Key advantage: RIMSA's parallel architecture enables wideband operation and faster response</li><li>This is why Paper 3 uses RIMSA for real-time 6G control</li></ul>"
+            },
+            {
                 title: "RF Fundamentals: RIS, Beamforming, SINR",
                 notes: "<strong>RIS Architecture:</strong><ul><li>Each element: patch antenna + varactor diode</li><li>Varactor bias voltage → phase shift 0 to 2π</li><li>Low power vs. active relays</li><li>Beamforming: Phase gradient creates directional beam</li><li>Sum-rate objective: Maximize total throughput for all users</li><li>Trade-off: Helping one user may interfere with others</li></ul>"
             },
@@ -240,10 +244,6 @@
             {
                 title: "Key Takeaways & Benchmark",
                 notes: "<strong>Performance Analysis:</strong><ul><li>Sum-rate 9.79 bps/Hz: Best among learning-based methods</li><li>Traditional SDR: 17.2 but O(N³) complexity - infeasible for real-time</li><li>LLM-RIMSA: O(1) inference complexity</li><li><1ms inference enables symbol-level control at 28 GHz</li><li>First application of LLM/Transformer to metasurface control</li></ul>"
-            },
-            {
-                title: "Formulas Cheat Sheet",
-                notes: "<strong>Quick Reference:</strong><ul><li>Have these ready for Q&A</li><li>Wavelength λ = c/f is basis for all RF calculations</li><li>Chu limit formula comes from 1948 paper</li><li>S-parameters measured with Vector Network Analyzer (VNA)</li><li>Shannon capacity sets theoretical max for any wireless system</li></ul>"
             },
             {
                 title: "Why This Combination Matters",
