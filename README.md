@@ -31,7 +31,7 @@ Uses a GPT-2 based transformer to control Reconfigurable Intelligent Metasurface
 
 - **Key Innovation**: LLM for real-time beamforming control
 - **Method**: GPT-2 backbone + Spatio-Temporal Attention
-- **Target Results**: 17.8 bps/Hz sum-rate
+- **Target Results**: 9.79 bps/Hz sum-rate (6-layer GPT-2 model, Table III)
 
 ---
 
@@ -140,10 +140,11 @@ trainer, benchmark = run_llm_rimsa_training(n_epochs=50)
 ### Paper 3: LLM-RIMSA
 | Metric | Paper Value | This Implementation |
 |--------|-------------|---------------------|
-| Sum Rate | 17.8 bps/Hz | 10-15 bps/Hz* |
+| Sum Rate | 9.79 bps/Hz (6-layer model) | 7-10 bps/Hz* |
+| RIMSA Elements | 1024 (32×32 array) | 256 (16×16, scaled for demo) |
 | vs Random Phase | Significant | 30-50% improvement |
 
-*Results depend on training duration and configuration
+*Results depend on training duration and configuration. Paper uses 1024 elements; demo uses 256 for faster execution.
 
 ---
 
