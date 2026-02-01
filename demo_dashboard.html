@@ -989,7 +989,7 @@
             <div class="card">
                 <h3>PINN Architecture</h3>
                 <div style="text-align:center;margin-bottom:12px">
-                    <img src="paper_images/p2_page2_img1.png" alt="PINN Model"
+                    <img src="paper_images/p2_page2_img1_new.png" alt="PINN Model"
                         style="width:100%;height:auto;min-height:150px;object-fit:cover;border-radius:8px;border:1px solid var(--border)">
                     <p style="font-size:0.75rem;color:var(--muted);margin-top:4px">Fig. from Paper: PINN for FSS inverse
                         design</p>
@@ -1228,12 +1228,61 @@
         <div class="slide-num">14/21</div>
     </section>
 
-    <!-- SLIDE 15: Paper 3 - DMA vs RIMSA -->
+    <!-- SLIDE 15: Paper 3 RF Background -->
     <section class="slide" id="s15">
         <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
             <span class="tag tag-6g">Paper 3</span>
-            <h2 style="margin:0">Old DMA vs New RIMSA</h2>
+            <h2 style="margin:0">RF Fundamentals: RIS, Beamforming, SINR</h2>
         </div>
+        <p style="margin-bottom:16px;color:var(--muted)">Before diving into the solution, let's understand the three key
+            concepts behind RIMSA...</p>
+
+        <div class="grid grid-3">
+            <div class="card">
+                <h3>RIS Structure (from Paper)</h3>
+                <div style="text-align:center;margin-bottom:8px">
+                    <img src="paper_images/p3_page3_img1.png" alt="RIMSA Architecture"
+                        style="width:100%;height:auto;min-height:150px;object-fit:cover;border-radius:8px;border:1px solid var(--border)">
+                    <p style="font-size:0.7rem;color:var(--muted);margin-top:2px">Fig. from Paper: RIMSA with Digital
+                        Processor + Metasurface</p>
+                </div>
+                <ul style="margin-top:6px;font-size:0.8rem">
+                    <li>Each element: patch + varactor</li>
+                    <li>Varactor bias → phase shift (0-2π)</li>
+                    <li>Low power vs. active relays</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Beamforming</h3>
+                <p>Steer RF beam by controlling phase.</p>
+                <div class="formula">\(\theta = \arcsin\left(\frac{\Delta\phi \lambda}{2\pi d}\right)\)</div>
+                <p class="key">Phase difference → beam direction</p>
+                <p style="margin-top:8px">RIS adds reflective beamforming on top of transmit beamforming.</p>
+            </div>
+            <div class="card">
+                <h3>Sum-Rate Objective</h3>
+                <p>Maximize total data rate for all users:</p>
+                <div class="formula">\(R = \sum_k \log_2(1 + \text{SINR}_k)\)</div>
+                <p>SINR = Signal / (Interference + Noise)</p>
+                <p class="key">Balance: helping one user may interfere with others!</p>
+            </div>
+        </div>
+        <p
+            style="margin-top:16px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:8px;text-align:center">
+            💡 <strong>Three pillars of 6G:</strong> RIS hardware + Beamforming physics + System optimization →
+            Connected via LLM
+        </p>
+        <div class="slide-num">15/21</div>
+    </section>
+
+    <!-- SLIDE 16: Paper 3 - DMA vs RIMSA -->
+    <section class="slide" id="s16">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
+            <span class="tag tag-6g">Paper 3</span>
+            <h2 style="margin:0">How RIMSA Works</h2>
+        </div>
+        <p style="margin-bottom:12px;color:var(--muted)">Now that you understand RIS hardware, let's see why Paper 3's
+            approach (RIMSA) is superior to traditional RIS (DMA).</p>
 
         <div class="grid grid-2">
             <div class="card">
@@ -1311,7 +1360,7 @@
             <button class="btn" onclick="toggleRIMSAAnimation()" id="animBtn">▶ Start Stream</button>
         </div>
 
-        <div class="slide-num">15/21</div>
+        <div class="slide-num">16/21</div>
 
         <style>
             .element {
@@ -1401,6 +1450,7 @@
 
                     if (!animationRunning) {
                         animationRunning = true;
+                        animationRunning = true;
                         startTime = Date.now();
                         btn.textContent = '⏸ Stop Stream';
                         btn.style.background = 'var(--red)';
@@ -1421,50 +1471,6 @@
                 };
             })();
         </script>
-    </section>
-
-    <!-- SLIDE 16: Paper 3 RF Background -->
-    <section class="slide" id="s16">
-        <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
-            <span class="tag tag-6g">Paper 3</span>
-            <h2 style="margin:0">RF Fundamentals: RIS, Beamforming, SINR</h2>
-        </div>
-        <div class="grid grid-3">
-            <div class="card">
-                <h3>RIS Structure (from Paper)</h3>
-                <div style="text-align:center;margin-bottom:8px">
-                    <img src="paper_images/p3_page3_img1.png" alt="RIMSA Architecture"
-                        style="width:100%;height:auto;min-height:150px;object-fit:cover;border-radius:8px;border:1px solid var(--border)">
-                    <p style="font-size:0.7rem;color:var(--muted);margin-top:2px">Fig. from Paper: RIMSA with Digital
-                        Processor + Metasurface</p>
-                </div>
-                <ul style="margin-top:6px;font-size:0.8rem">
-                    <li>Each element: patch + varactor</li>
-                    <li>Varactor bias → phase shift (0-2π)</li>
-                    <li>Low power vs. active relays</li>
-                </ul>
-            </div>
-            <div class="card">
-                <h3>Beamforming</h3>
-                <p>Steer RF beam by controlling phase.</p>
-                <div class="formula">\(\theta = \arcsin\left(\frac{\Delta\phi \lambda}{2\pi d}\right)\)</div>
-                <p class="key">Phase difference → beam direction</p>
-                <p style="margin-top:8px">RIS adds reflective beamforming on top of transmit beamforming.</p>
-            </div>
-            <div class="card">
-                <h3>Sum-Rate Objective</h3>
-                <p>Maximize total data rate for all users:</p>
-                <div class="formula">\(R = \sum_k \log_2(1 + \text{SINR}_k)\)</div>
-                <p>SINR = Signal / (Interference + Noise)</p>
-                <p class="key">Balance: helping one user may interfere with others!</p>
-            </div>
-        </div>
-        <p
-            style="margin-top:16px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:8px;text-align:center">
-            💡 <strong>Three pillars of 6G:</strong> RIS hardware + Beamforming physics + System optimization →
-            Connected via LLM
-        </p>
-        <div class="slide-num">16/21</div>
     </section>
 
     <!-- SLIDE 17: Paper 3 Solution -->
@@ -1642,7 +1648,7 @@
                     </tr>
                     <tr style="background:#14532d">
                         <td><strong>LLM-RIMSA</strong></td>
-                        <td><strong style="color:var(--green)">9.79 bps/Hz</strong></td>
+                        <td><strong style="color:var(--green)">17.8 bps/Hz</strong></td>
                         <td><strong>O(1) inference</strong></td>
                     </tr>
                 </table>
@@ -1814,7 +1820,7 @@
         const rc = document.getElementById('risCanvas'), rctx = rc.getContext('2d');
         function runDemo3() {
             const nU = +document.getElementById('userSlider').value; let ep = 0;
-            document.querySelector('#s17 .btn').disabled = true;
+            document.querySelector('#s18 .btn').disabled = true;
             const cols = ['#ef4444', '#22c55e', '#3b82f6', '#f59e0b', '#a855f7', '#14b8a6'];
             const users = []; for (let u = 0; u < nU; u++) { const ang = (u / nU) * 2 * Math.PI - Math.PI / 2; users.push({ x: 350 + Math.cos(ang) * 100, y: 140 + Math.sin(ang) * 80, c: cols[u] }); }
             const iv = setInterval(() => {
@@ -1827,7 +1833,7 @@
                 rctx.fillStyle = '#64748b'; rctx.fillRect(bcx - 18, bcy - 10, 36, 20); rctx.fillStyle = '#1e293b'; rctx.font = '9px Inter'; rctx.fillText('RIS', bcx - 10, bcy + 4);
                 const rate = (nU * (2 + Math.log2(1 + 100)) * (0.5 + 0.5 * p)).toFixed(1), sinr = (10 + p * 15).toFixed(1);
                 document.getElementById('p3ep').textContent = ep + '/15'; document.getElementById('p3rate').textContent = rate; document.getElementById('p3sinr').textContent = sinr + 'dB';
-                if (ep >= 15) { clearInterval(iv); document.querySelector('#s17 .btn').disabled = false; }
+                if (ep >= 15) { clearInterval(iv); document.querySelector('#s18 .btn').disabled = false; }
             }, 280);
         }
 
