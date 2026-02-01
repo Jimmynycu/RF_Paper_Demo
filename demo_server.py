@@ -163,6 +163,30 @@ if HAS_FASTAPI:
             return FileResponse(dashboard_path)
         return HTMLResponse("<h1>Demo Dashboard not found. Run the setup first.</h1>")
     
+    @app.get("/demo_dashboard.html")
+    async def demo_dashboard():
+        """Serve the demo dashboard HTML file."""
+        dashboard_path = Path(__file__).parent / "demo_dashboard.html"
+        if dashboard_path.exists():
+            return FileResponse(dashboard_path)
+        return HTMLResponse("<h1>Demo Dashboard not found.</h1>")
+    
+    @app.get("/presenter.html")
+    async def presenter():
+        """Serve the presenter view."""
+        presenter_path = Path(__file__).parent / "presenter.html"
+        if presenter_path.exists():
+            return FileResponse(presenter_path)
+        return HTMLResponse("<h1>Presenter view not found.</h1>")
+    
+    @app.get("/presentation.html")
+    async def presentation():
+        """Serve the presentation view."""
+        presentation_path = Path(__file__).parent / "presentation.html"
+        if presentation_path.exists():
+            return FileResponse(presentation_path)
+        return HTMLResponse("<h1>Presentation view not found.</h1>")
+    
     @app.get("/api/glossary")
     async def get_glossary():
         """Get all fact-checked terminology."""

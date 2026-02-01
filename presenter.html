@@ -34,8 +34,8 @@
 
         .container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 3fr 1fr;
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: 1fr 1.5fr;
             gap: 16px;
             padding: 16px;
             height: 100vh;
@@ -69,14 +69,10 @@
 
         #currentSlide {
             grid-column: 1;
-            grid-row: 1;
+            grid-row: 1 / 3;
+            /* Span both rows */
             position: relative;
             overflow: hidden;
-        }
-
-        #currentSlide iframe {
-            /* Dynamic scale calculated by JavaScript - will be set inline */
-            transform: scale(0.5);
         }
 
         #nextSlide {
@@ -99,7 +95,7 @@
         }
 
         #speakerNotes {
-            grid-column: 1;
+            grid-column: 2;
             grid-row: 2;
         }
 
@@ -118,132 +114,17 @@
             margin-bottom: 6px;
         }
 
-        #timer {
-            grid-column: 2;
-            grid-row: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #timer .time {
+        /* Slide counter overlay on next slide */
+        #nextSlide .slide-counter {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 12px;
-        }
-
-        #timer .slide-counter {
-            font-size: 1.5rem;
-            color: var(--muted);
-            margin-bottom: 20px;
-        }
-
-        #timer .controls button {
-            padding: 8px 16px;
-            margin: 4px;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        #timer .controls button:hover {
-            filter: brightness(1.1);
-        }
-
-        #timer .controls button.reset {
-            background: #64748b;
-        }
-
-        #controls {
-            grid-column: 1 / -1;
-            grid-row: 3;
-            display: grid;
-            grid-template-columns: 120px 1fr 120px auto;
-            gap: 20px;
-            align-items: center;
-            padding: 20px;
-        }
-
-        #controls button {
-            padding: 12px 24px;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
-        }
-
-        #controls button:hover {
-            filter: brightness(1.1);
-        }
-
-        #controls button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .slide-info {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.9rem;
-            color: var(--muted);
-            text-align: center;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        #navigationPanel {
-            grid-column: 2;
-            grid-row: 2;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            justify-content: center;
-            align-items: stretch;
-        }
-
-        #navigationPanel button {
-            padding: 14px 24px;
-            background: var(--accent);
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        #navigationPanel button:hover {
-            background: #2563eb;
-            transform: translateY(-2px);
-        }
-
-        #navigationPanel button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        #navigationPanel .slide-counter {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             color: var(--text);
             text-align: center;
             font-weight: 600;
-            padding: 4px;
-        }
-
-        .open-presentation {
-            background: var(--green) !important;
+            padding: 8px;
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 6px;
+            margin-top: 8px;
         }
 
         /* CRITICAL: Hide ALL scrollbars in previews */
@@ -273,6 +154,7 @@
 
         <div class="panel" id="nextSlide">
             <h3>Next Slide</h3>
+            <div class="slide-counter" id="slideCounter">1 / 21</div>
             <iframe id="nextFrame" src="demo_dashboard.html" scrolling="no"></iframe>
         </div>
 
@@ -281,14 +163,6 @@
             <div class="notes-content" id="notesContent">
                 <p>Notes will appear here...</p>
             </div>
-        </div>
-
-        <div class="panel" id="navigationPanel">
-            <div class="slide-counter" id="slideCounter">1 / 21</div>
-            <button onclick="prevSlide()" id="prevBtn">← Previous</button>
-            <span class="slide-info" id="slideInfo">Slide 1: Title</span>
-            <button onclick="nextSlide()" id="nextBtn">Next →</button>
-            <button class="open-presentation" onclick="openPresentation()">🖥️ Open Presentation Window</button>
         </div>
     </div>
 
@@ -420,9 +294,51 @@
         }
 
         // Initialize
+        let iframesReady = 0;
+        const totalIframes = 2;
+
+        function onIframeReady() {
+            iframesReady++;
+            if (iframesReady === totalIframes) {
+                // Wait a bit for the iframe's JavaScript to initialize
+                setTimeout(() => {
+                    updateSlides();
+                    updateNotes();
+                }, 100);
+            }
+        }
+
         window.onload = () => {
-            updateSlides();
-            updateNotes();
+            const currentFrame = document.getElementById('currentFrame');
+            const nextFrame = document.getElementById('nextFrame');
+
+            // Check if iframes are already loaded, or wait for load event
+            function setupIframe(iframe) {
+                // Check if iframe is already loaded
+                try {
+                    if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
+                        onIframeReady();
+                    } else {
+                        iframe.addEventListener('load', onIframeReady);
+                    }
+                } catch (e) {
+                    // If we can't access contentDocument (cross-origin), just wait for load
+                    iframe.addEventListener('load', onIframeReady);
+                }
+            }
+
+            setupIframe(currentFrame);
+            setupIframe(nextFrame);
+
+            // Fallback: if iframes don't trigger ready after 2 seconds, force update
+            setTimeout(() => {
+                if (iframesReady < totalIframes) {
+                    console.warn('Iframes did not load in time, forcing update');
+                    updateSlides();
+                    updateNotes();
+                }
+            }, 2000);
+
             updatePreviewScale();
 
             // Listen for slide changes from presentation window
@@ -448,15 +364,6 @@
                     type: 'goto-slide',
                     slideIndex: currentSlideIndex
                 }, '*');
-
-                // CRITICAL: Force iframe to scroll to top after navigation
-                setTimeout(() => {
-                    try {
-                        currentFrame.contentWindow.scrollTo(0, 0);
-                    } catch (e) {
-                        // Cross-origin restriction, ignore
-                    }
-                }, 100);
             }
 
             // Navigate next slide iframe
@@ -465,24 +372,10 @@
                     type: 'goto-slide',
                     slideIndex: currentSlideIndex + 1
                 }, '*');
-
-                // CRITICAL: Force iframe to scroll to top after navigation
-                setTimeout(() => {
-                    try {
-                        nextFrame.contentWindow.scrollTo(0, 0);
-                    } catch (e) {
-                        // Cross-origin restriction, ignore
-                    }
-                }, 100);
             }
 
-            // Update counter and info
+            // Update counter
             document.getElementById('slideCounter').textContent = `${currentSlideIndex + 1} / 21`;
-            document.getElementById('slideInfo').textContent = `Slide ${currentSlideIndex + 1}: ${slideNotes[currentSlideIndex].title}`;
-
-            // Update button states
-            document.getElementById('prevBtn').disabled = currentSlideIndex === 0;
-            document.getElementById('nextBtn').disabled = currentSlideIndex === 20;
 
             // DO NOT send channel message here - prevents loop!
         }
@@ -529,10 +422,10 @@
 
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown') {
                 e.preventDefault();
                 nextSlide();
-            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') {
                 e.preventDefault();
                 prevSlide();
             } else if (e.key === 'Home') {
@@ -540,11 +433,21 @@
                 currentSlideIndex = 0;
                 updateSlides();
                 updateNotes();
+                // Sync to presentation window
+                channel.postMessage({
+                    type: 'goto-slide',
+                    slideIndex: currentSlideIndex
+                });
             } else if (e.key === 'End') {
                 e.preventDefault();
                 currentSlideIndex = 20;
                 updateSlides();
                 updateNotes();
+                // Sync to presentation window
+                channel.postMessage({
+                    type: 'goto-slide',
+                    slideIndex: currentSlideIndex
+                });
             }
         });
     </script>
