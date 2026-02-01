@@ -51,14 +51,14 @@ spectral-eclipse/
 │   │   ├── chu_limit.py          # Chu limit calculator
 │   │   ├── esa_configuration.py  # 3D antenna structure
 │   │   ├── evaluator.py          # Simplified EM simulator
-│   │   └── moead.py              # MOEA/D optimizer
+│   │   ├── moead.py              # MOEA/D optimizer
 │   │
 │   ├── paper2_pinn_fss/          # Paper 2 Implementation
 │   │   ├── __init__.py
 │   │   ├── shape_network.py      # FCNN for shape generation
 │   │   ├── mode_matching.py      # Physics solver
 │   │   ├── pinn_loss.py          # Physics-informed loss
-│   │   └── fss_designer.py       # Training pipeline
+│   │   ├── fss_designer.py       # Training pipeline
 │   │
 │   └── paper3_llm_rimsa/         # Paper 3 Implementation
 │       ├── __init__.py
@@ -257,7 +257,7 @@ from src.paper2_pinn_fss.mode_matching import FSSParameters, RealModeMatchingSol
 
 # Configure mode count for speed/accuracy tradeoff
 params = FSSParameters.with_mode_count(5)   # 25 modes, ~5ms per eval
-# params = FSSParameters.with_mode_count(9)  # 81 modes, ~6ms per eval  
+# params = FSSParameters.with_mode_count(9)  # 81 modes, ~6ms per eval
 # params = FSSParameters.with_mode_count(11) # 121 modes, ~9ms (paper-level)
 
 solver = RealModeMatchingSolver(params, device='cpu')
