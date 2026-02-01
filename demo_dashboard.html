@@ -395,34 +395,38 @@
 
     <!-- SLIDE 3: Overview -->
     <section class="slide" id="s3">
-        <h2>Research Overview</h2>
+        <h2>Research Overview | 研究概覽</h2>
         <p>Three papers demonstrating RF + AI integration</p>
-        <div class="card" style="margin-top:24px">
-            <table>
+        <div class="card" style="margin-top:24px;overflow-x:auto">
+            <table style="font-size:0.85rem">
                 <tr>
-                    <th>Paper</th>
-                    <th>RF Problem</th>
-                    <th>AI Solution</th>
-                    <th>Innovation</th>
+                    <th style="min-width:180px">研究主題</th>
+                    <th style="min-width:200px">關鍵技術</th>
+                    <th style="min-width:140px">天線類型</th>
+                    <th style="min-width:200px">效能指標</th>
+                    <th style="min-width:120px">設計方法分類</th>
                 </tr>
                 <tr>
-                    <td><span class="tag tag-rf">1</span>Chu-Limit ESA</td>
-                    <td>Small antennas have narrow BW</td>
-                    <td>MOEA/D optimization</td>
-                    <td>Use Chu limit <span style="color:var(--muted);font-size:0.85rem">(physics BW limit)</span> as
-                        guide, not constraint</td>
+                    <td><span class="tag tag-rf">Paper 1</span><br>基於 Chu 極限引導與分解的多目標大規模優化用於生成式寬頻電小天線設計</td>
+                    <td>多目標進化算法 (MOEA/D)、Chu 極限引導分解策略、混合變量編碼、遺傳算法 (NSGA-II)</td>
+                    <td>電小天線 (ESA)、「徑向微束」(Radial-beamlet) 天線</td>
+                    <td>阻抗頻寬 \(50.3\%\) (\(2.05\)-\(3.43\text{ GHz}\))、實現增益 \(1.72\)-\(3.86\text{ dBi}\)、頻寬-效率乘積
+                        \(0.402\) (超過極限 \(0.389\))</td>
+                    <td>物理信息驅動與模型驅動</td>
                 </tr>
                 <tr>
-                    <td><span class="tag tag-ml">2</span>PINN FSS</td>
-                    <td>FSS inverse design needs millions of sims</td>
-                    <td>Physics-Informed NN</td>
-                    <td>Physics equations = free supervision</td>
+                    <td><span class="tag tag-ml">Paper 2</span><br>利用物理信息神經網絡（PINN）進行頻率選擇表面（FSS）的逆向設計</td>
+                    <td>物理信息神經網絡 (PINN)、模式匹配法 (Mode Matching Method)、全連接神經網絡 (FCNN)、Adam 優化器</td>
+                    <td>頻率選擇表面 (FSS)</td>
+                    <td>設計目標頻率 \(15\text{ GHz}\)，實測值 \(15.288\text{ GHz}\)（誤差 \(1.92\%\)）；\(S_{21}\) 參數</td>
+                    <td>物理信息驅動</td>
                 </tr>
                 <tr>
-                    <td><span class="tag tag-6g">3</span>LLM-RIMSA</td>
-                    <td>6G needs real-time 256-element control</td>
-                    <td>Transformer</td>
-                    <td>One forward pass (~1ms) for beamforming</td>
+                    <td><span class="tag tag-6g">Paper 3</span><br>LLM-RIMSA：大語言模型驅動的可重構智能超表面天線系統</td>
+                    <td>GPT-2 主幹網絡、空間域預處理模組、雙向 LSTM (BiLSTM)、時空注意力機制、強化學習 (DRL)、圖神經網絡 (GNN)</td>
+                    <td>可重構智能超表面天線 (RIMSA)</td>
+                    <td>總和傳輸速率 (Sum Rate) 達 \(9.79\text{ bps/Hz}\)；推理延遲小於 \(20\text{ ms}\)</td>
+                    <td>數據驅動與語義推理驅動</td>
                 </tr>
             </table>
         </div>
