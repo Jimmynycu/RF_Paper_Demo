@@ -375,7 +375,7 @@
         <h1>RF & AI Research Portfolio</h1>
         <p class="subtitle">Bridging Electromagnetics and Machine Learning</p>
         <p style="margin-top:40px;color:var(--muted)">Click anywhere or use ↑↓ to navigate</p>
-        <div class="slide-num">1/21</div>
+        <div class="slide-num">1/20</div>
     </section>
 
     <!-- SLIDE 2: About Me -->
@@ -427,25 +427,64 @@
                     <th style="min-width:120px">設計方法分類</th>
                 </tr>
                 <tr>
-                    <td><span class="tag tag-rf">Paper 1</span><br>基於 Chu 極限引導與分解的多目標大規模優化用於生成式寬頻電小天線設計</td>
-                    <td>多目標進化算法 (MOEA/D)、Chu 極限引導分解策略、混合變量編碼、遺傳算法 (NSGA-II)</td>
+                    <td><span class="tag tag-rf">Paper 1</span><br>基於 Chu limit引導與分解的多目標大規模優化用於生成式寬頻電小天線設計</td>
+                    <td>
+                        <ul style="margin:0;padding-left:16px">
+                            <li>多目標進化算法 (MOEA/D)</li>
+                            <li>Chu limit引導分解策略</li>
+                            <li>混合變量編碼</li>
+                            <li>遺傳算法 (NSGA-II)</li>
+                        </ul>
+                    </td>
                     <td>電小天線 (ESA)、「徑向微束」(Radial-beamlet) 天線</td>
-                    <td>阻抗頻寬 \(50.3\%\) (\(2.05\)-\(3.43\text{ GHz}\))、實現增益 \(1.72\)-\(3.86\text{ dBi}\)、頻寬-效率乘積
-                        \(0.402\) (超過極限 \(0.389\))</td>
+                    <td>
+                        <ul style="margin:0;padding-left:16px">
+                            <li>阻抗頻寬 \(50.3\%\) (\(2.05\)-\(3.43\text{ GHz}\))</li>
+                            <li>實現增益 \(1.72\)-\(3.86\text{ dBi}\)</li>
+                            <li>頻寬-效率乘積 \(0.402\) (超過極限 \(0.389\))</li>
+                        </ul>
+                    </td>
                     <td>物理信息驅動與模型驅動</td>
                 </tr>
                 <tr>
                     <td><span class="tag tag-ml">Paper 2</span><br>利用物理信息神經網絡（PINN）進行頻率選擇表面（FSS）的逆向設計</td>
-                    <td>物理信息神經網絡 (PINN)、模式匹配法 (Mode Matching Method)、全連接神經網絡 (FCNN)、Adam 優化器</td>
+                    <td>
+                        <ul style="margin:0;padding-left:16px">
+                            <li>物理信息神經網絡 (PINN)</li>
+                            <li>模式匹配法 (Mode Matching Method)</li>
+                            <li>全連接神經網絡 (FCNN)</li>
+                            <li>Adam 優化器</li>
+                        </ul>
+                    </td>
                     <td>頻率選擇表面 (FSS)</td>
-                    <td>設計目標頻率 \(15\text{ GHz}\)，實測值 \(15.288\text{ GHz}\)（誤差 \(1.92\%\)）；\(S_{21}\) 參數</td>
+                    <td>
+                        <ul style="margin:0;padding-left:16px">
+                            <li>設計目標頻率 \(15\text{ GHz}\)</li>
+                            <li>實測值 \(15.288\text{ GHz}\)（誤差 \(1.92\%\)）</li>
+                            <li>\(S_{21}\) 參數</li>
+                        </ul>
+                    </td>
                     <td>物理信息驅動</td>
                 </tr>
                 <tr>
                     <td><span class="tag tag-6g">Paper 3</span><br>LLM-RIMSA：大語言模型驅動的可重構智能超表面天線系統</td>
-                    <td>GPT-2 主幹網絡、空間域預處理模組、雙向 LSTM (BiLSTM)、時空注意力機制、強化學習 (DRL)、圖神經網絡 (GNN)</td>
+                    <td>
+                        <ul style="margin:0;padding-left:16px">
+                            <li>GPT-2 主幹網絡</li>
+                            <li>空間域預處理模組</li>
+                            <li>雙向 LSTM (BiLSTM)</li>
+                            <li>時空注意力機制</li>
+                            <li>強化學習 (DRL)</li>
+                            <li>圖神經網絡 (GNN)</li>
+                        </ul>
+                    </td>
                     <td>可重構智能超表面天線 (RIMSA)</td>
-                    <td>總和傳輸速率 (Sum Rate) 達 \(9.79\text{ bps/Hz}\)；推理延遲小於 \(20\text{ ms}\)</td>
+                    <td>
+                        <ul style="margin:0;padding-left:16px">
+                            <li>總和傳輸速率 (Sum Rate) 達 \(9.79\text{ bps/Hz}\)</li>
+                            <li>推理延遲小於 \(20\text{ ms}\)</li>
+                        </ul>
+                    </td>
                     <td>數據驅動與語義推理驅動</td>
                 </tr>
             </table>
@@ -1189,8 +1228,203 @@
         <div class="slide-num">14/21</div>
     </section>
 
-    <!-- SLIDE 15: Paper 3 RF Background -->
+    <!-- SLIDE 15: Paper 3 - DMA vs RIMSA -->
     <section class="slide" id="s15">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
+            <span class="tag tag-6g">Paper 3</span>
+            <h2 style="margin:0">Old DMA vs New RIMSA</h2>
+        </div>
+
+        <div class="grid grid-2">
+            <div class="card">
+                <h3>Old: Serial Feed (DMA)</h3>
+                <p style="font-size:0.9rem;color:var(--muted)">Watch the circles do "the wave" (like fans in a stadium)
+                </p>
+
+                <div id="serial-container" style="display:flex;gap:10px;justify-content:center;margin:30px 0"></div>
+
+                <div
+                    style="margin-top:20px;padding:12px;background:#450a0a;border-radius:8px;border:1px solid var(--red)">
+                    <p style="font-size:0.9rem;margin-bottom:8px"><strong style="color:var(--red)">⚠️ Three Critical
+                            Problems:</strong></p>
+                    <ul style="font-size:0.85rem;line-height:1.6;margin:0;padding-left:20px">
+                        <li><strong>Beam Squint:</strong> Different frequencies arrive at different times → beam
+                            spreads like a rainbow → user can't catch full signal</li>
+                        <li><strong>Intersymbol Interference:</strong> First element sends new bit while last element
+                            still sends old bit → air fills with mixed 1s and 0s → data corruption</li>
+                        <li><strong>Narrowband Only:</strong> Forced to use slow signals to avoid problems #1 and #2
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>New: Parallel Feed (RIMSA)</h3>
+                <p style="font-size:0.9rem;color:var(--muted)">Watch the circles "breathe together"</p>
+
+                <div id="parallel-container"
+                    style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:30px auto;width:fit-content">
+                </div>
+
+
+
+                <div
+                    style="margin-top:20px;padding:12px;background:#14532d;border-radius:8px;border:1px solid var(--green)">
+                    <p style="font-size:0.9rem;margin-bottom:8px"><strong style="color:var(--green)">✓ What RIMSA
+                            Solves:</strong></p>
+                    <ul style="font-size:0.85rem;line-height:1.6;margin:0;padding-left:20px">
+                        <li><strong>Independent Control:</strong> Phase and Amplitude adjust separately (no coupling)
+                        </li>
+                        <li><strong>Direct Transmission:</strong> Signal generated on surface → no double fading → high
+                            gain</li>
+                    </ul>
+                </div>
+
+                <div
+                    style="margin-top:10px;padding:12px;background:#450a0a;border-radius:8px;border:1px solid var(--red)">
+                    <p style="font-size:0.9rem;margin-bottom:8px"><strong style="color:var(--red)">⚠️ New Problem
+                            Created:</strong></p>
+                    <ul style="font-size:0.85rem;line-height:1.6;margin:0;padding-left:20px">
+                        <li><strong>Control Complexity:</strong> 1000s of independent knobs → LLM solves this in
+                            real-time</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align:center;margin-top:20px">
+            <div style="display:flex;align-items:center;justify-content:center;gap:20px;margin-bottom:12px">
+                <label style="font-size:0.9rem;color:var(--muted)">Signal Frequency:</label>
+                <label style="cursor:pointer">
+                    <input type="radio" name="freq" value="low" checked style="margin-right:5px">
+                    <span style="color:var(--text)">LOW</span>
+                </label>
+                <label style="cursor:pointer">
+                    <input type="radio" name="freq" value="mid" style="margin-right:5px">
+                    <span style="color:var(--text)">MID</span>
+                </label>
+                <label style="cursor:pointer">
+                    <input type="radio" name="freq" value="high" style="margin-right:5px">
+                    <span style="color:var(--text)">HIGH</span>
+                </label>
+            </div>
+            <button class="btn" onclick="toggleRIMSAAnimation()" id="animBtn">▶ Start Stream</button>
+        </div>
+
+        <div class="slide-num">15/21</div>
+
+        <style>
+            .element {
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                transition: background-color 0.05s;
+                border: 2px solid var(--border);
+            }
+        </style>
+
+        <script>
+            (function () {
+                const serialContainer = document.getElementById('serial-container');
+                const parallelContainer = document.getElementById('parallel-container');
+                const count = 10;
+
+                // Frequency settings: [speed multiplier, delay per element in seconds]
+                const FREQ_SETTINGS = {
+                    low: { speed: 0.5, delay: 0.3 },    // Slow, clear red/blue separation
+                    mid: { speed: 2, delay: 0.15 },     // Faster, overlap creates purple
+                    high: { speed: 8, delay: 0.08 }     // Very fast, all purple mess
+                };
+
+                let animationRunning = false;
+                let animationFrameId = null;
+                let startTime = 0;
+
+                // Generate Elements (only once)
+                if (serialContainer && serialContainer.children.length === 0) {
+                    for (let i = 0; i < count; i++) {
+                        let el = document.createElement('div');
+                        el.className = 'element serial-el';
+                        el.dataset.index = i;
+                        serialContainer.appendChild(el);
+
+                        let el2 = document.createElement('div');
+                        el2.className = 'element parallel-el';
+                        parallelContainer.appendChild(el2);
+                    }
+                }
+
+                // Get selected frequency setting
+                function getFreqSetting() {
+                    const selected = document.querySelector('input[name="freq"]:checked');
+                    return FREQ_SETTINGS[selected ? selected.value : 'low'];
+                }
+
+                // Color calculation based on time
+                function getSignalColor(time, speed) {
+                    const phase = (time * speed) % 2;
+                    if (phase < 1) {
+                        return '#ef4444'; // Red
+                    } else {
+                        return '#3b82f6'; // Blue
+                    }
+                }
+
+                // Animation loop
+                function animate() {
+                    if (!animationRunning) return;
+
+                    const currentTime = (Date.now() - startTime) / 1000;
+                    const setting = getFreqSetting();
+
+                    // Update serial elements (with delay - creates wave/interference)
+                    const serialElements = document.querySelectorAll('.serial-el');
+                    serialElements.forEach((el, index) => {
+                        const delay = index * setting.delay;
+                        const delayedTime = currentTime - delay;
+                        el.style.backgroundColor = getSignalColor(delayedTime, setting.speed);
+                    });
+
+                    // Update parallel elements (no delay - perfect sync)
+                    const parallelElements = document.querySelectorAll('.parallel-el');
+                    const parallelColor = getSignalColor(currentTime, setting.speed);
+                    parallelElements.forEach(el => {
+                        el.style.backgroundColor = parallelColor;
+                    });
+
+                    animationFrameId = requestAnimationFrame(animate);
+                }
+
+                // Toggle animation on/off
+                window.toggleRIMSAAnimation = function () {
+                    const btn = document.getElementById('animBtn');
+
+                    if (!animationRunning) {
+                        animationRunning = true;
+                        startTime = Date.now();
+                        btn.textContent = '⏸ Stop Stream';
+                        btn.style.background = 'var(--red)';
+                        animate();
+                    } else {
+                        animationRunning = false;
+                        if (animationFrameId) {
+                            cancelAnimationFrame(animationFrameId);
+                        }
+                        btn.textContent = '▶ Start Stream';
+                        btn.style.background = 'var(--accent)';
+
+                        // Reset colors
+                        document.querySelectorAll('.element').forEach(el => {
+                            el.style.backgroundColor = 'var(--card)';
+                        });
+                    }
+                };
+            })();
+        </script>
+    </section>
+
+    <!-- SLIDE 16: Paper 3 RF Background -->
+    <section class="slide" id="s16">
         <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
             <span class="tag tag-6g">Paper 3</span>
             <h2 style="margin:0">RF Fundamentals: RIS, Beamforming, SINR</h2>
@@ -1230,11 +1464,11 @@
             💡 <strong>Three pillars of 6G:</strong> RIS hardware + Beamforming physics + System optimization →
             Connected via LLM
         </p>
-        <div class="slide-num">15/21</div>
+        <div class="slide-num">16/21</div>
     </section>
 
-    <!-- SLIDE 16: Paper 3 Solution -->
-    <section class="slide" id="s16">
+    <!-- SLIDE 17: Paper 3 Solution -->
+    <section class="slide" id="s17">
         <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
             <span class="tag tag-6g">Paper 3</span><span class="tag tag-ml">Transformer</span>
             <h2 style="margin:0">Solution: LLM-RIMSA Architecture</h2>
@@ -1307,11 +1541,11 @@
                 </div>
             </div>
         </div>
-        <div class="slide-num">16/21</div>
+        <div class="slide-num">17/21</div>
     </section>
 
-    <!-- SLIDE 17: Paper 3 Demo -->
-    <section class="slide" id="s17">
+    <!-- SLIDE 18: Paper 3 Demo -->
+    <section class="slide" id="s18">
         <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
             <span class="tag tag-6g">Paper 3</span>
             <h2 style="margin:0">Live Demo: RIS Beamforming</h2>
@@ -1373,11 +1607,11 @@
                 </div>
             </div>
         </div>
-        <div class="slide-num">17/21</div>
+        <div class="slide-num">18/21</div>
     </section>
 
-    <!-- SLIDE 18: Paper 3 Takeaway -->
-    <section class="slide" id="s18">
+    <!-- SLIDE 19: Paper 3 Takeaway -->
+    <section class="slide" id="s19">
         <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
             <span class="tag tag-6g">Paper 3</span>
             <h2 style="margin:0">Key Takeaways & Benchmark</h2>
@@ -1450,61 +1684,6 @@
             💡 <strong>Key Insight:</strong> LLMs aren't just for text—the industry is starting to explore them for
             wireless control. This positions me at the cutting edge of 6G + AI research.
         </p>
-        <div class="slide-num">18/21</div>
-    </section>
-
-    <!-- SLIDE 19: Formulas -->
-    <section class="slide" id="s19">
-        <h2>Quick Formulas Cheat Sheet</h2>
-        <div class="card" style="margin-top:16px">
-            <table>
-                <tr>
-                    <th>Concept</th>
-                    <th>Formula</th>
-                    <th>Key Insight</th>
-                </tr>
-                <tr>
-                    <td>Wavelength</td>
-                    <td>\(\lambda = c/f\)</td>
-                    <td>1 GHz → 30 cm, 10 GHz → 3 cm</td>
-                </tr>
-                <tr>
-                    <td>Electrical Size</td>
-                    <td>\(ka = 2\pi a/\lambda\)</td>
-                    <td>ka < 0.5=ESA</td>
-                </tr>
-                <tr>
-                    <td>Quality Factor</td>
-                    <td>\(Q = f_0/BW\)</td>
-                    <td>High Q = narrow BW</td>
-                </tr>
-                <tr>
-                    <td>Chu Limit</td>
-                    <td>\(Q_{min} \geq 1/(ka)^3 + 1/ka\)</td>
-                    <td>Physics limit on antenna</td>
-                </tr>
-                <tr>
-                    <td>S-Parameters</td>
-                    <td>S₁₁ = reflect, S₂₁ = transmit</td>
-                    <td>Measured with VNA</td>
-                </tr>
-                <tr>
-                    <td>PINN Loss</td>
-                    <td>\(\mathcal{L} = \mathcal{L}_{phys} + \mathcal{L}_{design}\)</td>
-                    <td>Physics = free labels</td>
-                </tr>
-                <tr>
-                    <td>Shannon</td>
-                    <td>\(C = B\log_2(1 + SNR)\)</td>
-                    <td>Capacity limit</td>
-                </tr>
-                <tr>
-                    <td>Sum Rate</td>
-                    <td>\(R = \sum_k \log_2(1 + SINR_k)\)</td>
-                    <td>Multi-user objective</td>
-                </tr>
-            </table>
-        </div>
         <div class="slide-num">19/21</div>
     </section>
 
