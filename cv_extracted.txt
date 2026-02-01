@@ -1,0 +1,48 @@
+JIMMY LIU
+Taipei,Taiwan • +886978-768-367
+Email: jimmyliu.ii12@nycu.edu.tw • Github: github.com/Jimmynycu • LinkedIn: linkedin.com/in/jimmyliu2025/
+PROFESSIONAL SUMMARY
+SeniorAIEngineerspecializinginLLMAgentOrchestrationandRAG.Architectedhigh-performanceautomationworkflows
+atMediaTekandBroadcom,driving70%accelerationinproduction. Expertinfine-tuningfoundationmodels,deploying
+vectordatabases,andengineeringasynchronousmulti-agentsystemsforenterprisescale.
+TECHNICAL SKILLS
+• Languages: Python(Advanced),Verilog,ShellScripting,C++
+• AIFrameworks: PyTorch,TensorFlow,LangChain,HuggingFace
+• Infrastructure: Linux,Git,Docker,LangSmith,RAGPipelines
+• Competencies: LLMFine-tuning(LoRA/QLoRA),DeepLearningOptimization,AsyncArchitecture
+PROFESSIONAL EXPERIENCE
+AIArchitectureEngineer Homee.AI
+Sep2025–Present Taipei,Taiwan
+• Architectedahigh-performance,asynchronousQ&Asystemforbuyer-facingConversationalAI,orchestrating8concurrent
+chatagents.
+• ImplementedadvancedLLMtrackingusingLangSmith,enablingreal-timemonitoringoftokenusage,latency,andintent-
+recognitionaccuracy.
+• Resolvedcriticaldataintegritybottlenecksrelatedtomaprenderingandcomplexdatapipelines,enhancingsystemfault
+tolerance.
+EDASoftwareEngineer MediaTek
+2023May–2024May Hsinchu,Taiwan
+• EngineeredandcuratedLLM-baseddatapreparationforsemiconductordesign,establishingcodedocumentationstan-
+dardsforinternalLLMtrainingpipelines.
+• MaintainedPearl-basedautomationtoolsforlatestprocess,discoveringcriticalissueandcreateinameasurable50%
+acceleration.
+ImpedanceEngineer Broadcom
+2020May–2022July Hsinchu,Taiwan
+• DesignedanddeployedanewautomatedworkflowsystemusingPython,reducingmanualprocessingtimeby70%.
+• OptimizedthedecapselectionforWiFiPCBboardthroughcross-functionalcollaboration(680+components).
+TECHNICAL PROJECTS
+LLM-PoweredDataRetrievalAgent|FunctionCalling,RAG
+• DeployedanLLMsolutionutilizingFunctionCallingfortargetedvideosearch,implementingregional/keywordtrendfilter-
+ingandautomatedfetching.
+Multi-AgentApplicantTrackingSystem|Multi-AgentSystems
+• Orchestratedamulti-agentsolutiontoextractcandidateinformationintoExcelanddeployedan"AgentFactory"toau-
+tonomouslyanalyzesuitability.
+Real-TimeSpeech-to-ActionSystem|Asyncio,APIControl
+• Developedaconcurrentasyncioarchitectureforreal-timevoice/expressiondetection,triggeringVTubeStudioAPIswith
+lowlatency.
+EDUCATION
+Master’sDegree: AIInnovation NationalYangMingChiaoTungUniversity
+Focus: LLMConfidence,Fine-tuning,RAG Hsinchu,Taiwan
+• Thesis: DesignedandprovidesoftwaresimulationsofAImodelstoconfidenceawaredevelopment.
+
+---PAGE---
+

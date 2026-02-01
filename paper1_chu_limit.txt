@@ -1,0 +1,1724 @@
+# Chu-Limit-Guided_Decomposition-Based_Multiobjective_Large-Scale_Optimization_for_Generative_Broadband_Electrically_Small_Antenna_Design.pdf
+# Total Pages: 13
+
+
+=== PAGE 1 ===
+
+This article has been accepted for publication in IEEE Transactions on Antennas and Propagation. This is the author's version which has not been fully edited and
+content may change prior to final publication. Citation information: DOI 10.1109/TAP.2026.3652259
+> REPLACE THIS LINE WITH YOUR PAPER IDENTIFICATION NUMBER (DOUBLE-CLICK HERE TO EDIT) < 1
+Chu-Limit-Guided Decomposition-Based
+Multiobjective Large-Scale Optimization for
+Generative Broadband Electrically Small
+Antenna Design
+Yu Kuang, Graduate Student Member, IEEE, Qingsha S. Cheng, Senior Member, IEEE
+and Zhi Ning Chen, Fellow, IEEE
+g1 Abstract—In traditional electrically small antennas (ESAs) (Q) factor, which is practically related to the product of
+design frameworks, overcoming the bandwidth limit derived from fractional bandwidth and radiation efficiency [3]. The size of
+the Chu limit is considered unachievable. This paper proposes a the antenna is defined by the product, ka, where k is the
+three-dimensional (3-D) ESA configuration with high degrees of wavenumber at the center frequency and a is the radius of the
+freedom (DoF), which is employed to significantly expand the
+minimum sphere enclosing the antenna. The theoretical limit
+design space for beyond-limit solutions. A revised multiobjective
+has been explored from various perspectives, including circuit
+evolutionary algorithm based on decomposition (MOEA/D) is
+quantities[1]-[5], field quantities[6],[7], and source current
+presented, which is guided by a Pareto front derived from the
+analyses[8]-[10], focusing on the fundamental principles rather
+bandwidth limit to achieve rapid convergence. Prior knowledge,
+including structural priors, fabrication constraints, and physical than specific antenna implementations.
+interpretations of design parameters and objectives, is To make these theoretical limits relevant to practical antenna
+incorporated to efficiently generate effective solutions. The design, validation in practical implementations is essential.
+proposed method generates nine solutions, all of which exceed the Studies have shown that spherical helix structures can nearly
+bandwidth limits. A “radial-beamlet” antenna, fabricated using achieve the optimal current distributions for spherical shells
+metal 3-D printing, achieves impedance bandwidth of 50.3%
+[11]-[13]. Similarly, several TM dipole antennas have been
+(2.05-3.43 GHz) and realized gain of 1.72-3.86 dBi. The
+shown to closely approach the performance limits for planar
+bandwidth-efficiency product of the fabricated solution is 0.402,
+and cylindrical geometries [8],[14],[15]. Although achieving
+compared to the performance limit of 0.389. This approach
+the Chu bound remains challenging, numerous approaches
+pushes the boundaries of electrically small antennas and provides
+a new pathway for the advanced design of similar structures. have been proposed to tackle this issue [16]-[19]. A
+Index Terms— Electrically small antenna, Metal 3D printing, comprehensive survey [20] on small antenna designs highlights
+Chu limit, Multi-objective, Optimization. the substantial gap between existing designs and the
+performance limit.
+Artificial intelligence (AI) and optimization techniques have
+I. INTRODUCTION played a critical role in advancing the design of increasingly
+Br oadband omnidirectional electrically small antennas complex antennas to meet stringent specifications. Heuristic
+(ESAs) are essential in practical wireless devices such as optimization methods, such as genetic algorithms (GA) [21]
+portable terminals, IoT nodes, wearable sensors, and compact and particle swarm algorithms (PSO) [22], are exploited to
+communication modules. The Wheeler and Chu limits [1],[2] explore unintuitive three-dimensional (3-D) antenna
+define a fundamental constraint on the performance of ESAs, configurations. However, their limited degree-of-design
+quantifying the trade-off between electrical size and the quality freedom (DoF) makes it challenging to approach the
+performance limit. In contrast, numerical current-based design
+Manuscript received xx xx, 2025. This work was supported in part by the approaches offer improved proximity to theoretical limits for
+National Natural Science Foundation of China under Grant 62071211, in part
+ESAs [23]-[27], thanks to their ability to converge under
+by the Shenzhen Science and Technology Program under Grant
+JCYJ20240813095713018, and in part by the Advanced Research and extremely high DoF, enabling optimal current distributions on
+Technology Innovation Centre (ARTIC), National University of Singapore, predefined surfaces.
+under Grant AFP-RP1. (Corresponding author: Qingsha S. Cheng.)
+Building on this idea, generative design, which involves
+Yu Kuang is with the Department of Electrical and Electronic Engineering,
+creating high DoF antenna configuration, has emerged as a
+Southern University of Science and Technology, Shenzhen 518055, China, and
+also with the Department of Electrical and Computer Engineering, National powerful approach to exploring unconventional and
+University of Singapore, Singapore 117583 (e-mail: kuangyu@u.nus.edu). high-performance designs. For example, increasing the DoF in
+Qingsha S. Cheng is with the Department of Electrical and Electronic
+unit cell design has led to phase breakthroughs in metasurfaces,
+Engineering, Southern University of Science and Technology, Shenzhen
+518055, China (e-mail: chengqs@sustech.edu.cn). thereby enhancing the metalens performance [28]-[30].
+Zhi Ning Chen is with the Department of Electrical and Computer Likewise, expanding the DoF in 3D ESA configurations offers
+Engineering, National University of Singapore, Singapore 117583 (e-mail:
+the potential to reach the performance limit by enhancing the
+eleczn@nus.edu.sg).
+design flexibility. However, this also significantly increases the
+Authorized licensed use limited to: Chih-Hua Chang. Downloaded on January 20,2026 at 13:09:51 UTC from IEEE Xplore. Restrictions apply.
+© 2026 IEEE. All rights reserved, including rights for text and data mining and training of artificial intelligence and similar technologies. Personal use is permitted,
+but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html for more information.
+
+=== PAGE 2 ===
+
+> REPLACE THIS LINE WITH YOUR PAPER IDENTIFICATION NUMBER (DOUBLE-CLICK HERE TO EDIT) < 2
+complexity of the optimization problem, introducing
+max f
+challenges associated with large-scale design spaces and 2 Known Pareto front
+(Performance limit )
+computational efficiency.
+The design space increases exponentially with the number of
+design parameters, a phenomenon known as “curse of
+dimensionality” in numerical optimization [31]. Meanwhile,
+the inherently conflicting objectives in antenna design,
+DoF min f
+including bandwidth, efficiency, and size, define it as a 1
+high-dimensional multiobjective optimization problem (MOP).
+The multiobjective evolutionary algorithm based on
+decomposition (MOEA/D) [32] is a mainstream method in
+solving MOPs. In antenna applications, most MOEA/D-based design (GAD). Guided by this concept, the 3-D ESA
+studies focus on tailoring reproduction operators and update configuration with high-DoF is developed and a large-scale
+strategies to improve performance in specific scenarios multiobjective optimization problem is formulated.
+[33]-[35] and aiming to balance convergence speed and
+A. Concept: Generative Antenna Design using Optimization
+solution diversity [36],[37]. However, few existing approaches
+are tailored to high-dimensional antenna optimization problems Generative antenna design (GAD) aims to explore novel
+and lack convergence guidance based on physical insights. high-DoF antenna structures through optimization,
+The Wheeler and Chu limits represent the Pareto front of the approaching performance limits guided by prior knowledge.
+MOP that seeks to simultaneously maximize the fractional The GAD concept, as shown in Fig.1, includes two key features:
+bandwidth and minimize electrical size. This study (1) significantly increasing the DoF in antenna configuration to
+incorporates such prior knowledge, together with other expand the design space, and (2) integrating prior knowledge to
+empirical experience, into the MOEA/D framework to enhance guide optimization towards performance limit.
+convergence efficiency in large-scale optimization problems. The objective of increasing DoF in antenna design is to
+This paper proposes a Chu limit-guided decomposition- significantly expand the design space, enabling the generation
+based multiobjective large-scale optimization technique for of new designs with excellent performance. The DoF typically
+generative design of broadband ESAs. A high DoF 3-D ESA includes geometry parameters, configurations, and structures.
+configuration is proposed. The Pareto front derived from the As shown in Fig. 1(a), representative antenna structures with
+performance limit, together with other physical knowledge, are increasing DoF demonstrate a clear progression in performance.
+employed to guide problem decomposition, initialization, and The increase of DoF provides greater design diversity and
+reproduction, enabling more efficient convergence in the high- design flexibility but also introduces challenges for
+dimensional design space. The proposed ESA configuration is optimization due to the vast design space.
+further optimized under prior knowledge constraints to validate Incorporating prior knowledge (PK) in algorithms is to
+the effectiveness of the algorithm. Nine solutions exceeding achieve efficient convergence to multiple feasible designs.
+performance limit are obtained in the population of the 20th Prior knowledge generally includes engineering constraints,
+generation. One of the solutions is simplified, fabricated using fundamental electromagnetic theory, and empirical experience.
+the 3-D printing, and experimentally measured. As shown in Fig. 1(b), the performance limit derived from the
+The main contributions of this paper are as follows: Chu limit is transformed into the known Pareto front. This PF is
+1) A novel problem decomposition strategy in MOEA/D that embedded into the optimization process to guide problem
+leverages the true Pareto front derived from theoretical decomposition and solution assignment, thereby improving
+limits and engineering constraints, enabling direct convergence toward high-performance designs.
+convergence guided by prior knowledge.
+B. 3-D ESA Configuration with High DoF
+2) Integration of additional prior knowledge into
+To effectively increase the DoF of the ESA, the proposed
+initialization and reproduction processes to efficiently
+configuration consists of multiple metal rods arranged at fixed
+generate effective and feasible solutions, further
+positions around a center-fed dipole. The existence and
+enhancing convergence in large-scale optimization of a
+orientation of each rod are optimized to create a complex
+3-D ESA with high degrees of freedom.
+parasitic loading configuration. The modeling description is
+3) A systematic generative-design framework is proposed
+shown in Fig. 2. 27 customized positions are determined
+that consistently generates beyond-limit solutions on a
+uniformly distributed within one-eighth spherical regions, as
+unified ESA configuration, with experimental validation
+shown in Fig. 2(a). The radius of the enclosing spherical
+through an equivalent fabricated prototype. This confirms
+regions is a. The radius r, length l, and rotation angles ( and )
+that approaching the performance limit is a repeatable and
+in azimuth and elevation planes of each metal rod define its
+systematically achievable engineering capability.
+posture, as shown in Fig. 2(b). A D symmetry around the
+4
+z-axis and a horizontal mirror symmetry across the xoy plane
+II. GENERATIVE ANTENNA DESIGN CONCEPT, HIGH DOF
+are applied as symmetric constraints. These constraints enforce
+CONFIGURATION AND MOP FORMULATION
+the lowest-order TM₁₀ spherical-mode behavior and effectively
+This section presents the concept of generative antenna
+ecnamrofreP
+This article has been accepted for publication in IEEE Transactions on Antennas and Propagation. This is the author's version which has not been fully edited and
+content may change prior to final publication. Citation information: DOI 10.1109/TAP.2026.3652259
+Optimization guided
+by known PF
+(a) (b)
+Fig. 1. Concept of generative antenna design guided by the performance limit.
+(a) Increasing antenna DoF to improve performance. (b) Performance limit
+transformed into a known PF guiding multiobjective optimization.
+Authorized licensed use limited to: Chih-Hua Chang. Downloaded on January 20,2026 at 13:09:51 UTC from IEEE Xplore. Restrictions apply.
+© 2026 IEEE. All rights reserved, including rights for text and data mining and training of artificial intelligence and similar technologies. Personal use is permitted,
+but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html for more information.
+
+=== PAGE 3 ===
+
+> REPLACE THIS LINE WITH YOUR PAPER IDENTIFICATION NUMBER (DOUBLE-CLICK HERE TO EDIT) < 3
+reduce the design DoF. One possible generated structure is
+illustrated in Fig. 2(c). This configuration is fed through a 50-Ω
+discrete port (red dot) positioned at the center between the arms
+of the driven dipole in the simulation. Compared to low-DoF
+geometry-based models and high-DoF voxel-based models, it
+provides an intermediate level of DoF that is sufficient to
+generate complex parasitic structures without being too
+challenging for algorithms.
+C. Problem Formulation
+Following the concept of GAD, approaching the
+performance limit of the ESA based on the proposed 3-D
+configuration can be formulated as a multiobjective
+optimization problem. The two conflict objectives are electrical
+size ka and fractional bandwidth BW. The optimization
+problem to be solved can be described as follows:
+m
+w
+s
+in F ( x
+b .r .t. x
+b .t. x 
+i
+) =
+
+ 0
+b ( f ( x ,
+1
+m c R , x 
+ c ,1 , x 
+j
+c x
+R
+[ L
+) , −
+n
+c ,U
+j
+f (
+2
+c ]
+j
+x b , x c ) )
+performance when tackling large-scale mixed-variable
+multiobjective problems with high computational cost. In
+particular, the Chu limit is transformed into an explicit Pareto
+front to guide the optimization process. The performance-limit-
+guided MOP decomposition and the reference-point solution
+assignment are employed to direct the algorithm toward the
+performance limit. Other prior knowledge is also integrated
+into offspring reproduction and population initialization to
+further improve algorithm efficiency and effectiveness.
+A. Performance-Limit-Guided MOP Decomposition
+In decomposition-based multi-objective optimization
+frameworks, an MOP is decomposed into a set of scalarizing
+single-objective subproblems, each generated by a scalarizing
+function with a different weight vector. However, existing
+studies have shown that the performance of MOEA/D is
+strongly influenced by the shape and distribution of the
+underlying Pareto front [38],[39]. This indicates that tailoring
+the decomposition strategy to the characteristics of the
+problem’s Pareto front can significantly improve algorithmic
+performance.
+In this work, we leverage physical performance limit theory
+(Chu limit) and relevant engineering constraints to explicitly
+construct the feasible region and the corresponding true Pareto
+front in the objective space. These physically grounded
+Pareto-optimal boundaries are uniformly sampled to generate
+reference points for subproblem scalarization, enabling the
+MOEA/D to align more closely with the design problem’s
+intrinsic structure and thereby achieve enhanced convergence
+and diversity. (1)
+1) Performance limit derived from Chu-limit of single mode
+antenna
+where F is a vector of two objective functions. xb is a vector of Assuming an metallic antenna enclosed by its minimum
+binary variables indicating whether a metal rod is present at sphere and dominated by the single mode, the performance
+each specific position, with ‘1’ representing the presence of a limit for given VSWR of s and radiation efficiency η is
+rod and ‘0’ representing its absence. m is the dimension of expressed as follows [20]:
+binary variables. xc is a vector of continuous variables,
+representing the posture of metal rods, including length, radius,
+and rotate angles. n is the dimension of continuous variables,
+corresponding to the number of metal rods present, as indicated
+by the number of “1” in xb. f and f denote the objective
+1 2
+functions for center frequency and fractional bandwidth,
+respectively. Lc and Uc define the lower and upper bounds of xc.
+The formulated problem features: (1) Large scale: 135
+design parameters in total; (2) Mixed-variable structure: the
+design parameters typically include binary and continuous
+types. (3) Variable-length design space: the dimension of the
+continuous parameters varies from 4 to 108, defined by the
+binary parameters. (4) Expensive optimization: each EM
+full-wave simulation takes about 3 mins. This problem is
+typically a generative antenna design problem, and prior
+knowledge is indeed an efficient and effective optimization.
+III. PERFORMANCE-LIMIT-GUIDED DECOMPOSITION-BASED
+MULTIOBJECTIVE OPTIMIZATION FRAMEWORK
+This section presents the integration of prior knowledge into
+the MOEA/D framework [32], enhancing convergence
+B W
+C hu
+s 1
+s
+1
+k a ( k
+1
+a ) 3
+1
+
+=
+− 
++
+
+−
+(2)
+where BW is the fractional bandwidth. For metallic antennas, Chu
+the total efficiency is typically set to 95%, and s is set to 1.93,
+corresponding to the −10-dB impedance bandwidth. All
+Chu-limit performance curves in the following sections are
+derived from (2).
+2) Engineering constraints derived from physical size and
+simulation frequency bounds
+In experiments, the antenna structure is enclosed within a
+sphere of radius R, and its electromagnetic performance is
+evaluated over a finite frequency range [f , f ]. Although the
+L U
+actual antenna topology varies, the boundary of achievable
+responses can be heuristically estimated by identifying the –10
+dB reflection points on both ends, denoted as P and P ,
+-10, L -10, R
+corresponding to the left- and right-hand sides of the frequency
+response, respectively.
+To approximate the engineering constraints, two cases are
+considered. First, the P is fixed at f , and the P is swept
+-10, L L -10, R
+from f to f . Second, P is to fixat f , and P is swept
+L U -10, R U -10, L
+( a )
+y
+z
+l
+( b )
+r
+x 
+a
+y
+z
+x
+θ
+( c )
+This article has been accepted for publication in IEEE Transactions on Antennas and Propagation. This is the author's version which has not been fully edited and
+content may change prior to final publication. Citation information: DOI 10.1109/TAP.2026.3652259
+Fig. 2. Geometry modelling of the antenna. (a) Customized rod positions within
+one of the eight spherical regions. (b) Configuration of a rod around driven
+dipole. (c) The proposed 3-D ESA configuration in simulation.
+Authorized licensed use limited to: Chih-Hua Chang. Downloaded on January 20,2026 at 13:09:51 UTC from IEEE Xplore. Restrictions apply.
+© 2026 IEEE. All rights reserved, including rights for text and data mining and training of artificial intelligence and similar technologies. Personal use is permitted,
+but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html for more information.
+
+=== PAGE 4 ===
+
+> REPLACE THIS LINE WITH YOUR PAPER IDENTIFICATION NUMBER (DOUBLE-CLICK HERE TO EDIT) < 4
+from f to f . The relationship between the resulting bandwidth L U
+BW and electrical size ka is determined based on these
+reflection points. Based on these heuristic considerations, the
+practical engineering constraints B W
+E
+( k a ) can be represented
+by envelope boundaries.
+The feasible region F ⊆  2 is jointly defined by the derived
+performance limit B W
+C hu
+( k a ) and engineering constraints
+B W
+E
+( k a ) :
+s .t. B W  B W
+C hu
+( k a
+F
+) , B
+=
+W
+{ ( k
+
+a ,
+B
+B
+W
+W
+E
+) }
+( k a ) , k a
+m in
+ k a  k a
+m ax
+(3)
+To illustrate the feasible regionF, the radius R is set to 18.3
+mm, and the simulation frequency bound [f , f ] is set from 1.5
+L U
+to 5 GHz. The boundaries of objective space are shown in Fig. 2.
+Region 1 represents the feasible region constrained by both
+performance limit and engineering constraints. Region 2 is the
+infeasible region beyond the performance limit but within the
+engineering constraints. Region 3 lies outside both the
+performance limit and the engineering constraints. Region 4
+exceeds engineering constraints but adheres to the Chu limit.
+In Fig.2, the true Pareto front P F ⊆ F is defined by the
+boundary of the feasible region F (gray region, Region 1),
+expressed as:
+s .t. B W = m in ( B W
+P
+C
+F
+hu
+(
+=
+k
+{ ( k
+a ) , B
+a ,
+W
+B
+E
+W
+( k
+)
+a
+}
+) ) , k a  [ k a
+Z L
+, k a
+Z U
+]
+(4)
+where k a
+Z L
+and k a
+Z U
+denote intersection points of B W
+C hu
+( k a )
+and B W
+E
+( k a ) .The set PF represents the non-dominated
+frontier, where improvement in one objective necessarily leads
+to degradation in the other.
+The reference points z  P F are uniformly distributed points
+from the derived true Pareto front PF as illustrated in Fig. 4.
+The kth points z (k ) are utilized to define the kth scalarizing
+subproblems g (k ) in the proposed framework:
+m in
+x
+g (k ) ( x |z ) = mi a x (
+{1,2}
+f
+i
+( x ) − z (k
+i
+) ) , k = 1 , , N . (5)
+where x is the vector of design parameters, including xb and xc,
+and i is the ith objective. The modified Tchebycheff approach
+ensures that the scalarizing function maintains the diversity of
+solutions along the irregular Pareto front. By optimizing all N
+subproblems simultaneously, the method guarantees that if all
+reference points are reached, the final solutions will exhibit a motivates the proposed population reassignment, which
+uniformly distributed and diverse Pareto front. facilitates parent selection and contributes to the generation of
+high-quality offspring.
+B. Population-to-Reference-Points Reassignment
+The proposed population-to-reference-points reassignment is
+The traditional weight vector-based decomposition and
+performed at the beginning of each generation. It mainly
+cooperation mechanism ensure the MOEA/D can stably
+follows a two-step procedure: (1) All individuals in the current
+converge and maintain the solution diversity along the weight
+population are sorted in descending order based on their
+vector direction [40]. In contrast, the reference points-based
+decomposition proposed in Section II-A provided the explicit fractional bandwidth FV 2 , giving higher priority to those with
+convergence targets and allowed global reproduction and broadband performance. S is the index set of sorted individuals.
+solution update. (2) Each individual
+To further improve convergence, a population reassignment
+is proposed based on the prior knowledge between reference
+points and solutions. In practical antenna design, optimal
+antenna structures at similar center frequencies (electrical size
+ka in objective space) also tend to be similar. This observation
+i  S is then assigned to the subproblem
+whose reference point is closest in terms of electrical size FV . 1
+The index j of the subproblem corresponds to the ith individual
+can be obtained as follows:
+j =argmin zj −FVi ,i=s,...,s ,sS (6)
+i 1 1 1 N
+j
+)%(WB
+1
+1
+2
+0
+8
+6
+4
+2
+0
+0
+0
+0
+0
+0
+0
+P
+E
+0
+en
+.4
+r f o r m a n c e lim
+g in e e r in g c o n
+3
+4
+0 .6 0 .8
+it
+s tr a in t 2
+2
+1
+1 .0 1k
+E
+.2a
+n g in e
+1 .4
+e r in
+3
+g
+1
+c
+.6
+o n s tr a in
+4
+1 .8
+t 1
+2 .0
+Fig. 3. Feasible region of the proposed optimization problem. The solid line is
+the true Pareto front derived from the Chu-limit theory. Two dashed lines are
+engineering constraints derived from physical size and simulation frequency
+bounds. Four kinds of regions are defined by those boundaries.
+)%(
+WB
+8
+7
+6
+5
+4
+3
+2
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0 .4
+g (1
+0
+P e rfo rm a n c e lim it
+E n g in e e rin g c o n s tra in t 1
+E n g in e e rin g c o n s tra in t 2
+R e fe re n c e p o in ts
+(k+ 3 ) g
+(k+ 2 ) g
+(k+ 1 ) g
+(k) g
+(k-1 ) g
+(k-2 ) g
+(k-3 ) g
+) ...
+.6 0 .8 1 .0 1 .2 1 .4
+k a
+g (N )
+N e
+1 .6
+ig h b
+1
+o
+.8
+rh o o d o
+2 .0
+f g (k )
+This article has been accepted for publication in IEEE Transactions on Antennas and Propagation. This is the author's version which has not been fully edited and
+content may change prior to final publication. Citation information: DOI 10.1109/TAP.2026.3652259
+Fig. 4. Illustration of problem decomposition and population reassignment
+based on derived boundaries. Black solid arrow lines are frequency-based
+reference lines. Each point is associated with the closest reference line in the
+objective space. The red point represents the candidate solution, while the
+green points are identified as neighbors after association.
+Authorized licensed use limited to: Chih-Hua Chang. Downloaded on January 20,2026 at 13:09:51 UTC from IEEE Xplore. Restrictions apply.
+© 2026 IEEE. All rights reserved, including rights for text and data mining and training of artificial intelligence and similar technologies. Personal use is permitted,
+but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html for more information.
+
+=== PAGE 5 ===
+
+> REPLACE THIS LINE WITH YOUR PAPER IDENTIFICATION NUMBER (DOUBLE-CLICK HERE TO EDIT) < 5
+To ensure one-to-one assignment, the selected reference points
+z ( j) is removed from the candidate set z once matched. As
+shown in Fig.4, each dot corresponds to a solution because its
+location is closest to the corresponding reference line.
+The pseudocode of population reassignment is presented in
+Subalgorithm 1. For each subproblem g (k ) , neighborhood B(k)
+is predefined based on the sequence of reference points. As
+shown in Fig.4, the red dot represents the solution assigned to
+the subproblem g (k ) , while the green dots are assigned to
+neighboring subproblems. These solutions form the mating
+pool for offspring reproduction of g(k).
+C. Mixed Variable Coding and Offspring Reproduction
+In the proposed algorithm framework, each individual x
+encodes a candidate ESA structure, and can be represented by
+an ( M + M  k ) -dimensional mixed-variable vector:
+x = [ x b1 , , x bM , x c1,1 , , x c1,k , , x cM
+,1
+, , x cM
+,k
+T] (7)
+where xb indicates whether the ith metal rod is present
+i
+( x bi = 1 ) or absent ( x bi = 0 ) , and each group
+{ x c }
+i,j
+kj=1 = [ x ci,1 , , x ci,k ] specifies the geometry and orientation
+of that rod
+Reproduction follows a two-part strategy. The pseudocode is
+represented in Subalgorithm 2. Binary mutation is applied first,
+using the DE/rand/1 strategy, to generate a mutated binary
+vector vb. In parallel, the continuous vector xc is first mutated
+using DE/rand/1, followed by polynomial mutation to obtain vc.
+The parent vectors are selected from the neighborhood defined
+by the population reassignment. A uniform crossover is then
+performed on the binary variables xb and vb to generate the
+offspring ub. The associate continuous group { x c }
+i,j
+kj=
+1
+for each
+rod i is inherited from xc if u bi = x bi
+Subalgorithm 1: Population-Reassignment
+Input: FV: function values of current population; z: initialized
+reference points
+Output: Index: correspondence index between individuals and
+reference points; S: sorted index of individuals based on
+fractional bandwidth.
+1. S = sort (FV ); 2
+2. for each i in S do
+3. Subproblem index j is obtained by (6)
+4. Delete the reference pointsz(j)in z
+5. Index(j) = i;
+6. end for
+7. Return S and Index
+Subalgorithm 2: Offspring-Reproduction
+Input: P: the selected parents from the solutions of
+neighborhood; x: the current individual
+Output: x’: produced offspring
+1. Initialize i = 1
+2. while i ≤ 4 or flag = 1 do
+3. Perform binary mutation using
+; otherwise, from vc. After
+boundary repair, the offspring is evaluated using a coarse mesh
+EM model. The process is repeated up to four times or until a
+valid structure is found.
+A key feature of this strategy is the coupling between
+structural presence and parameter optimization. Each rod’s
+geometry is optimized only when it is active, avoiding
+unnecessary updates to non-existent structures. The approach
+reflects a fundamental principle in antenna design: only
+physical elements that appear in the design affect performance
+and deserve tuning. At the same time, the parameter dimension
+remains fixed, with optimization applied only to meaningful
+structures.
+D. Prior-Knowledge Guided Population Initialization
+Prior knowledge from the state-of-the-art (SOTA) ESA
+structures [41]-[44] can effectively guide the generation of
+high-quality candidates during population initialization. Based
+on this PK, the probability of generation can be intuitively Each xc is sampled from a piecewise constant distribution
+i,j
+adjusted to generate structures resembling the SOTA designs, f (xc ,prior). The prior parameter priorincludes the interval
+c i,j i,j i,j
+rather than relying on uniform random sampling. A set of prior bound [a,b][Lc ,Uc ] and the probability p(xc [a,b])
+i,j i,j i,j
+parameters θprior ={p}∪{prior} is introduced to construct assigned to that interval, to increase probability of sampling the
+customized probability
+i
+distri
+i
+b
+,j
+utions. Each
+xb
+is sampled from desired geometry and orientation of the ith rod. Therefore, a
+i
+a binary probability distribution f (xb,p), where p represents joint probability distribution P(x,θprior) over the mixed
+b i i i
+the activation probability of the ith rod (i.e., P(xb =1)= p ). variable vector x is constructed.
+i i
+v b = x b + F  ( x bp1  x bp
+2
+)
+4. Perform continuous mutation using
+v c = P o ly M u t ( x c + F  ( x cp1 − x cp
+2
+) )
+5. Apply uniform crossover to xb and vb to obtain ub
+6. Generate uc: for each rod i,
+if u bi = x bi then { u c }
+i,j
+kj=1 = { x c }
+i,j
+kj=1 ;else
+{uc }k ={vc }k
+i,j j=1 i,j j=1
+7. Repair x’= (ub, uc) if out of the boundaries
+8. Evaluate x’ using coarse mesh EM model
+9. if x’ is valid then set flag = 0; else i=i+1
+10. end while
+11. Return x’
+Subalgorithm 3: Population-Initialization
+Input: N: population size; L: lower bounds of parameters; U:
+upper bounds of parameters; θ p rio r : prior parameter set
+Output: P: Initialized population
+1. while |P| < N do
+2. for each i = 1 to M do
+3. Sample x bi ~ f
+b
+( , p
+i
+)
+This article has been accepted for publication in IEEE Transactions on Antennas and Propagation. This is the author's version which has not been fully edited and
+content may change prior to final publication. Citation information: DOI 10.1109/TAP.2026.3652259
+4. for j = 1 to k do
+5. Sample xc ~ f (,prior)
+i,j c i,j
+6. end for
+7. temp = [xb, xc];
+8. end for
+9. Evaluate temp using the coarse mesh EM model;
+10. if valid then add temp to P;
+11. end while
+12. Return P
+Authorized licensed use limited to: Chih-Hua Chang. Downloaded on January 20,2026 at 13:09:51 UTC from IEEE Xplore. Restrictions apply.
+© 2026 IEEE. All rights reserved, including rights for text and data mining and training of artificial intelligence and similar technologies. Personal use is permitted,
+but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html for more information.
+
+=== PAGE 6 ===
+
+> REPLACE THIS LINE WITH YOUR PAPER IDENTIFICATION NUMBER (DOUBLE-CLICK HERE TO EDIT) < 6
+M k
+P(x,θprior)=[f (xb,p)f (xc ,prior)] (8)
+b i i c i,j i,j
+i=1 j=1
+Table I summarizes representative prior settings derived
+from SOTA ESA designs, illustrating how PK is transformed
+into the parameters of binary and continuous probability
+distributions. The pseudocode of population initialization is
+shown in Subalgorithm 3.
+TABLE I
+REPRESENTATIVE PRIOR KNOWLEDGE SETTINGS
+Prior Knowledge Affected Variables High Probability Range
+Rods near the driven dipole strongly affect EM response x bi (central region**) p i (center region**)
+Top-loading rods enhance
+performance*
+x bi (top region**),
+x bi,1 (length),
+b xi,2 (rotate angle)
+p
+i
+(top region**);
+p ( x ci,1  [8 ,1 2 ]) ;
+p ( x ci,2  [1 0 0 ,1 5 0 ])
+Algorithm 1: Performance-limit-guided MOEA/D framework
+Input: N: population size; T: neighborhood size; t :
+max
+maximum number of generations
+Output: P: Final population
+1. Initialize uniform N reference points (z ,...,z ) on True
+1 N
+Pareto front derived from Chu-limit theory;
+2. for each i = 1 to N do
+3. Set B(i)={i,...,i },where z ,...,z are the T closest
+1 T i1 iT
+reference points to
+*The bounds of length and rotate angle are assumed to be [1,12] and [0,180],
+respectively. **The region is selected by empirical experience.
+E. Performance-Limit-Guided MOEA/D Framework
+The pseudocode of performance-limit-guided MOEA/D
+framework is presented in Algorithm 1. Initially, the reference
+points are uniformly sampled from the derived true Pareto front.
+Then, the MOP is decomposed into multiple scalarizing
+subproblems corresponding to reference points (Step 1). Next,
+a neighborhood set B is constructed for each reference point by
+calculating the Euclidean distance among reference points
+(Step 2-4). The initial population P(0) is generated using a
+PK-guided strategy that samples mixed variables from
+customized probability distributions derived from
+representative ESA designs (Step 5). The main evolutionary
+loop iterates until the maximum number of generations (t ) is max
+reached.
+Within each generation, three steps are executed:
+1) Individuals are first sorted by performance and reassigned
+to the most suitable subproblems using Population
+Reassignment, enabling prioritized mating and better
+parent selection.
+2) For the subproblem corresponding to each individual,
+parents are selected from either the neighborhood or the
+entire population based on a predefined probability , and
+offspring is generated using Offspring Reproduction.
+3) Each offspring is evaluated against the entire population
+using scalarizing functions, and up to two solutions are
+replaced, enabling global update of high-quality solutions.
+Eventually, the final population P is output.
+Table II summarizes the PK and their functions in the
+proposed framework. The positions of PK are also annotated in
+the framework flowchart shown in Fig. 5. The proposed
+PK-guided framework introduces two major innovations:
+ PK 1 defines the decomposition of the MOP and the
+construction of the true Pareto front, fundamentally
+shaping the convergence behavior of the algorithm. With
+this PK, the algorithm shifts from traditional weight-based
+guidance to a strategy that focuses on rapidly generating
+high-quality solutions and globally spreading them across
+z
+i
+4. end for
+5. P(0) = Population-Initialization (N);
+6. for each generation t = 1 to t do max
+7. (S, Index) = Population-Reassignment (P, FV);
+8. for each individual i  S do
+9. x selected from the neighborhoods if rand() <  else
+p
+the entire population;
+10. x’ = Offspring-Reproduction (x , x)
+p i
+11. Update solution of the whole subproblem:
+for each j  S, set x
+j
+= x ’ , if g ( x ’ | z )  g ( x
+j
+| z )
+This article has been accepted for publication in IEEE Transactions on Antennas and Propagation. This is the author's version which has not been fully edited and
+content may change prior to final publication. Citation information: DOI 10.1109/TAP.2026.3652259
+;
+12. end for
+13. end for
+14. Return P;
+TABLE II
+SUMMARY OF PK AND THEIR FUNCTIONS IN THE PROPOSED FRAMEWORK
+Prior Knowledge Function in the Algorithm
+Performance limit and Guide MOP decomposition using physically
+PK1 engineering constraints bounded true Pareto front
+Structural similarity Guides solution reassignment based on ka to
+PK2
+near center frequency form structure-aware neighborhoods
+Geometry is used only Couple binary and continuous evolution using
+PK3
+when structure exists physical relationship
+Typical structures from Construct sampling distributions for favor PK4
+SOTA ESA designs effective designs
+Coarse EM mesh
+PK5 Use a fast model to filter out invalid samples
+model
+Start
+Maximum generation,
+Population size,
+Neighborhood size
+Initialization Evolution
+PK 1&2
+PK 1 Reassignment of new
+Neighborhood definition population and subproblems
+of each subproblem
+PK 4&5 Mating selection
+Population initialization PK 3&5
+Offspring reproduction
+Solution replacement in the
+entire population
+Stop criteria?
+Output
+End
+population
+Fig. 5. Flowchart of the proposed optimization framework based on MOEA/D
+for approaching performance limit of ESA.
+Authorized licensed use limited to: Chih-Hua Chang. Downloaded on January 20,2026 at 13:09:51 UTC from IEEE Xplore. Restrictions apply.
+© 2026 IEEE. All rights reserved, including rights for text and data mining and training of artificial intelligence and similar technologies. Personal use is permitted,
+but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html for more information.
+
+=== PAGE 7 ===
+
+> REPLACE THIS LINE WITH YOUR PAPER IDENTIFICATION NUMBER (DOUBLE-CLICK HERE TO EDIT) < 7
+the population, thereby accelerating convergence toward
+subproblem targets.
+ PKs 2–5 jointly support the optimization stages across
+population initialization, parent selection, mixed-variable
+offspring generation, and fast feasibility screening. This
+forms a cohesive mechanism that efficiently produces
+physically meaningful and high-quality solutions.
+In essence, the proposed framework modifies MOEA/D
+using PK to rapid convergence in large scale design spaces.
+IV. GENERATIVE ESA DESIGN USING OPTIMIZATION
+In this section, we simplified the ESA configuration in
+Section II-B with prior knowledge constraints for further
+fabrication and optimized it for approaching performance limit
+using the proposed algorithm.
+A. Prior Knowledge Constraints
+The configuration described in Section II-B provides
+sufficient DoF to generate complex ESA structures. However,
+to balance design and fabrication feasibility, certain structural
+parameters that minimally affect EM performance can be
+further simplified. Two PK constraints are introduced to reduce
+the dimensionality of the design space, as illustrated in Fig. 6.
+(1) Constraining metal rods to specific planes. As shown in Fig.
+6 (b), the 27 metal rods are divided into three groups, with each
+group constrained to a specific plane defined by an azimuthal
+angle  (i.e., =0,30,60 in the xoy-plane). Only the
+elevation angle  of each rod is adjustable. This
+plane-constrained arrangement promotes physical connectivity
+between rods, enabling the effective generation of resonant
+structures and fabrication feasibility. (2) Adoption of square
+metal bars with fixed side length. The original metal rods are
+replaced by square metal bars with a fixed side length, as
+depicted in Fig. 6(c). This modification minimally affects EM
+performance but enhances fabrication feasibility.
+As demonstrated in Fig. 6, with these PK constraints, the
+number of parameters is reduced from 135 to 81. The design
+parameters include 27 binary variables to determine the
+presence of the metal square bar at the predefined position and
+54 continuous variables to control each bar’s length and
+rotation angle. This parameter reduction significantly
+simplifies the optimization problem while preserving sufficient
+DoF for performance optimization.
+B. Optimization Results
+The proposed algorithm is initialized with a population size
+of 162 individuals and 20 total generations. The 3-D ESA
+configuration, as shown in Fig. 6, is optimized. Fig. 7 shows the
+final Pareto front and the population of the 20th generation.
+Nine solutions in the final Pareto front exceed the fractional
+bandwidth limit (upper-left boundary) derived from Chu limit
+[20]. It is evident that these nine individuals distributed along
+the derived Pareto front demonstrate that the derived PF based
+on the Chu-limit theory effectively guides the population
+toward convergence.
+Four solutions are selected and illustrated in Fig. 8. The
+{
+0
+R o d
+...
+s
+1{
+} { } L e n g th
+3 6 ... 1 1 0 3 .4 ... 8 .9
+} R o ta te a n g le
+(a )
+z
+x y
+P re se n t b a r
+A b se n t b a r
+x o
+y
+z
+(c )
+y-p
+x
+la n e
+(b )
+3 0 °
+(
+x o z-p la n e
+
+F r o n t v ie w
+0 ° 3
+T
+0
+o
+°
+p
+6 0 °
+v ie w
+zθ
+l
+x
+= 3 0 ° )
+Fig. 6. Simplified 3-D ESA design based on prior knowledge constraints. (a)
+Representation of design parameter. (b) Fabrication constraints: rods grouped
+in  = 0°, 30°, and 60° planes; only θ is adjustable. (c) The front and top views
+of the generated ESA defined by the above bitstring and constraints.
+)%(WB
+8
+6
+4
+2
+0
+0
+0
+0
+0
+0 .4 0
+S
+.6
+o
+S
+lu
+S o lu tio n
+o lu tio n 2
+tio n 1
+0 .8
+S o
+3
+1 .0
+lu tio n 4
+1 .2k
+a
+1 .4
+P ro p o s e d M e th
+(N o n -d o m in a te
+P ro p o s e d M e th
+(D o m in a te d )
+1 .6 1 .8 2 .0
+odo d)d
+Fig. 7. The optimized results of the proposed method after 20 generations of
+optimization. Red points indicate the Pareto optimal set (non-dominated
+solutions), blue points represent the 20th generation result obtained by
+proposed method.
+)Bd(
+|
+S|
+11
+0-5
+-1 0
+-1 5
+-2 0
+-2 51
+A
+.5
+ch iev e d b a n d w id th
+S im .|S | 11
+2 .0 2 .5 3 .0 3 .5
+F re q u e n c y (G
+S
+H
+B
+im . T
+4 .0
+z )
+a n d w
+o ta l E
+4 .5
+id th
+ff.
+1 0
+8 0
+6 0
+4 0
+2 0
+0
+5 .0
+lim
+)%
+0 (
+ycneiciffE
+latoT
+it
+This article has been accepted for publication in IEEE Transactions on Antennas and Propagation. This is the author's version which has not been fully edited and
+content may change prior to final publication. Citation information: DOI 10.1109/TAP.2026.3652259
+Solution 1
+(a)
+Solution 2 Solution 3 Solution 4
+BW/BWlimit=48.4%/47.3% BW/BWlimit=57%/50.4% BW/BWlimit=76.1%/76%
+0 Solution 2
+)B
+d-10 Solution 3
+(
+S
+|11 -20 Solution 4
+|-30
+1.5 2.0 2.5 3.0 3.5 4.0 4.5 5.0
+Frequency(GHz)
+(b)
+Fig. 8. Antenna structures and the corresponding performance. (a) The antenna
+structures, |S | parameter, and total efficiency results of Solution 1. (b) The
+11
+antenna structures and |S | parameter results of Solution 2-4.
+11
+Authorized licensed use limited to: Chih-Hua Chang. Downloaded on January 20,2026 at 13:09:51 UTC from IEEE Xplore. Restrictions apply.
+© 2026 IEEE. All rights reserved, including rights for text and data mining and training of artificial intelligence and similar technologies. Personal use is permitted,
+but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html for more information.
+
+=== PAGE 8 ===
+
+> REPLACE THIS LINE WITH YOUR PAPER IDENTIFICATION NUMBER (DOUBLE-CLICK HERE TO EDIT) < 8
+return loss and total efficiency of Solution 1 are shown in Fig. 8 TABLE III
+(a). The simulated impedance bandwidth for |S 11 |< -10 dB is PERFORMANCE COMPARISON BETWEEN MOEA/D, NSGA II, AND THE
+44.73% (2.1-3.31 GHz), with an electrical size ka = 1.03. The PROPOSED ALGORITHM
+average total efficiency within the operating band is 95%. Proposed algorithm MOEA/D w/o PK NSGA II w/o PK
+Consequently, the bandwidth-efficiency product (Bη) is 0.425 Final IGD value 0.0458 ± 0.0138 0.1841 ± 0.069 0.1595 ± 0.0111
+which exceeds the derived performance limit Bη of 0.379 at the No. of solutions 9.2 ± 2.7 0 0
+same ka. The impedance bandwidths of Solution 2-4 are 48.4% No. of simulation 3718 ± 121 3240 3240
+(2.24-3.67 GHz), 57% (2.17-3.94 GHz), 76.1% (2.41-5.37 Simulation time ~37h ~34h ~34h
+GHz), compared to their respective performance limits of
+47.3%, 50.4%, and 76.0%. These solutions demonstrate the
+effectiveness of the algorithm in generating multiple optimal
+designs, covering the region of the derived Pareto front for
+0.3
+ka=1-1.4. The diversity demonstrates the robustness and
+generalization of the optimization framework, which well 0.25
+balances multiple objectives and constraints to achieve
+0.2
+excellent performance in antenna design.
+C. Performance Comparison with Baseline Algorithms 0.15
+The classical NSGA-II and MOEA/D are introduced for 0.1
+performance comparison. To examine the influence of the prior
+knowledge, all algorithms are applied to the PK-constrained 0.05
+ESA generative design problem defined in Section II and IV-A.
+0
+To evaluate the performance of the algorithms, the signed 1 2 3 4 5 6 7 8 9 10 111213141516 17181920
+inverted generation distance (IGD) metric is utilized. The
+proposed Chu-limit-guided MOEA/D integrates PK 1–5 in
+addition to the PK constraint, whereas NSGA-II and MOEA/D
+are executed only with the PK constraint. For statistical
+comparison, each algorithm is independently executed five
+times. The performance limit derived from Section III-A is
+employed as the Pareto front. The population size of all
+algorithms is set to 2  d (i.e. 162), where d is the dimension.
+The mixed-variable encoding method in NSGA II and
+MOEA/D is the real-coded strategy. The uniform selection,
+intermediate crossover, and feasible mutation are utilized in
+NSGA II by default. The weighted-sum decomposition is
+utilized in MOEA/D. The population size and neighborhood
+size are set to be 162 and 20. All algorithms terminate after 20
+generations due to the limited simulation budget.
+Fig. 9 shows the statistical convergence curves of MOEA/D,
+NSGA II, and the proposed method over 20 generations. The
+MOEA/D and NSGA II show a limited reduction in signed IGD
+within the limited simulation budget, with mean signed IGD
+values above 0.15. In contrast, the proposed framework
+exhibits a consistent decrease in signed IGD, reaching values
+lower than 0.05. This observation is also confirmed in Table III.
+The proposed method achieves the smallest final signed IGD
+value of 0.0458 ± 0.0138 among the three algorithms.
+Meanwhile, the proposed method requires 3718 ± 121
+simulations (~37 hours), compared with 3240 simulations (~34
+hours) for MOEA/D and NSGA II.
+The difference in convergence behavior also appears in the
+number of beyond-limit solutions obtained. As a result of better
+final population of NSGA II and MOEA/D. In contrast, the
+convergence, the 9.2 ± 2.7 beyond-limit solutions are obtained
+final populations of the four independent runs of the proposed
+from the proposed method, whereas no beyond-limit solution is
+method are shown in Fig. 11. These four final populations show
+generated by NSGA II and MOEA/D. The final populations of
+slightly different distributions for each independent run.
+the best run of the NSGA II and MOEA/D are shown in Fig. 10.
+Multiple beyond-limit solutions are uniformly covered in the
+There is a notable gap between the performance limit and the
+range of ka = 1-1.4.
+eulaV
+DGI
+dengiS
+MOEA/D NSGA II Proposed method
+Min-Max Region Min-Max Region Min-Max Region
+Generations
+Fig. 9. Statistical convergence curves comparison between MOEA/D, NSGA II,
+and the proposed algorithm.
+80
+60
+40
+20
+0
+0.6 0.8 1.0 1.2 1.4 1.6 1.8
+)%(WB
+Performance limit
+MOEA/D
+ka
+)%(WB
+8
+6
+4
+2
+0
+0
+0
+0
+0
+0 .6 0
+P
+N
+.8
+e rfo rm a n
+S G A II
+1 .0 1 .2k
+a
+c e lim
+1 .4 1
+it
+.6 1 .8
+(a) (b)
+Fig. 10. Final population of (a) MOEA/D and (b) NSGA II.
+)%(WB
+8
+6
+4
+2
+0
+0
+0
+0
+0
+0 .4 0
+P
+R
+R
+R
+R
+.6
+e rfo rm a
+u n 1
+u n 2
+u n 3
+u n 4
+0 .8
+n c e lim
+1 .0
+it
+1 .2k
+a
+1 .4 1 .6 1 .8 2 .0
+This article has been accepted for publication in IEEE Transactions on Antennas and Propagation. This is the author's version which has not been fully edited and
+content may change prior to final publication. Citation information: DOI 10.1109/TAP.2026.3652259
+Fig. 11. Final-generation population for four independent runs of the proposed
+algorithms.
+Authorized licensed use limited to: Chih-Hua Chang. Downloaded on January 20,2026 at 13:09:51 UTC from IEEE Xplore. Restrictions apply.
+© 2026 IEEE. All rights reserved, including rights for text and data mining and training of artificial intelligence and similar technologies. Personal use is permitted,
+but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html for more information.
+
+=== PAGE 9 ===
+
+> REPLACE THIS LINE WITH YOUR PAPER IDENTIFICATION NUMBER (DOUBLE-CLICK HERE TO EDIT) < 9
+V. FABRICATION, EXPERIMENT AND DISCUSSIONS 3D printing part
+To validate the effectiveness of the proposed algorithm, 18.3 mm
+Solution 1 is selected for fabrication and measurement. z 0.4 mm 35 µm
+0.508 mm
+A. Simplified and equivalent structure for fabrication y x PCB feeding part 91.5 mm
+Side view
+The antenna structure of Solution 1, as shown in Fig. 8(a), is
+hard to fabricate due to the presence of numerous suspend
+parasitic bars. Based on the mirror theory, the structure of
+= +
+Solution 1, which is a dipole-type structure, can be equivalent
+z
+to a monopole-like structure, referred to as the “radial-beamlet”
+antenna. For satisfying the requirement of fabrication, Solution y x Assembled antenna Component 1 Component 2
+1 is simplified including removing the suspend bars, smoothing
+3D-Print-Ready Models
+small protrusions, etc. and fabricated by metal 3D printing
+Fig. 12. Configuration of the simplified ESA for fabrication.
+techniques, as shown in Fig. 12. The printing material based on
+copper is utilized for ensuring high electrical conductivity,
+which is Copper-Chromium-Zirconium alloy (CuCrZr,
+Conductivity ≥ 85% IACS). The 50 Ω discrete port in the
+original structure can be equivalent to 25 Ω coaxial port in the
+monopole-like structure. The impedance transformer connected
+to SMA port and 25 Ω coaxial port is designed with PCB
+fabrication technique, as shown in Fig. 13.
+B. Impedance bandwidth and radiation pattern
+The antenna prototype of the fabricated solution is shown in
+Fig. 14. Fig.15 shows that the measured and simulated
+impedance bandwidth for |S | < -10 dB is 54.3% (2.08-3.63
+11
+GHz) and 50.3% (2.05-3.43 GHz), respectively. The measured
+and simulated realized gain over the operating band varies
+between 1.72-3.86 dBi and 2.14-3.3 dBi, respectively. The
+simulated directivity over the operating band varies between
+3.01-5.1 dBi. The simulated total efficiency is approximately
+80%. The good agreement between measured and simulated
+results shows the effectiveness of the proposed framework. The
+bandwidth-efficiency product Bη is 0.402, while the
+corresponding performance limit Bη is 0.389.
+Table IV summarizes the performance characteristics of the
+fabricated solution and representative wideband antennas. The
+calculation of ka does not include the physical size of feeding
+baluns or large ground planes. For designs [22], [45]-[49] at
+ka=0.91-1.07, the reported designs achieve bandwidths
+14%-17.3%. The reported design in [50] and [51] realized
+67.7% and 55.6% bandwidth at electrically larger sizes of
+ka=1.4 and 1.73, respectively. The fabricated solution achieves
+broad bandwidth (50.3%) with high radiation efficiency (80%)
+at an electrically small size (ka=1.05). Meanwhile, the
+proposed design maintains stable radiation patterns (2.7-3.9
+dBi) over its wide operating band. In terms of fabrication
+complexity, the compared prototypes utilize multilayer
+substrates [49], NFRP or parasitic loading [45],[46],[48],[51],
+complex feeding structures [47], or 3D-printed dielectric shells
+[22],[52]. In contrast, the fabricated solution is realized as
+metal structure with a simple feeding structure, achieving the
+highest performance ratio (R=1.03) among the designs. Fig. 16 presents the bandwidth-efficiency product Bƞ from
+Table III against their ka values. The performance limit derived
+from (2), based on the Chu-sphere, is included for comparison.
+2 5 -Ω P o r
+I m
+t
+p e d a n c e tr a n s
+G ro u n d
+( b )
+f o r m
+v
+e r
+ia s
+( a )
+I m p e d a n
+G
+c
+ro u n d
+e tr a n s f o r m
+( c )
+e r
+5 0 -Ω
+v ia
+P
+s
+o r t
+Fig. 13. Configuration of layer 2 in the PCB feeding structure. (a) Side view. (b)
+Top view. (c) Bottom view.
+(a) (b)
+Fig. 14. Photograph of the fabricated ESA. (a) Assembled antenna. (b)
+Disassembled 3-D printed antenna components.
+)%(
+ycneiciffE
+)Bd(
+|
+S|
+11
+98765
+-1
+-2
+-3
+000000
+0
+0
+0
+1 .5
+S
+S
+im
+im
+. |S |
+11
+. T o ta l E ff.
+2 .0 2 .5
+F
+M e a . |S
+S im . R
+3 .0
+re q u e n c y
+|
+11
+e a liz
+3 .5
+(G H
+e d G
+z )
+M e
+a in
+4 .0
+a . R e a liz
+S im
+4 .5
+e d G a in
+. D ire c tiv
+5
+)iBd(
+0 niaG
+-5
+5 .0
+ity
+This article has been accepted for publication in IEEE Transactions on Antennas and Propagation. This is the author's version which has not been fully edited and
+content may change prior to final publication. Citation information: DOI 10.1109/TAP.2026.3652259
+Fig. 15. Simulated and measured reflection coefficient, efficiency, directivity
+and gain.
+1.0
+Performance limit [20]
+Planar antennas
+0.8 Non-planar surface antennas
+Solution 1 - 4
+0.6 Fabricated solution
+η
+B [50]
+0.4 [51]
+Cone
+0.2 [22] [47]
+Sphere [52] Cube [52] [48] [46] [4 [ 9 4 ] 5] Dipole
+0.0
+0.5 1.0 1.5 1.8
+ka
+Fig. 16. Comparison of the performance of the recently reported linear polarized
+wideband antennas to the maximum bandwidth-efficiency product as function
+of the electrical size ka.
+Authorized licensed use limited to: Chih-Hua Chang. Downloaded on January 20,2026 at 13:09:51 UTC from IEEE Xplore. Restrictions apply.
+© 2026 IEEE. All rights reserved, including rights for text and data mining and training of artificial intelligence and similar technologies. Personal use is permitted,
+but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html for more information.
+
+=== PAGE 10 ===
+
+> REPLACE THIS LINE WITH YOUR PAPER IDENTIFICATION NUMBER (DOUBLE-CLICK HERE TO EDIT) < 10
+TABLE IV
+PERFORMANCE COMPARISON OF THE FABRICATED DESIGN WITH RECENTLY REPORTED LINEAR POLARIZED BROADBAND ANTENNAS
+Ref.-Year ka* Size ( 30  )* BW (GHz) Efficiency Gain (dBi) Fabrication R**
+[22]-2018 0.92 4/3  π  0.1453 0.666-0.795 (17.9%) 85% ~3.5 3D Printing, ABS resin 0.51
+[45]-2020 1.06 π  0.1682  0.002 2.044-2.36 (14.3%) 95% 0.9-1.5 PCB technique, RO4003C 0.34
+[46]-2021 1 π  0.1682  0.001 1.1-1.31 (17.4%) 95% ~5.5 PCB technique, Rogers 6006 0.47
+[50]-2022 1.4 π  0.2232  0.002 1.31-2.52 (67.7%) 77% 1.68-2.6 PCB technique, RT5880 0.8
+[47]-2022 1.07 0.23  0.23  0.001 0.95-1.13 (18%) 92% 1.1-1.6 PCB technique, FR4 0.41
+0.62 4/3  π  0.0983 0.875-0.979 (11.2%) 90% 4.8-6.1 3D printing, ABS300, Sphere 0.83
+[52]-2023
+0.71 0.18  0.18  0.13 0.879-0.976 (10.5%) 87% 4.8-6.5 3D printing, ABS300, Cube 0.54
+[48]-2024 0.91 π  0.1452  0.004 1.5-1.73 (14.2%) 91% 4.4-4.6 PCB technique, Rogers 4350 0.44
+[51]-2025 1.73 0.53  0.12  0.011 1.62-2.87 (55.6%) 79% 1.6-2.9 PCB technique, RO4003 0.48
+[49]-2025 1.06 π  0.1662  0.068 1.85-2.13 (14%) 76% 2.9-4.2 Multilayer PCB, Rogers 6006 0.27
+Fabricated
+1.05 4/3  π  0.1673 2.08-3.63 (54.3%) 80% 2.7-3.9 3D Printing, All copper 1.03
+Solution***
+*
+0
+ and k are calculated at the center frequency of the operating bandwidth in free space. ** R B W / ( B W )C
+hu
+  =  
+This article has been accepted for publication in IEEE Transactions on Antennas and Propagation. This is the author's version which has not been fully edited and
+content may change prior to final publication. Citation information: DOI 10.1109/TAP.2026.3652259
+, calculated from the performance limit given
+in (2). *** Fabricated solution is simplified and fabricated based on Solution 1.
+The dipole and cone references are simulated with the same VI. CONCLUSIONS
+physical size as the proposed design. A notable performance
+A Chu limit-guided decomposition-based multiobjective
+gap is observed between the reported designs and the
+optimization technique has been developed. The Pareto front
+performance limit. Most reported designs [45]-[49] are
+derived from the performance limit and engineering constraints
+low-profile planar structures, whose limited volume utilization
+was utilized to decompose the multiobjective problem into
+leads to reduced performance compared with the performance
+multiple single objective subproblems. Other prior knowledge
+limit. The reported design [52] is closer to the performance
+was incorporated at different stages of the proposed framework
+limit, owing to its more efficient utilization of the 3D region. It
+to efficiently generate effective solutions. Using the proposed
+is immediately apparent that the Bƞ of the fabricated solution
+algorithm, the ESA with high DoF has been optimized, and the
+and optimized solutions 1-4 above and closely follow the
+multiple solutions exceeding the performance limit have been
+performance limit. It validates the effectiveness and scalability
+obtained. One solution has been simplified and fabricated. The
+of the proposed algorithm framework.
+fabricated solution achieves measured and simulated
+To explicitly highlight the trade-offs of the fabricated design,
+impedance bandwidth (|S | < −10 dB) of 54.3% (2.08-3.63
+11
+the specific merits and limitations of the reported designs are
+GHz) and 50.3% (2.05-3.43 GHz), respectively. The measured
+summarized as follows:
+and simulated realized gain over the operating band vary
+Advantages: (1) Beyond-limit performance. The fabricated
+between 1.72-3.86 dBi and 2.14-3.3 dBi, respectively. The
+solution approaches the performance limit by a balance
+multiple solutions obtained from the proposed framework
+between small electrical size and wide impedance bandwidth.
+demonstrate the effectiveness of the generative antenna design
+(2) Algorithm-driven generality. Using a generic all-metal
+concept for pursuing the performance limit.
+3D-printed radiator with a simple feeding, the proposed
+framework relies on the optimization algorithm to
+REFERENCES
+systematically discover multiple unintuitive antenna structures.
+[1] L. J. Chu, “Physical limitations of omni-directional antennas,” J. Appl.
+It demonstrates strong scalability beyond conventional design.
+Phys., vol. 19, no. 12, pp. 1163-1175, 1948.
+Limitations: (1) Spherical design region. To approach the [2] H. A. Wheeler, “Fundamental limitations of small antennas,” Proc. IRE,
+performance limit, the proposed antenna is designed in the vol. 35, no. 12, pp. 1479-1484, 1947.
+[3] A. D. Yaghjian and S. R. Best, “Impedance, bandwidth, and Q of
+spherical region with high profile. It increases fabrication
+antennas,” IEEE Trans. Antennas Propag., vol. 53, no. 4, pp. 1298-1324,
+difficulty and restricts applicability in low-profile industrial 2005.
+scenarios. (2) Practical implementation. The optimized [4] C. Pfeiffer, “Fundamental efficiency limits for small metallic antennas,”
+IEEE Trans. Antennas Propag., vol. 65, no. 4, pp. 1642-1650, 2017.
+dipole-like solution is validated by converting it into an
+[5] A. D. Yaghjian and H. R. Stuart, “Lower bounds on the Q of electrically
+equivalent monopole-like structure. The introduction of a small dipole antennas,” IEEE Trans. Antennas Propag., Article vol. 58,
+ground plane and feeding network leads to performance loss, no. 10, pp. 3114-3121, 2010.
+[6] R. Collin and S. Rothschild, “Evaluation of antenna Q,” IEEE Trans.
+such as realized gain and radiation efficiency.
+Antennas Propag., vol. 12, no. 1, pp. 23-27, 1964.
+Overall, despite the implementation trade-offs, the fabricated
+[7] W. Geyi, “Physical limitations of antenna,” IEEE Trans. Antennas
+solution verifies the beyond-limit performance and its Propag., vol. 51, no. 8, pp. 2116-2123, 2003.
+improvement over the reported works. It demonstrates that the [8] M. Gustafsson, C. Sohl, and G. Kristensson, “Illustrations of new physical
+bounds on linearly polarized antennas,” IEEE Trans. Antennas Propag.,
+solutions generated by the proposed framework are physically
+vol. 57, no. 5, pp. 1319-1327, 2009.
+valid and can be experimentally realized. These observations [9] M. Gustafsson, C. Sohl, and G. Kristensson, “Physical limitations on
+provide a solid foundation for further mechanism exploration antennas of arbitrary shape,” Proceedings of the Royal Society A:
+Mathematical, Physical and Engineering Sciences, vol. 463, no. 2086, pp.
+and for advancing practical applications. Furthermore, this
+2589-2607, 2007.
+enables a new design paradigm of data-driven knowledge [10] B. P. Nel, A. K. Skrivervik, and M. Gustafsson, “Q-factor bounds for
+discovery, in which high-performance designs are generated to microstrip patch antennas,” IEEE Trans. Antennas Propag., vol. 71, no. 4,
+pp. 3430-3440, 2023.
+initiate the investigation of novel radiation mechanisms
+Authorized licensed use limited to: Chih-Hua Chang. Downloaded on January 20,2026 at 13:09:51 UTC from IEEE Xplore. Restrictions apply.
+© 2026 IEEE. All rights reserved, including rights for text and data mining and training of artificial intelligence and similar technologies. Personal use is permitted,
+but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html for more information.
+
+=== PAGE 11 ===
+
+This article has been accepted for publication in IEEE Transactions on Antennas and Propagation. This is the author's version which has not been fully edited and
+content may change prior to final publication. Citation information: DOI 10.1109/TAP.2026.3652259
+> REPLACE THIS LINE WITH YOUR PAPER IDENTIFICATION NUMBER (DOUBLE-CLICK HERE TO EDIT) < 11
+[11] S. R. Best, “Low Q electrically small linear and elliptical polarized [33] Q.-Q. Li, Q.-X. Chu, Y.-L. Chang, and J. Dong, “Tri-objective compact
+spherical dipole antennas,” IEEE Trans. Antennas Propag., vol. 53, no. 3, log-periodic dipole array antenna design using MOEA/D-GPSO,” IEEE
+pp. 1047-1053, 2005. Trans. Antennas Propag., vol. 68, no. 4, pp. 2714-2723, 2020.
+[12] H. L. Thal, “New radiation Q limits for spherical wire antennas,” IEEE [34] D. Lu, L. Wang, E. Yang, and G. Wang, “Design of high-isolation
+Trans. Antennas Propag., vol. 54, no. 10, pp. 2757-2763, 2006. wideband dual-polarized compact MIMO antennas with multiobjective
+[13] A. B. Murray and A. K. Iyer, “An exact synthesis procedure for minimum optimization,” IEEE Trans. Antennas Propag., vol. 66, no. 3, pp.
+quality factor spherical wire antennas,” IEEE Trans. Antennas Propag., 1522-1527, 2018.
+vol. 73, no. 4, pp. 2308-2318, 2025. [35] X. Wang, G. Wang, D. Wang, and Q. Zhang, “Ensemble-learning-based
+[14] M. Capek et al., “Optimal planar electric dipole antennas: Searching for multiobjective optimization for antenna design,” IEEE Trans. Antennas
+antennas reaching the fundamental bounds on selected metrics,” IEEE Propag., vol. 71, no. 2, pp. 1295-1303, 2023.
+Antennas Propag. Mag., vol. 61, no. 4, pp. 19-29, 2019. [36] J. Nagar and D. H. Werner, “A comparison of three uniquely different
+[15] S. R. Best, “Electrically small resonant planar antennas: Optimizing the state of the art and two classical multiobjective optimization algorithms as
+quality factor and bandwidth,” IEEE Antennas Propag. Mag., vol. 57, no. applied to electromagnetics,” IEEE Trans. Antennas Propag., vol. 65, no.
+3, pp. 38-47, 2015. 3, pp. 1267-1280, 2017.
+[16] O. S. Kim, O. Breinbjerg, and A. D. Yaghjian, “Electrically small [37] D. Ding and G. Wang, “Modified multiobjective evolutionary algorithm
+magnetic dipole antennas with quality factors approaching the Chu lower based on decomposition for antenna design,” IEEE Trans. Antennas
+bound,” IEEE Trans. Antennas Propag., vol. 58, no. 6, pp. 1898-1906, Propag., vol. 61, no. 10, pp. 5301-5307, 2013.
+2010. [38] Y. Qi, X. Ma, F. Liu, L. Jiao, J. Sun, and J. Wu, “MOEA/D with adaptive
+[17] H. R. Stuart and A. D. Yaghjian, “Approaching the lower bounds on Q for weight adjustment,” Evol Comput., vol. 22, no. 2, pp. 231-64, 2014.
+electrically small electric-dipole antennas using high permeability shells,” [39] H. Ishibuchi, Y. Setoguchi, H. Masuda, and Y. Nojima, “Performance of
+IEEE Trans. Antennas Propag., vol. 58, no. 12, pp. 3865-3872, 2010. decomposition-based many-objective algorithms strongly depends on
+[18] R. W. Ziolkowski and A. Erentok, “Metamaterial-based efficient pareto front shapes,” IEEE Trans. Evol. Comput., vol. 21, no. 2, pp.
+electrically small antennas,” IEEE Trans. Antennas Propag., vol. 54, no. 7, 169-190, 2017.
+pp. 2113-2130, 2006. [40] Y. Yuan, H. Xu, B. Wang, and X. Yao, “A new dominance relation-based
+[19] A. D. Yaghjian, “Reducing the Q lower bound for electrically small evolutionary algorithm for many-objective optimization,” IEEE Trans.
+antennas using dispersive tuning,” IEEE Trans. Antennas Propag., vol. 72, Evol. Comput., vol. 20, no. 1, pp. 16-37, 2016.
+no. 5, pp. 4642-4646, 2024. [41] C. Friedman, “Wide-band matching of a small disk-loaded monopole,”
+[20] D. F. Sievenpiper et al., “Experimental validation of performance limits IEEE Trans. Antennas Propag., vol. 33, no. 10, pp. 1142-1148, 1985.
+and design guidelines for small antennas,” IEEE Trans. Antennas Propag., [42] H. R. Stuart, S. R. Best, and A. D. Yaghjian, “Limitations in relating
+vol. 60, no. 1, pp. 8-19, 2012. quality factor to bandwidth in a double resonance small antenna,” IEEE
+[21] E. E. Altshuler, “Electrically small self-resonant wire antennas optimized Antennas Wirel. Propag. Lett., vol. 6, pp. 460-463, 2007.
+using a genetic algorithm,” IEEE Trans. Antennas Propag., vol. 50, no. 3, [43] K. Fang-Yao, C. Hsi-Tseng, H. Heng-Tung, C. Hsi-Hsir, and P. Nepa, “A
+pp. 297-300, 2002. novel dipole antenna design with an over 100% operational bandwidth,”
+[22] M.-C. Tang, X. Chen, M. Li, and R. W. Ziolkowski, “Particle swarm IEEE Trans. Antennas Propag., vol. 58, no. 8, pp. 2737-2741, 2010.
+optimized, 3-D-printed, wideband, compact hemispherical antenna,” [44] T.-H. Yang and D. F. Sievenpiper, “Intuitive broadband matching
+IEEE Antennas Wirel. Propag. Lett., vol. 17, no. 11, pp. 2031-2035, 2018. technique for top-loaded monopole antennas,” IEEE Trans. Antennas
+[23] J. Tucek, M. Capek, L. Jelinek, and O. Sigmund, “Density-based topology Propag., vol. 67, no. 12, pp. 7611-7616, 2019.
+optimization in method of moments: Q-factor minimization,” IEEE Trans. [45] X. Chen, M. C. Tang, D. Yi, and R. W. Ziolkowski, “Wideband,
+Antennas Propag., vol. 71, no. 12, pp. 9738-9751, 2023. electrically small, near-field resonant parasitic dipole antenna with stable
+[24] M. Capek, L. Jelinek, and M. Gustafsson, “Shape synthesis based on radiation performance,” IEEE Antennas Wirel. Propag. Lett., Article vol.
+topology sensitivity,” IEEE Trans. Antennas Propag., vol. 67, no. 6, pp. 19, no. 5, pp. 826-830, 2020.
+3889-3901, 2019. [46] X. Chen, M.-C. Tang, D. Yi, and R. W. Ziolkowski, “Wideband, compact
+[25] L. Jelinek and M. Capek, “Optimal currents on arbitrarily shaped antennas with interdigitated magnetic-based near-field resonant parasitic
+surfaces,” IEEE Trans. Antennas Propag., vol. 65, no. 1, pp. 329-341, elements,” IEEE Trans. Antennas Propag., vol. 69, no. 8, pp. 5036-5041,
+2017. 2021.
+[26] M. Capek, M. Gustafsson, and K. Schab, “Minimization of antenna [47] Y. Zhang and Y. Li, “Wideband isotropic antenna with miniaturized
+quality factor,” IEEE Trans. Antennas Propag., vol. 65, no. 8, pp. ground for enhanced 3 db coverage ratio,” IEEE Antennas Wirel. Propag.
+4115-4123, 2017. Lett., vol. 21, no. 6, pp. 1253-1257, 2022.
+[27] M. Gustafsson and S. Nordebo, “Optimal antenna currents for Q, [48] Y. Wang, M.-C. Tang, M. Li, D. Li, and X. Zeng, “Planar single-layer
+superdirectivity, and radiation patterns using convex optimization,” IEEE wideband electrically small quasi-isotropic antenna characterized by
+Trans. Antennas Propag., vol. 61, no. 3, pp. 1109-1118, 2013. filtering response,” IEEE Trans. Antennas Propag., vol. 72, no. 2, pp.
+[28] P. Liu, L. Chen, and Z. N. Chen, “Prior-knowledge-guided 1363-1372, 2024.
+deep-learning-enabled synthesis for broadband and large phase shift range [49] Q. Lin, M.-C. Tang, M. Li, and R. W. Ziolkowski, “Electrically small,
+metacells in metalens antenna,” IEEE Trans. Antennas Propag., vol. 70, enhanced bandwidth, low-profile, broadside-radiating huygens dipole
+no. 7, pp. 5024-5034, 2022. antenna,” IEEE Antennas Wirel. Propag. Lett., pp. 1-5, 2025.
+[29] Y. Lyu, T. H. Gan, and Z. N. Chen, “TE-TM balanced wide-angle [50] Q. Lin, M.-C. Tang, X. Chen, D. Yi, M. Li, and R. W. Ziolkowski,
+metacells for low scan-loss metalens antenna using prior “Low-profile, electrically small, ultrawideband antenna enabled with an
+knowledge-guided generative deep learning-enabled method,” IEEE inductive grid array metasurface,” IEEE Trans. Antennas Propag., vol. 70,
+Trans. Antennas Propag., pp. 1-1, 2025. no. 8, pp. 7152-7157, 2022.
+[30] P. Liu and Z. N. Chen, “Full-range amplitude-phase metacells for sidelobe [51] Y. Wang et al., “Design of a mode-compressed wideband asymmetrical
+suppression of metalens antenna using prior-knowledge-guided dipole antenna with stable omnidirectional radiation pattern,” IEEE Trans.
+deep-learning-enabled synthesis,” IEEE Trans. Antennas Propag., vol. 71, Antennas Propag., vol. 73, no. 3, pp. 1882-1887, 2025.
+no. 6, pp. 5036-5045, 2023. [52] R. Wang, K. Klionovski, and A. Shamim, “Fully printed 3-D antennas
+[31] Y. Tian et al., “Evolutionary large-scale multi-objective optimization: A with wideband radiation isotropy based on annular currents models,”
+survey,” ACM Comput. Surv., vol. 54, no. 8, pp. 1-34, 2021. IEEE Open J. Antennas Propag., vol. 4, pp. 484-491, 2023.
+[32] Q. Zhang and H. Li, “MOEA/D: A multiobjective evolutionary algorithm
+based on decomposition,” IEEE Trans. Evol. Comput., vol. 11, no. 6, pp.
+712-731, 2007.
+Authorized licensed use limited to: Chih-Hua Chang. Downloaded on January 20,2026 at 13:09:51 UTC from IEEE Xplore. Restrictions apply.
+© 2026 IEEE. All rights reserved, including rights for text and data mining and training of artificial intelligence and similar technologies. Personal use is permitted,
+but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html for more information.
+
+=== PAGE 12 ===
+
+This article has been accepted for publication in IEEE Transactions on Antennas and Propagation. This is the author's version which has not been fully edited and
+content may change prior to final publication. Citation information: DOI 10.1109/TAP.2026.3652259
+> REPLACE THIS LINE WITH YOUR PAPER IDENTIFICATION NUMBER (DOUBLE-CLICK HERE TO EDIT) < 12
+Yu Kuang (S’20-M’25) received the Associate Professor from 1988 to 1995. From 1995 to 1997, he
+B.Eng. degree in communication joined the City University of Hong Kong (HK) as a Research
+engineering from Southern University of Assistant and later a Research Fellow. Between 1997 and 1999,
+Science and Technology (SUSTech), he conducted his research at the University of Tsukuba, Japan,
+Shenzhen, China, in 2019, and the Ph.D. with the Japan Society for the Promotion of Science (JSPS)
+degree from the National University of Fellowship Award. In 2001 and 2004, he visited the University
+Singapore (NUS), Singapore, in 2025. of Tsukuba twice under the JSPS Fellowship Program (senior
+He was a Postdoctoral Fellow with level). In 2004, he worked at IBM T. J. Watson Research
+Southern University of Science and Center, Yorktown, USA, as an Academic Visitor. In 2013, he
+Technology, Shenzhen, China, in 2025. He is currently an visited the “Laboratoire des Signaux et Systèmes,” UMR8506
+ARTIC Fellow with the National University of Singapore. CNRS-Supelec-University Paris Sud in Gif-sur-Yvette, France,
+He was a recipient of the Best Student Paper Award at the 2023 as a Senior DIGITEO Guest Scientist. In 2015, he visited the
+Asia-Pacific Conference on Antennas and Propagation Center for Northeast Asian Studies of Tohoku University,
+(APCAP). His current research interests include metantennas, Japan, as a Senior Visiting Professor. From 1999 to 2016, he
+characteristic mode analysis, electrically small antennas, worked with the Institute for Infocomm Research (I2R)
+optimization, and deep learning. (formerly Centre for Wireless Communications, National
+University of Singapore), Singapore, as a Principal Scientist,
+Qingsha S. Cheng (S’00–M’05–SM’09) Department Head, Manager, and Technical Advisor. In 2023,
+received the B.Eng. and M.Eng. degrees he visited Chalmers University of Technology, Swenden under
+from Chongqing University, Chongqing, E2 Guest Researcher Program.
+China, in 1995 and 1998, respectively, Dr. Chen held concurrent guest professorships at Southeast
+and the Ph.D. degree from McMaster University (Changjiang Chair Professor), Nanjing University,
+University, Hamilton, ON, Canada, in Tsinghua University, Shanghai Jiaotong University, Tongji
+University, University of Science and Technology of China,
+2004.
+Fudan University, Dalian Maritime University, Chiba
+In 1998, he joined the Department of
+University, National Taiwan University of Science and
+Computer Science and Technology, Peking University,
+Technology, National Taiwan University, South China
+Beijing, China. In 2004, he became a Postdoctoral Fellow and,
+University of Technology, Shanghai University, Beijing
+in 2007, a Research Engineer with the Department of
+University of Posts and Telecommunications, Yunnan
+Electrical and Computer Engineering, McMaster University.
+University, Beijing Institute of Technology, Nanyang
+In 2014, he joined the Department of Electrical and Electronic
+Technologies University, University of Surrey, City University
+Engineering, Southern University of Science and Technology
+of Hong Kong, and Chalmers University of Technology.
+(SUSTech), Shenzhen, China, where he is currently an
+Dr. Chen is currently serving as a member of the State Key
+Associate Professor. Laboratory of Millimeter-waves at Southeast University and
+He has authored or coauthored more than 200 publications the State Key Laboratory of Tera-Hertz & Millimeter-waves at
+including technical book chapters, refereed international City University of Hong Kong. Additionally, he has served as a
+technical journals, refereed international conference reviewer for local and overseas research organizations in
+proceedings, and international workshops. His current Canada, Chile, mainland China, Hong Kong SAR, Finland,
+research interests include AI-assisted and physics-driven smart Ireland, Sweden, and the UK.
+modeling and optimization of microwave components and Dr. Chen has provided technical consultancy services to twelve
+antennas, surrogate modeling and optimization, space local and overseas companies as a Technical Advisor, Guest
+mapping, multiobjective optimization, and neural networks. Professor, and Chief Scientist.
+Dr. Chen is the founding General Chair of the Marina Forum
+(Mar-For in 2021), International Workshop on Antenna
+Zhi Ning Chen (M’99−SM’05−F’07)
+Technology (iWAT in 2005), International Symposium on
+received his B.Eng, M.Eng, and Ph.D
+InfoComm & Mechatronics Technology in Bio-Medical &
+degrees all in Electrical Engineering
+Healthcare Application (IS 3T-in-3A in 2010), International
+from the Institute of Communications
+Microwave Forum (IMWF in 2010), and Asia-Pacific
+Engineering (ICE), China in 1985, 1988,
+Conference on Antennas and Propagation (APCAP in 2012).
+and 1993, and his second PhD degree in
+He has also been involved in multiple international events as
+2003 from the University of Tsukuba,
+General Chair, as well as Chair and member of Program
+Japan, respectively.
+Committees and Advisory committees. He is the General Chair
+In 2012, he joined the Department of
+of the 2021 IEEE International Symposium on Antennas and
+Electrical and Computer Engineering,
+Propagation and USNC-URSI Radio Science Meeting (the first
+National University of Singapore (NUS), as a tenured Full
+version outside North America).
+Professor. Currently, he is a Provost Chair Professor and the
+Dr. Chen has been invited to deliver 190+ keynote, plenary, and
+founder and Director of the Advanced Research and
+invited speeches at international academic and industrial
+Technology Innovation Center. Prior to NUS, he worked at ICE
+events.
+as a Lecturer and later as a Professor, and at Southeast
+Dr. Chen has published 729(J351+C378) academic papers and
+University, China, as a Postdoctoral Fellow and later an
+seven books entitled Broadband Planar Antennas (Wiley 2005),
+Authorized licensed use limited to: Chih-Hua Chang. Downloaded on January 20,2026 at 13:09:51 UTC from IEEE Xplore. Restrictions apply.
+© 2026 IEEE. All rights reserved, including rights for text and data mining and training of artificial intelligence and similar technologies. Personal use is permitted,
+but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html for more information.
+
+=== PAGE 13 ===
+
+This article has been accepted for publication in IEEE Transactions on Antennas and Propagation. This is the author's version which has not been fully edited and
+content may change prior to final publication. Citation information: DOI 10.1109/TAP.2026.3652259
+> REPLACE THIS LINE WITH YOUR PAPER IDENTIFICATION NUMBER (DOUBLE-CLICK HERE TO EDIT) < 13
+UWB Wireless Communication (Wiley 2006), Antennas for
+Portable Devices (Wiley 2007), Antennas for Base Stations in
+Wireless Communications (McGraw-Hill 2009), Handbook of
+Antenna Technologies (with 76 chapters) (Springer References
+2016 as Editor-in-Chief), and Substrate-Integrated
+Millimeter-Wave Antennas for Next-generation
+Communications and Radars (Wiley and IEEE Press Series on
+Electromagnetic Wave Theory in 2021). He has also
+contributed chapters to the books entitled Developments in
+Antenna Analysis and Design (IET 2018), UWB Antennas and
+Propagation for Communications, Radar, and Imaging (Wiley
+2006), Antenna Engineering Handbook (McGraw-Hill 2007),
+Microstrip and Printed Antennas (Wiley 2010), and
+Electromagnetics of Body Area Networks (Wiley 2016).
+Dr. Chen holds 35 granted and filed patents and has completed
+43+ technology licensing deals with industry.
+Dr Chen is a pioneer in developing small and wideband and
+ultra-wideband antennas, wearable and implanted medical
+antennas, package antennas, near-field antennas and coils,
+three-dimensional integrated LTCC arrays, microwave lens
+antennas, and microwave metamaterial-metasurface antennas
+for communications, sensing, and imaging systems. Currently,
+Dr. Chen is more interested in the translational research of
+electromagnetic metamaterials and the applications of
+characteristic mode analysis, transformation optics, and
+prior-knowledge-guided deep learning-enabled optimization
+and generative design methods in antenna engineering.
+Dr. Chen is the recipient of the prestigious IEEE Antennas and
+Propagation Society (APS) John Kraus Antenna Award in 2021,
+EurAAP Antenna Award 2025, and the International
+Symposium on Antennas and Propagation Best Paper Award in
+2010, the CST University Publication Awards in 2008 and
+2015, the ASEAN Outstanding Engineering Achievement
+Award in 2013, the Institution of Engineers Singapore
+Prestigious Engineering Achievement Awards in 2006, 2013
+(two awards), and 2014, the I2R Quarterly Best Paper Award in
+2004, the IEEE iWAT Best Poster Award in 2005, several
+technology achievement awards from China during 1990-1997,
+as well as more than 28 academic awards received by the
+students under his supervision.
+Dr. Chen was elevated to the Fellow of the Academy of
+Engineering, Singapore in 2019, the Fellow of the IEEE for his
+contributions to small and broadband antennas for wireless
+applications in 2007, and Fellow and Vice President of the
+Asia-Pacific Artificial Intelligence Association. Currently, he is
+serving as a member of the IEEE APS AdCom and the IEEE
+Future Networks Initiative Technology Focus Editorial Board.
+He has served the IEEE Council on RFID as a member of
+Fellow Committee, aDistinguished Lecturer since 2016 and as
+a founding Vice President during 2015-2020. He served the
+IEEE Transactions on Antennas and Propagation as an
+Associate Editor and the IEEE APS as a Distinguished Lecturer,
+as well as a member of the Fellow Committee and the New
+Direction Committee, now a member of Administration
+Committee and Meetings Committe. He served as the Chair of
+the IEEE Singapore MTT/AP Chapter in 2008 and the Chair of
+the IEEE Singapore RFID Chapter in 2017.
+(www.ece.nus.edu.sg/staff/bio/czn.html)
+Authorized licensed use limited to: Chih-Hua Chang. Downloaded on January 20,2026 at 13:09:51 UTC from IEEE Xplore. Restrictions apply.
+© 2026 IEEE. All rights reserved, including rights for text and data mining and training of artificial intelligence and similar technologies. Personal use is permitted,
+but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html for more information.

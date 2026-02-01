@@ -1,0 +1,1507 @@
+1
+LLM-RIMSA: Large Language Models driven
+Reconfigurable Intelligent Metasurface Antenna
+Systems
+Yunsong Huang, Hui-Ming Wang Senior Member, IEEE, Qingli Yan and Zhaowei Wang
+Abstract—The evolution of 6G networks demands ultra- A. Technological Evolution of RIMSA
+massive connectivity and intelligent radio environments, yet
+existingreconfigurableintelligentsurface(RIS)technologiesface RIS technologies are broadly categorized into three types,
+critical limitations in hardware efficiency, dynamic control, and each with unique challenges and application scenarios. The
+scalability.ThispaperintroducesLLM-RIMSA,atransformative
+first type is reflective RIS, which passively reflects incident
+frameworkthatintegrateslargelanguagemodels(LLMs)witha
+signalstoenhancecoveragewithoutrelyingonradiofrequency novel reconfigurable intelligent metasurface antenna (RIMSA)
+architecture to address these challenges. Unlike conventional (RF) chains [4]. The programmable manipulation of reflected
+RIS designs, RIMSA employs parallel coaxial feeding and 2D signal phase and amplitude enables precise beam steering
+metasurface integration, enabling each individual metamaterial through RIS. Emerging research has validated RIS transfor-
+element to independently adjust both its amplitude and phase.
+mative potential across key wireless communication metrics:
+While traditional optimization and deep learning (DL) methods
+channel capacity maximization [5]- [7], energy consumption
+strugglewithhigh-dimensionalstatespacesandprohibitivetrain-
+ingcostsforRIMSAcontrol,LLM-RIMSAleveragespre-trained minimization [8], and secure transmission via physical-layer
+LLMs cross-modal reasoning and few-shot learning capabilities encryption [9]. However, this approach suffers from double-
+to dynamically optimize RIMSA configurations. Simulations path fading. Active RIS variants address this issue by am-
+demonstrate that LLM-RIMSA achieves state-of-the-art perfor-
+plifying signals but introduce high power consumption and
+mance, outperforming conventional DL-based methods in sum
+increased hardware complexity [10].
+ratewhilereducingtrainingoverhead.Theproposedframework
+pave the way for LLM-driven intelligent radio environments. The second type is transmissive RIS, which directs signals
+through the metasurface to fill coverage gaps. Nevertheless,
+Index Terms—Large language models, reconfigurable intelli-
+gent metasurface antenna, wireless communications. itincurssignificantinsertionloss,reducingapertureefficiency
+[11].ThethirdtypeisradiativeRIS,suchasdynamicmetasur-
+faceantennas(DMA)andreconfigurableholographicsurfaces
+(RHS), which integrate radiation and phase-shifting capa-
+I. INTRODUCTION
+bilities [12]. However, DMA waveguide-based architecture
+introducesfrequencyselectivityduetoLorentzian-constrained
+THE sixth-generation (6G) wireless networks aim to sup-
+elements and propagation delays [13], while RHS relies on
+port ultra-massive connectivity for emerging applica-
+holographic interference patterns that are limited to amplitude
+tions like Internet of things (IoT) ecosystems, holographic
+modulation [14]. Furthermore, both approaches employ serial
+communications, and tactile internet, which demand unprece-
+feeding, leading to uneven excitation and increased control
+dented spectral efficiency, sub-millisecond latency, and three-
+complexity.
+dimensional coverage [1]. While traditional massive MIMO
+To address the limitations of existing RIS technologies,
+and millimeter-wave technologies enhance spectral efficiency,
+we propose the reconfigurable intelligent metasurface antenna
+phased arrays face critical limitations in hardware cost, power
+(RIMSA), a novel radiative RIS architecture. At its core,
+consumption, and energy efficiency, particularly as antenna
+RIMSA employs parallel coaxial feeding, a departure from
+scales expand to extra-large MIMO (XL-MIMO). These chal-
+traditional serial-fed designs. This innovative feeding mecha-
+lenges have spurred the development of reconfigurable intel-
+nism excites all metasurface elements simultaneously through
+ligent surfaces (RIS) [2], a disruptive hardware paradigm that
+apowerdistributionnetwork,effectivelyeliminatingfrequency
+dynamically manipulates electromagnetic wave propagation
+selectivity and propagation delays that have long plagued
+to enable low-cost, energy-efficient, and intelligent wireless
+systems like DMA [15]. A key feature of RIMSA is its incor-
+environments [3].
+poration of amplitude-phase joint modulation, which enables
+each individual metamaterial element to independently adjust
+both its amplitude and phase. Importantly, this independent
+Yunsong Huang, Hui-Ming Wang, and Zhaowei Wang are with the
+control over amplitude and phase for every single unit is
+School of Information and Communications Engineering, Xi’an Jiaotong
+University, Xi’an 710049, China (e-mail: song1102@stu.xjtu.edu.cn; xjb- critical to achieving high-precision beamforming, enhancing
+swhm@gmail.com;wangzwssd@stu.xjtu.edu.cn). signaldirectivity,andenablingefficientmulti-userinterference
+QingliYaniswiththeSchoolofComputerScience&Technology,Xi’an
+suppression.SuchcapabilitiesmakeRIMSAparticularlywell-
+University of Posts & Telecommunications, Xi’an 710121, Shaanxi, China
+(e-mail:yql@xupt.edu.cn) suited for dense communication environments where fine-
+5202
+guA
+81
+]PS.ssee[
+1v82721.8052:viXra
+
+---PAGE---
+
+2
+grained control and adaptability are essential [16]. Addition- C. LLM Driven RIMSA Control
+ally, RIMSA adopts a compact 2D integration design, where
+Large language models (LLMs) [36] are finding diverse
+the metasurface serves as the radiating aperture. By avoiding
+applications in wireless communications, enhancing various
+bulky waveguides, this design significantly reduces hardware
+aspects of network performance and user experience [37].
+complexityandphysicalfootprint,supportingscalabledeploy-
+They enable intuitive customer support, protocol optimiza-
+ment in compact and resource-constrained environments.
+tion through network scenario simulation [38], and advanced
+network analytics for fault detection and automated reporting
+B. Limitations of Model and DL Driven RIS Control Methods [39].Atthephysicallayer,LLMsoptimizecriticalparameters
+like beamforming directions to improve signal coverage [40].
+Despite these advantages, scaling such systems to support
+LLM4CP demonstrates how fine-tuned GPT achieves high-
+thousands of reconfigurable elements remains hindered by
+precision channel prediction by aligning channel characteris-
+unresolved control challenges [17]. Traditional optimization-
+tics with LLM feature spaces [41].
+based RIS control methods [18] excel in model-driven
+LLMs bridge semantic environmental understanding with
+frameworks via channel estimation-parameter optimization
+physical-layer beamforming, revolutionizing RIMSA control.
+paradigms. Representative techniques like convex relaxation
+Unlike model-driven approaches, LLMs infer latent relation-
+[19], block coordinate descent [20], and alternating opti-
+ships between dynamic channel states and optimal RIMSA
+mization[21]achievenear-theoretical-limitperformance(e.g.,
+configurations through context-aware reasoning [42], [43].
+sum-rate [22]) under precise channel state information (CSI),
+Pre-trained LLMs, fine-tuned on sparse experimental data,
+offering convergence guarantees and computational efficiency
+generalize beamforming policies across diverse deployment
+in low-dimensional scenarios [23]. However, they face critical
+scenarios [44], enabling real-time, model-agnostic control and
+limitations:First,explicitchannelestimationincursprohibitive
+transforming passive hardware into self-optimizing cognitive
+pilotoverheadforlarge-scalesystems[8];Second,non-convex
+systems [45]. Compared to traditional methods, LLMs exhibit
+constraints (e.g., unit modulus) amplify complexity, while
+superior scalability and computational efficiency by process-
+static formulations lack adaptability to dynamic environments
+ing heterogeneous data streams [41], while their continuous
+[24]. These scalability and practicality bottlenecks hinder
+learning capabilities ensure robustness against time-varying
+deployment in complex wireless networks [25].
+channels and user mobility [46]. Additionally, LLMs expo-
+Deep learning (DL) based approaches have emerged as
+sure to diverse training corpora enhances pattern recognition,
+innovative solutions for controlling RIS, demonstrating sig-
+enablingdeeperinsightsintopropagationmechanismsthrough
+nificant advantages in model-free optimization [26]. Among
+semantic-channel feature alignment [47].
+these DL methods, deep reinforcement learning (DRL) [27]
+Recent advancements in LLMs have demonstrated their
+andgraphneuralnetworks(GNNs)[28]standoutasrepresen-
+exceptional ability to model complex temporal and spatial
+tativetechniques[29].DRLmethodmodelsRISconfiguration
+relationships in cross-modal tasks. Different from prompt-
+throughamarkovdecisionprocess[30],thisapproachdynam-
+based WirelessLLM proposed in [48], which focuses on
+icallyadaptstocomplexradioenvironmentswithoutrequiring
+integrating multimodal data such as text, signals, and pro-
+sub-channel CSI, significantly enhancing system performance
+tocols, and enhancing domain knowledge through retrieval-
+metrics like sum rate [31]. GNN architecture implicitly es-
+augmentedgeneration(RAG)andexternaltools,LLM-RIMSA
+timate channels, directly mapping received pilot signals to
+emphasizes the design of specialized modules to adjust the
+optimal beamforming and reflection coefficients [32]. The
+model architecture to the input feature space of LLMs. Fur-
+permutation invariant/equivariant properties of GNNs effec-
+thermore, LLM employs parameter freezing and fine-tuning
+tively capture multi-user interference while incorporating het-
+strategies to retain the general knowledge of the pre-trained
+erogeneous data like user locations, achieving near-perfect
+model while enhancing its generalization capabilities. As a
+CSI performance under limited pilot lengths [33]. However,
+result,comparedtoWirelessLLM,LLM-RIMSAdemonstrates
+DRL suffers from dependency on extensive environmental
+distinct advantages in achieving high prediction accuracy and
+interaction data and slow training convergence, with potential
+stronggeneralizationperformance.Byleveragingtheuniversal
+inefficiencies in exploring high-dimensional RIS phase spaces
+modelingcapabilitiesofLLMs,wecanbypassexplicitchannel
+[34].GNNs,despitetheirinterpretability,faceescalatingcom-
+estimation, and reduce dependency on exhaustive trial-and-
+putational complexity as user and reflection unit quantities
+error learning. This paper proposes LLM-RIMSA, the first
+increase, coupled with reliance on offline training data and
+framework to harness LLMs for real-time RIMSA configu-
+limited adaptability to dynamic channel variations [35].
+ration in wireless systems. Our key contributions are:
+Both approaches must overcome critical deployment chal-
+lenges:thecomplexhigh-dimensionalcontroldemandsarising RIMSA architecture innovation: Introduces a novel
+•
+from thousands of RIMSA elements requiring precise ampli- RIMSA architecture with a parallel coaxial feeding net-
+tude phase optimization, and the need for real-time adapta- work and 2D metasurface integration, detailing its struc-
+tion to dynamic environments characterized by time-varying turaldesignandsignalmodelingasbothtransmittingand
+channels and multi-user interference under constrained pilot receiving antennas.
+resources. These persistent limitations highlight the necessity LLM-driven framework: Proposes the first LLM-RIMSA
+•
+of further studies to improve system robustness and ensure framework leveraging a GPT-2 backbone to dynami-
+scalableimplementationsforlarge-scaleRIMSAdeployments. cally optimize RIMSA configurations using pilot sig-
+
+---PAGE---
+
+3
+3
+performance will be enhanced compared with conventional
+CS-based channel estimation schemes. The contributions of
+inthispaperareasfollows:
+In our proposed architecture of the RIMSA array ca- •
+pable of adaptively controlling both antenna and array ……………………………………………… ………………………………………………
+responses through parallel feeding circuits. In RIMSA ……
+systems,allmetamaterialelementsfeededsimultaneously ……………………………………………… ………………………………………………
+byacoaxialfeednetwork.RIMSAiscomposedofphase
+control circuits, metamaterial elements, power distribu-
+tionnetworkandfeedports,whichensurestheisolation ………………………… ………………
+betweenadjacentports. ……
+We propose a TSR channel estimation method. In the ………………………… ………………
+•
+first stage, the same phasing shift vectors are applied to
+all metasurface antennas to merge the columns of the
+measurement matrix, reducing its coherence than that
+Fig.2. ThearchitectureofRIMSA.
+ofconventionalCS-basedapproaches.ThiswillimproFvieg.1. ThearchitectureofRIMSA.
+theaccuracyofDoAsestimationbutwillalsointroduce
+ambiguous DoAs. In addition, we optimize the phase multi-resolution method is proposed in [46] by developing a
+shiftsofmetamaterialelementsbyquasi-Newtonmethod hniaerlasr,cehlicimalicnoadteibnogokexbpasleicditonsuthbe-chhyabrnidnealrcChiSteIcteusrtei.mation.The
+to ensure the received power keeping robust. In the fraUmnleikweotrhke wbroirdkgseisn h[4i1g]h,-wdihmichendsiiroecntalyl ocphtiamninzeesl tdheata and
+secondstage,weuseRiemannianmanifoldalgorithmto phaseshiftmatrixwithgivengrids,ourproposedTSRchannel metasurface control through end-to-end optimization.
+optimizethephaseadjustmentofmetamaterialelements estimationschemewithRIMSAdecreasesthecoherenceofthe
+Cross-modal data processing: Introduces a space domain
+to refine the groundtruth arrival angles from the DoA • measurement matrix by reducing the dimension of measure-
+candidate set, and calculate the channel attenuations, mpreenptrmoacterisxsicnoglummnso.dOuuler baansidc ipdoeasiitsiothnaatl, ienmoburedspdeicniagl layers
+where the DoAs ambiguity introduced in the first stage dtoesiagdn,apsotmLeLdMiffserefnotrDhoiAghs-mdiamyehnasvieonthaelsRamIMe SreAspopnaserameter
+iseliminated. vceocntotrr,owlhwichhiwleillprreedsuecervtihnegcoshpearetnioceteomfpthoeramleacsourrermeleanttions in
+We present the numerical performance analysis and re- matrix. This is significantly different with the grid matching
+• wireless channels.
+sults of the proposed scheme in RIMSA systems. We pursuitstrategyin[42]andtheNewtonrefinementmethodin
+alsoprovidethecomparisonofchannelestimationperfor- [P4e3]r.foInrmadadnitcioen,vwaleidcaotnisoidne:rSthiemoupltiamtiiozantsiondeomf tohenspthraastee- LLM- •
+mancewithsomeexistingschemes.Thenumericalresults sRhiIfMtinSgAvecatcohritoeveenssuhreigthhaetrthseurmeceuivseedrproawteercionmthpeawrheodleto con-
+illustratethatourmethodcanprovideabetterestimation ivnetenretisotendalDoDARrLangmeeisthloardgeaenndougGhN, wNhicmhehtahsodno,twbeiethn lower
+accuracy. consideredinthepreviousworks.
+training and inference cost. The framework supports
+adaptive deployment across large scale wireless commu-
+A. RelatedWorks B. Organization
+nications scenarios, establishing a universal solution for
+In our proposed architecture of the RIMSA array, each This paper is organized as follows: In Section II, we will
+intelligent radio environments.
+metasurface antenna is connected to an RF chain and the introducetheRIMSAarraymodelindetail.Thechannelesti-
+wholereceiverstructureissimilartoahybridMIMOsystem.Thmeatrioenstproobflemthdisueptoaptheeranitsennoargstaruncitzueredwailslbefoinlltroowdusc.edSection
+Therefore, we can use the channel estimation methods wIitIhprienseSnectstiotnheIII.syInstSeemctiomnoIdVe,lweanpdrespernotbplreomposefdortmwou-lsatatgioen. The
+hybrid MIMO systems as starting points for RIMSA. Tohpetim re i fi z n a e t m io e n nt p (T ro S b R l ) e m m eth i o s d. fo T r h m en u , l w at e ed ana a ly s ze a co L m L p M utata p io ro na b l lem in
+works in [40], [41], [42], [43], [44], [45], [46] address the complexityinSectionV.Simulationresultsandanalyzeswill
+SectionIII.SectionIVproposesaLLMbackboneforRIMSA
+CSchannelestimationforhybridMIMOsystemsundersparse begiveninSectionVI.SectionVIIisconclusionofthispaper.
+multipathchannels. control. Section V provides simulation results and Section VI
+Alltheworksin[40],[41],[42],[43],[44]focusonenhancco-ncludes the paper. II. SYSTEMMODEL
+ing CS-based channel estimation through grid optimization
+In this section, we discuss the architecture of RIMSA in
+in the CS framework. The non-uniformly quantized angle
+grids are used in [40], which reduce the coherence of the
+II-A. The channel ImIo.deSl
+Y
+of
+ST
+R
+E
+IM
+M
+SAMa
+O
+rr
+D
+ay
+EL
+will be described
+insectionII-B.
+measurement matrix to improve the performance. To furthAe.r RIMSA Architecture
+improvetheperformanceviareducingcoherence,theauthors
+in[41]employconvexoptimizationtodesignthemeasurementThAe. RRIMIMSASAarchrietepcrtuerseents a highly adaptable metasurface
+matrix. The works in [42], [43], [44] provide approachesainntennaT,hecaRpIMabSlAeiosfafldeyxnibalmyciconfiagdujurasbtlmemenettasaunrfdacereacnotennfinag,uration
+refinement of the grid. A distributed grid matching pursuit allowing for adaptation and reconfiguration according to the
+in response to varying wireless environments. As depicted in
+(DGMP)algorithmisproposedin[42],andaNewtonrefine- wireless environment. As shown in Fig.2, one RIMSA com-
+Fig. 1, the structure of a RIMSA incorporates phase-shifting
+mentmethodfordiscretegridisconsideredin[43]. prises phase-shifting circuits, metamaterial elements, power
+Regardinggridlessapproaches,theauthorsin[45]develcoiprcuditisst,rimbuetitoanmnaettweroiraklaenldemfeeedntpso,rtas.pTohwepehradseisctornibtruotlicoinrcunitetwork,
+the sparse signal recovery problem with an unknown paaran-d offeeedachpomretsta.maEtearciahl emleemteanmtaitserrieasplonesliebmleefnotr apdhjuassteingcontrol
+metric dictionary, and propose an iterative reweighted (IcRi)rcutihteipshatsaeskoefdEMwisthignmal,owduhilcahtinisgcotmhepospehdasoef aovfartahcetore,lectro-
+method to decrease the surrogate function. Furthermore, the transmission line and short stub. Specifically, by regulating
+magnetic (EM) signal, utilizing a varactor, transmission line,
+and short stub. By adjusting the control voltage applied to the
+phase control circuit, the capacitance of the varactors can be
+tuned,therebyalteringthephaseresponseofthecorresponding
+metamaterial element. The phase-shifting mechanism depends
+on the phase control circuit, enabling continuous phase mod-
+ulation of the EM wave and facilitating analog beamforming.
+The RF power is evenly distributed across all metamaterial
+elementsviathepowerdistributionnetwork,whichisrealized
+using microstrip line power dividers. The feed ports include
+a primary feed port along with auxiliary ports for power
+N Ex
+N Ey
+N
+R y
+N Rx
+Ny
+y
+N x
+O
+z
+x
+
+Power divider
+/combiner
+RF chain
+Fig.2. AplanarRIMSAarraywithNRy NRx antennas(RFchains)anda
+totalofNxNymetamaterialelements,whereeachRIMSAisaplanarantenna
+aswellwithNEy NEx elements.
+division. These four core components are tightly integrated,
+ensuring a compact overall antenna design. All metamaterial
+elements are simultaneously excited by the incoming signal
+and subsequently directed to the RF chain and digital pro-
+cessor through a parallel feed network, mitigating frequency
+selectivity commonly encountered in antenna architecture of
+DMA and RHS.
+Traditional hybrid analog-digital MIMO architectures typ-
+ically depend on specialized analog combining hardware,
+such as phase shifter networks, which inherently consume
+significant power due to the active tuning demands of the
+phaseshifters.Incontrast,theradiationpatternofaRIMSAis
+generatedthroughdynamicallytunablemetamaterialelements.
+These elements are embedded within a parallel feeding net-
+work,primarilycomposedofpassivecomponentslikevaractor
+diodes, leading to a marked reduction in power consumption.
+Additionally,thelimitedresponsespeedofconventionalphase
+shifters results in fixed radiationpatterns during a single sym-
+bol period in traditional hybrid MIMO systems. However, the
+RIMSA achieves symbol-level beam reconfiguration, thanks
+to the sub-nanosecond response time of varactor diodes. This
+allowsthemetamaterialelementstobeswiftlyreconfiguredby
+thecontrolcircuitrywithinasinglesymbolduration,enabling
+real-time adaptation to rapidly changing channel conditions.
+As illustrated in Fig. 2, a general RIMSA antennas con-
+sists of N = N N densely spaced subwavelength
+E Ex
+×
+Ey
+metamaterial elements. The RIMSA array is composed of
+N = N N RIMSAs connected to RF chains. The
+R Rx
+×
+Ry
+RIMSA array consists of N = N N N N =
+t Ex Rx
+×
+Ey Ry
+N N in total elements. Integrated electromagnetic wave
+x y
+×
+control and reconfiguration is achieved through dynamic con-
+figuration of the metamaterial elements phase responses. For
+n =1,2...,N ,n =1,2,...,N ,theeffectofphaseshifting
+r R e E
+of metamaterial elements is v
+nr,ne
+= e−jαnr,ne which is the
+weighting factor of n th metamaterial element of n th RF
+e r
+chain. α denotes the phase shift. We define vector v
+nr,ne nr
+
+---PAGE---
+
+4
+as the phase shift vector of n th RF chain, which is
+r
+z
+v =1/ (cid:112) N [v ,v ,...,v ]T . (1)
+nr E nr,1 nr,2 nr,NE
+RIMSA
+B. Signal Model
+y
+We consider a MISO system that includes a base station Base Station
+(BS) and K single-antenna users. The BS equipped with a
+ϕ𝑘 θ𝑘
+RIMSAismadeupofuniformplanararray(UPA).Themobile x
+user is equipped with an omnidirectional antenna as Fig. 3.
+The uplink channel characteristics between the base station
+and user k are characterized by h k RNt×1. In traditional User 2 User k
+∈ User 1
+methods, CSI acquisition precedes data transmission through
+uplink pilot signaling. Leveraging channel reciprocity, the
+downlink channels correspond to the transpose of uplink esti-
+mates.Specifically,userk transmitsalength-Lpilotsequence Fig.3. SimulationlayoutofRIMSAassistedmultiusersystem.
+x (ℓ),ℓ = 1, ,L. The BS received signal in time slot ℓ is
+k
+···
+expressed as: to positional stability, while the NLoS component h
+k,NLoS
+K denotes the fast fading NLoS component, and the component
+(cid:88)
+y(ℓ)= VHh k x k (ℓ)+VHn(ℓ), (2) of which is independent and identically distributed (i.i.d.)
+k=1 circularlysymmetriccomplexGaussianrandomvariableswith
+where n(ℓ) (cid:0) 0,σ2I (cid:1) is the additive white Gaussian zero-mean and unit variance. The LoS component is position-
+noise (AWGN ∼ ). C V N CN 1 t×NR represents the beamforming dependent and slow-time-varying; The NLoS components are
+∈ causedbythemulti-patheffectsandarethusfast-time-varying.
+matrix at the RIMSA array as:
+As illustrated in Fig. 3, the LoS channel depends on user-
+ 
+v 1 0 ... 0 RIMSA geometric relationships. Let ϕ k and θ k respectively
+ 0 v 2 ... 0  denote the azimuth and elevation angles of arrival from user
+V= 
+
+. .
+.
+. .
+.
+... . .
+.
+ 
+
+(3) k to RIMSA. The n-th element of the RIMSA steering vector
+a (ϕ ,θ ) is given by:
+0 0 0 v R k k
+NR
+w I h e e n r s e u v re n s r t i h s a i t n t t h h e ef n o o rm ise of p ( r 1 es ). er T v h e e s u i n ts ita s r t y at p is r t o ic p a e l rty pr V op H er V tie = s, [a R (ϕ k ,θ k )] n = ej2π λ d c R{i1(n)sin(ϕk)cos(θk)+i2(n)sin(θk)} ( , 6)
+where d represents the inter-element spacing, and λ is the
+with its distribution and power remaining unchanged. We R c
+carrier wavelength, i (n) = mod(n 1,√N ), and i (n) =
+assumechannelreciprocity,sothatthechannelmatricesinthe 1 − t 2
+(n 1)/√N which is the index of n-th element. In the
+dow Le n t li s n k k di C rec d ti e o n n ot a e re th t e he m t o ra d n u s la p t o e s d e s o y f m th b e ol u t p ra li n n s k m c i h tt a e n d n f e r l o s m . s ⌊ imu − lations, w t e ⌋ assume d R = λ 2 c without loss of generality.
+the BS to ∈ user k. The received signal at user k is modeled as: This leads to the LoS channel expression:
+r =hHVw s + (cid:88) hHVw s +n , (4) h k,LoS =a R (ϕ k ,θ k ). (7)
+k k k k k i i k
+i̸=k Let (x ,y ,z ) denote the location of the user k and
+k k k
+wheren
+k ∼CN
+(cid:0) 0,σ
+0
+2(cid:1) isAWGN,w
+i ∈
+CNR×1 isthedigital (x R ,y R ,z R ) denote the location of the RIMSA, we have
+precoding vector. sin(ϕ )cos(θ )= y k − y R,sin(θ )= z k − z R, (8)
+k k d k d
+k k
+C. Channel Model where d is the distance between RIMSA and the user k.
+k
+WeassumethattheRIMSAisdeployedatalocationwhere
+a line-of-sight channel exists between RIMSA and the users, III. OPTIMIZATIONPROBLEMFORLLM-RIMSA
+so the Rician fading channel model h k for the RIMSA-user k In this section, we introduce the optimization goal and loss
+link is expressed as: function for RIMSA control of LLM.
+(cid:32)(cid:114) (cid:114) (cid:33)
+(cid:112) K 1
+h k = L k K+1 h k,LoS + K+1 h k,NLoS , (5) A. Optimization Problem
+Since the number of elements N in a typical RIMSA is
+t
+where L k ≜ L 1 d− k ρk, LB 1 E represents the large-scale path generally large (possibly in thousands), it is challenging to
+loss with d ≜ p p denoting the RIMSA-user k estimatethechannels.Themainideaofthispaperisthatsince
+k R k
+∥ − ∥
+distance and ρ being the path loss exponents. The Rician the final goal is to optimize the rates R , instead of explicitly
+k k
+factorK quantifiesthepowerratiobetweenline-of-sight(LoS) estimatingallthechannelcoefficientsasanintermediarystep,
+and non-line-of-sight (NLoS) components. The deterministic wecanexploitthepilotphasemoreefficientlybymappingthe
+LoS component h exhibits slow temporal variation due received pilots directly to the optimized transmission strategy
+k,LoS
+
+---PAGE---
+
+5
+for data rate maximization, in effect, bypassing channel esti- optimization objectives. During the training phase, the hybrid
+mation. loss function is formulated as follows:
+Under a block-fading channel model, channel parameters
+= +λ +λ , (13)
+remain constant within coherence intervals but vary indepen- L total L mse rate L rate precoding L fro
+dently across blocks. The corresponding signal-to-noise ratio where denotes the channel estimation MSE loss as:
+mse
+L
+(SINR) metric becomes:
+= Hˆ H 2, (14)
+SINR k = (cid:80)K i̸=k (cid:12) (cid:12) (cid:12) (cid:12) w w k H i H V V H H h h k k (cid:12) (cid:12) (cid:12) (cid:12) 2 2 +σ k 2 . (9) r w e h fl e e r c e ts H th t e ru s th um is d t a L h t e m a s r e tr a u te th ∥ ac v c a E o lu r − d e in o g f tr t w o ut i h r ( e 1 ∥ l 1 F e ) ss as c : hannel. 1 L rate
+The achievable rate for user k is computed as: K K
+(cid:88) (cid:88)
+= R = log (1+SINR ), (15)
+R =log(1+SINR ), (10) L rate − k − 2 k
+k k k=1 k=1
+where is determined by V and W according to (11),
+where multiuser interference is treated as noise. The RIMSA rate
+L
+optimizes digital precoding vectors w k and RIMSA beam- and L rate is a negative value, because the LLM model will
+forming matrix V to maximize a network utility function minimizethehybirdloss.BeingnegativecanhelpLLMmodel
+U(R ...R ). Typical utility functions include system sum- optimizeRIMSAconfigurationtoachievemaximumsumdata
+1 K
+rate (cid:80)K k=1 R k . rate. L fro correspond to zero force (ZF) precoding matrix
+Frobenius norm loss as:
+The system-level performance is quantified through the
+sum-rate capacity: = M VW 2, (16)
+L fro ∥ − ∥F
+(cid:88) K (cid:88) K where M CNR×K is the ZF precoding matrix and can
+R sum = R k = log 2 (1+SINR k ), (11) help LLM ∈ model faster optimize its parameters [30]. L λ fro is
+rate
+k=1 k=1
+increasing with training epochs increases, so the optimization
+TheoptimizationforRIMSA-enhancedsystemsistocontrol process will tend to maximum sum data rate. In addition, the
+RIMSA beamforming matrix V CNt×NR and digital pre- validation loss also adopts as loss function. It is worth
+coding matrix W CNR×K to m ∈ aximum the sum data rate noting that the multi-head a L tt r e at n e tion and feed forward layers
+∈
+R sum . To this end, we propose to design the optimal beam- ofthepre-trainedGPT-2arefrozen,whileotherparametersof
+formingvectorw k andRIMSAbeamformingmatrixV based the network are trainable. Since the former includes the main
+directly on the received pilots Y = [y(1),y(2), ,y(L)] parametersofthenetwork,thenumberoftrainableparameters
+CNR×L. Specifically, given the matrix Y, our go · a · l · is to solv ∈ e isrelativelysmall.Themodelwiththesmallestvalidationloss
+the following optimization problem according to (10): is saved for the testing phase.
+maximize E[R (W,V),...,R (W,V)]
+1 K
+W,V=g(Y) IV. THELLMMODELFORRIMSACONTROL
+s.t W=[w , ,w ],
+w 2 1 P ··· , K (12) In this section, we introduce how to apply a pre-
+∥ i ∥ ≤ max trained LLM model on RIMSA control. The proposed LLM-
+VHV=I,
+empowered RIMSA control framework integrates temporal
+where W is the digital precoding matrix of RIMSA. Solving feature extraction, spatio-temporal attention encoding, a GPT-
+problem (12) faces critical challenges from two perspectives: based backbone, and joint multi-task outputs. The detailed
+(1) The large number of RIMSA elements (possibly in implementation is structured in Fig. 4.
+thousands) makes explicit channel estimation impractical due The proposed LLM-RIMSA framework establishes an end-
+to prohibitive pilot overhead scaling. to-end signal processing architecture through four synergistic
+(2) Even with perfect CSI, the high-dimensional RIMSA components: Preprocessor module converts raw pilot signals
+configurationoptimizationinvolvesanonconvexcombinatorial into noise-robust temporal-spatial representations via multi-
+search space with complexity growing exponentially with N , scale convolutional filtering and bidirectional sequence mod-
+t
+rendering traditional convex relaxation methods computation- eling; Spatio-temporal attention module decouples and refines
+ally intractable. joint signal dependencies using parallelized temporal corre-
+lation learning and spatial affinity modeling; LLM module
+Toaddressthesedualchallenges,weproposeLLM-RIMSA
+leverages pretrained GPT-2 transformers with adaptive posi-
+to learn the mapping from pilot signals to optimal configura-
+tional encoding and residual refinement blocks to generate
+tions through neural network parameter learning, bypassing
+high-dimensional semantic embeddings; Output module im-
+explicit channel estimation while embedding physical con-
+plementsdual-taskdecodingwithphysicalconstraintsenforce-
+straints in the optimization process.
+ment,producingphasecontrolmatricesandchannelestimation
+parameters through task-specific nonlinear projections. This
+B. Training Loss Configuration
+1In fact, an explicit channel estimation is only for training, the RIMSA
+The proposed neural network is trained on pilot signals to
+configurations will be optimized by LLM model when receives the uplink
+controlRIMSAwithahybridlossfunctioncombiningmultiple pilotsignals.
+
+---PAGE---
+
+6
+Preprocessor Spatiotemporal Attention LLM Module Output Module
+Module Module
+Output
+Time GPT-2
+attention Backbone 4 2 ×Phase
+Temporal ej o r P Network e × R opti h m e i a z d ation
+Si
+P
+g
+i
+n
+lo
+a
+t
+l s ex m
+fe
+tr o
+a
+a d
+t
+c
+u
+u t
+r
+i l
+e
+o e n
+Bidi
+L
+r
+S
+e
+T
+ct
+M
+ional
+at
+S
+te
+p
+n
+a
+t
+c
+i
+e
+o n al n
+oi
+t c
+e P n o c s o it d io in n g b l a u
+di s
+Output
+e y & Multi-layer ol
+r c
+Transformer k Channel
+Feedforward decoder estimation
+network head
+Fig.4. AnillustrationofthenetworkarchitectureofLLM-RIMSA.
+unified architecture achieves multi-task optimization by pro- A bidirectional LSTM (BiLSTM) captures long-range tem-
+gressively transforming pilot signals from raw measurements poral dependencies due to its ability of contextual awareness
+to control parameters through hierarchical feature abstraction and sequence alignment. After temporal feature extraction,
+and context-aware reasoning. A bidirectional LSTM with hidden size N processes the
+R
+Remark 1: Different from prompt-based related works, compressedsequenceX ,capturinglong-rangedepen-
+MaxPool
+which focuses on integrating multimodal and enhancing do- dencies in both forward and backward directions:
+main knowledge through RAG and external tools, LLM-
+RIMSA emphasizes the design of specialized modules to ad-
+X
+MaxPool
+RNR×2NR BiLSTM X
+BiLSTM
+RNR×2NR.
+∈ −−−−−→ ∈
+justthemodelarchitecturetotheinputfeaturespaceofLLMs. (20)
+Besides, LLM-RIMSA demonstrates distinct advantages in Each direction outputs X BiLSTM , concatenation preserves
+achieving high prediction accuracy and strong generalization the full temporal resolution while doubling feature richness.
+performance. Forward/backwardhiddenstatesconcatenatetoform2N R -dim
+embeddings,encodingbothhistoricalandfuturecontext.Input
+features are permuted for temporal processing. Residual con-
+A. Preprocessor Module
+nections between convolutional and LSTM outputs mitigate
+The temporal feature extraction module processes raw re-
+vanishing gradients.
+ceivedsignalsthroughacompositeconvolutionalarchitecture.
+Thekeydesignrationalebehindthisarchitectureemphasizes
+Given pilot signals with input dimensions Y
+∈
+CNR×L (N
+R multi-scale feature fusion where the Conv1D-BN-Pooling
+is the number of RIMSA RF chains and L is the length of
+chain hierarchically extracts local-to-global patterns and the
+pilot signals). So the input tensor can be expressed as
+BiLSTMbridgesdistanttimestepstomitigatesignaldistortion
+(cid:20) (cid:21)
+X= ℜ (Y) R2×NR×L, (17) in noisy channels. Ensuring dimension consistency, the output
+(Y) ∈ sizealignsperfectlywiththespatio-temporalattentionmodule
+ℑ
+input requirements, facilitating seamless feature propagation.
+where () and () denote the real and imaginary parts of
+ℜ · ℑ · This preprocessing flow transforms raw pilot signals into
+the matrix, respectively. This results in a real-valued tensor
+temporallycoherentandspatiallyenrichedembeddings.These
+mathbfX withdimensions2 N L,wherethefirstdimen-
+R
+× × embeddings form the foundation for subsequent attention-
+sionseparatestherealandimaginarycomponents.ReshapeX
+from dimensions 2 N
+R
+L to 2N
+R
+L, i.e., X R2NR×L. based refinement and LLM-driven semantic modeling, en-
+× × × ∈ hancing the overall robustness and effectiveness of signal
+The preprocessor module performs temporal feature extrac-
+processing in complex communication environments.
+tion and bidirectional sequence modeling to generate noise-
+robust representations for downstream modules.
+A wide-kernel convolution Conv1D where C = 2N
+out R B. Spatio-temporal Attention Module
+andkernel=3expandsthefeaturedimensionwhilecapturing
+local temporal correlations: As the important component of the architecture, the spatio-
+temporal attention module processes the bidirectional LSTM
+X ∈ R2NR×L −− C − on − v1 − D → X Conv ∈ R2NR×2NR. (18) outputs X BiLSTM and learns jointspatio-temporal dependen-
+cies through a decoupled dual-attention mechanism. A novel
+Then, the Gaussian error linear unit (GELU) activation and
+multi-head attention architecture addresses spatial-temporal
+batch normalization (BN) enhance nonlinear expressivity and
+correlations.Temporalattentioncomputesdependenciesacross
+stabilize training. Max pooling reduces temporal redundancy
+timestepsusingscaleddot-productattention.Spatialattention
+by half, prioritizing dominant features:
+operates on transposed features to model inter-antenna rela-
+X R2NR×2NR MaxPool1D(2) X RNR×2NR. tionships. Attention outputs are added to original features via
+Conv MaxPool
+∈ −−−−−−−−→ ∈
+(19) residualconnections,preservedthroughlayernormalization.In
+
+---PAGE---
+
+7
+the meanwhile, dimension permutation avoids explicit tensor
+reshaping, reducing memory overhead. Position
+encoding
+Time attention (8-head) captures temporal dynamics across
+N meta-elements using multi-head scaled dot-product atten-
+R Masked multi-head
+tion: attention
+(cid:18) QK⊤(cid:19)
+Attention(Q,K,V)=Softmax V, (21) Linear Layer
+√d
+T
+where Q/K/V
+∈
+R0.5NR×0.25NR are split from X
+BiLSTM
+. Fe
+N
+ed
+e
+f
+t
+o
+w
+r
+o
+w
+r
+a
+k
+rd
+The8-headoutputsareconcatenatedandprojectedtomaintain
+dimension RNR×2NR. Linear Layer ×N
+L
+Space attention (8-head) models inter-feature relationships
+among 2N R channels via parallel spatial attention heads. And Training Frozen
+each head computes:
+Attention space =σ (cid:0) W s · X⊤ BiLSTM (cid:1) · X BiLSTM , (22) F ne ig tw . o 5 r . k. An illustration of the network architecture of GPT-2 backbone
+where W is a learnable spatial affinity matrix. The outputs
+s
+are fused to preserve R0.5NR×2NR. TABLEI
+GPT-2MODELDIMENSIONSPECIFICATIONS
+Feedforward network (FFN) applies two linear layers with
+GELU activation and four hidden dimension expansion as: ModelName TypeParameter FeatureDimension
+X RNR×2NR FFN X RNR×2NR. (23) GPT-2Base gpt2 768(NP =768)
+BiLSTM ∈ −−−→ FFN ∈ GPT-2Medium gpt2medium 1024(NP =1024)
+Feature fusion combines temporal and spatial attention
+GPT-2Large gpt2-large 1280(NP =1280)
+GPT-2XL gpt2-xl 1600(NP =1600)
+outputs through residual addition as:
+X =X +X +X . (24)
+fused time space space
+where P RN×NP is a trainable positional embedding
+enc
+The design of this module adopts a decoupled spatio- ∈
+matrix according to Table I, and N denotes the maximum
+temporal learning approach, where the separation of time
+sequence length.
+and space attention reduces computational complexity while
+Then the 6-layer transformer decoder process X , each
+pos
+enabling targeted feature refinement. This is complemented
+layer contains 12-head masked attention and 4 expanded
+by a dynamic weight allocation mechanism, utilizing a dual-
+feedforward networks. The 12-headcausal attention processes
+head structure to adaptively prioritize critical timesteps, such
+sequences with auto-regressive masking to prevent future
+as sudden channel fading, and spatial features, like antenna-
+information leakage as:
+specific distortions. Ensuring dimension preservation, the out-
+put maintains consistent dimensions of X R2NR×L,
+(cid:18) QK⊤(cid:19)
+fused ∈ Attention(Q,K,V)= MaskedSoftmax V,
+facilitating seamless integration with the projection layer and √d
+L
+(26)
+GPT-2 backbone. Illustrated in Fig. 4, this module generates
+where d =N /12 according to Table I, multi-head outputs
+context-aware spatio-temporal embeddings that encapsulate L P
+are concatenated and linearly projected. 4 expanded feedfor-
+both global temporal trends and local spatial correlations.
+ward networks apply dimension expansion and compression
+Theseembeddingsprovideessentialinductivebiasesforphase
+with GELU activation:
+prediction and channel estimation tasks, enhancing the accu-
+racy and efficiency of communication systems.
+FFN(x)=W GELU(W x+b )+b , (27)
+2 1 1 2
+· ·
+C. LLM Module where W 1 RNP×2NP and W 2 R2NP×NP are the
+∈ ∈
+trainable parameters.
+The LLM Module serves as the semantic reasoning core
+The 4 stage residual block group enhances local feature
+of the architecture, transforming spatio-temporal features into
+interactions through dual-branch convolution and squeeze-
+high-dimensional contextual representations. There are dif-
+excitation(SE)channelattention.Thedual-branchconvolution
+ferent kinds of GPT-2 models and we apply normal GPT-2
+parallel depth-wise convolutions (DWConv) capture multi-
+which consists of millions parameters into this problem. This
+scale spatial patterns as
+module comprises three key components: learnable position
+e b n lo c c o k din g g ro , u N p L ( - N layer is tr s a e n t sf a o s rm 6 er th d e e r c e o ). de T r h a e nd de 4 t - a s i t l a s ge of re G si P d T u - a 2 l X conv =DWConv 3×3 (X trm ) ⊕ DWConv′ 3×3 (X trm ). (28)
+L
+backbone network is shown in Fig. 5. SE channel attention recalibrates feature channels via
+Before learnable position encoding, X RNP is gener- squeeze-excitation as:
+proj
+∈
+atedbyX throughprojectionlayer.Thelearnableposition
+fused X =X σ(W GAP(X )). (29)
+se conv c conv
+encodinginjectstemporalorderinformationintotheprojected · ·
+features as: The key design rationale of this module focuses on hierar-
+X =X +Wp P , (25) chicalabstractionachievedthrougha6-layerTransformerthat
+pos proj enc
+·
+
+---PAGE---
+
+8
+progressively builds global context via stacked self-attention LeakyReLU activation preserves negative gradient informa-
+mechanisms, while residual blocks are employed to refine tion as:
+local signal characteristics. Ensuring dimension compatibility, (cid:16) (cid:17)
+X(2) =LeakyReLU X(1) R2048. (34)
+the projection layer transforms spatio-temporal features from channel channel ∈
+R2NR×L to RNP, effectively bridging these features with
+Dimension reshaping reconstructs complex channel matrix
+the GPT-2 input space. Leveraging pretraining compatibil-
+as:
+(cid:16) (cid:17)
+ity, the module inherits GPT-2 pretrained weights for its Hˆ =Reshape X(2) R2×Nt×K. (35)
+transformer layers, facilitating effective transfer learning in E channel ∈
+wireless communication scenarios. Consequently, this module where the first dimension separates real/imaginary compo-
+generates semantic-enriched embeddings RNP, which encap- nents.
+sulate long-term temporal dependencies from pilot sequences, The design of this module incorporates dual-head spe-
+spatialcorrelationsacrossantennaarrays,andchannel-specific cialization to efficiently handle complex signal processing
+physical constraints. These enriched embeddings are then tasks. Both heads share the LLM-derived semantic features
+directedtowardsdual-outputheadsforphaseoptimizationand X , promoting joint learning of correlated tasks, while
+LLM
+channel estimation, thereby completing the end-to-end signal engaging in task-specific processing tailored to their objec-
+processing chain. tives: the phase head emphasizes signal periodicity through
+The proposed architecture employs GPT-2 as its founda- GELU+LayerNorm, whereas the channel head focuses on
+tional backbone, comprising 6 stacked transformer decoders matrix completeness via high-dimension expansion. Physical
+with dimension-compatible modifications. The positional em- constraintsembeddingisachievedbyapplyingHardtanhinthe
+bedding layer is reinitialized as trainable parameters to ac- phaseheadtoenforcephysicallimits( π,π)intoV,aligning
+commodate wireless sequence lengths; Each decoder layer withRFcircuitlimitations,andR2×Nt× − K reshapingisusedto
+preserves frozen 12-head attention and 4 expanded FFN from reconstruct complex channel matrices. An activation strategy
+pretrained weights, while enabling fine-tuning of layer nor- utilizing LeakyReLU (with α = 0.01) prevents gradient
+malization parameters and residual connections; The 4-stage death during deep fading scenarios in channel estimation, and
+residual group with dual-branch DWConv and SE attention LayerNormensuresstabletrainingdespitevaryingpilotsignal
+is appended as trainable extensions. This configuration main- magnitudes. This module finalizes the end-to-end processing
+tainsN -dimensionalhiddenstatesthroughouttheprocessing chain, converting neural network outputs into engineering-
+P
+chain,ensuringcompatibilitywithalternativeLLMbackbones actionable parameters for channel estimates, phase shifting
+(e.g., Llama) through dimension-preserving adapter layers matrix and beamforming matrix for RIMSA systems.
+when considering computation-performance trade-offs.
+V. NUMERICALRESULTS
+D. Output Module
+Inthissection,weevaluatetheperformanceoftheproposed
+The Output Module operates as the task-specific decoder,
+LLM method for the RIMSA control in comparison to the
+generating physically constrained predictions for phase cor-
+channel estimation based approach and existing traditional
+rection and channel estimation. As illustrated in Fig. 4, this
+deep learning methods.
+dual-head architecture processes the LLM backbone outputs
+X RNP through parallel task branches.
+LLM
+Phas ∈ e optimization head consists of feature expansion, A. Simulation Parameters
+nonlinear processing and phase constraint. Feature expansion We consider a RIMSA assisted multiuser MISO commu-
+expands latent space dimensions via fully-connected layer: nication system as illustrated in Fig. 3, consisting of a BS
+X(
+p
+1
+ha
+)
+se
+=W
+p ·
+X
+LLM
++b
+p
+, (cid:0) W
+p ∈
+RNP×1024(cid:1) . (30) e
+R
+q
+F
+ui
+c
+p
+h
+p
+a
+e
+i
+d
+ns
+w
+. A
+ith
+s
+a
+sh
+R
+ow
+IM
+n
+S
+in
+A
+th
+w
+e
+hi
+F
+c
+i
+h
+g.
+h
+3
+a
+,
+s
+t
+1
+h
+0
+e
+2
+(
+4
+x;
+el
+y
+e
+;
+m
+z
+e
+)
+n
+-c
+ts
+oo
+a
+r
+n
+d
+d
+ina
+1
+t
+2
+e
+8
+s
+Nonlinear processing applies GELU activation and layer-
+of the BS locations in meters is (0, 0, 20). There are 3 users
+norm for stable gradient flow:
+uniformly distributed in a rectangular area [20,30] [20,30]
+(cid:16) (cid:16) (cid:17)(cid:17) ×
+X(2) =LayerNorm GELU X(1) R1024. (31) inthe(x,y)-planewithz=1.5asshowninFig.3.Weassume
+phase phase ∈ thattheRIMSAisequippedwithauniformplanararrayplaced
+Phase constraint enforces physical limits ( π,π) through on the (y, z)-plane in a 32 32 configuration, the RF chains
+−
+Hardtanh: are placed similar to RIMS × A on the (y, z)-plane in a 16 8
+(cid:16) (cid:17) ×
+V=Hardtanh X(2) π RNt. (32) configuration. K is the ratio between the power in the LoS
+phase · ∈
+pathandthepowerintheNLoSpaths.TheLoScomponentis
+SimilartoRIMSAbeamformingmatrixV,thedigitalprecod-
+position-dependent and is thus slow-time-varying; The NLoS
+ing matrix W is generated from second phase optimization
+components are caused by the multi-path effects and are thus
+head with power constraint. fast-time-varying. The large-scale path loss of L is 10−4.
+k
+Channelestimationheadconsistsofhigh-dimensionalmap-
+The path loss exponents are set as ρ =2.2. The uplink pilot
+k
+ping, LeakyReLU activation and dimension reshaping. High-
+transmitpowerandthedownlinkdatatransmitpoweraresetto
+dimensional mapping projects features to 2048D space for
+be15dBmand20dBm,andtheuplinknoisepoweris-100dBm
+detailed reconstruction as:
+and the downlink noise power is -80dBm unless otherwise
+X(
+ch
+1
+a
+)
+nnel
+=W
+c ·
+X
+LLM
++b
+c
+, (cid:0) W
+c ∈
+RNP×2048(cid:1) . (33) stated. The training dataset and validation dataset respectively
+
+---PAGE---
+
+9
+contain10,000and2000samples.Thetestingdatasetcontains One Channel Block Length: K
+5000 samples.
+Uplink Pilot Downlink Data Uplink Pilot Downlink Data
+This work introduces a hybrid optimization network archi- Transmission Transmission Transmission Transmission
+tecture based on GPT-2, designed to capture spatio-temporal Channel Channel
+Precoding Precoding
+Estimation Estimation
+channel evolution patterns and optimize phase, channel esti-
+mation, and precoding matrices through a multi-task learning One Channel Episode
+framework. Specifically configured with an input preprocess-
+One Channel Block Length: K
+ing module for complex feature fusion and temporal feature
+Uplink Pilot Downlink Data Uplink Pilot Downlink Data
+extraction using dilated causal convolutions, it also includes a
+Transmission Transmission Transmission Transmission
+spatio-temporal joint encoding module featuring bidirectional
+DRL Process DRL Control DRL Process DRL Control
+LSTM for capturing long-term dependencies and a hybrid
+attention mechanism for processing sequence and feature
+One Channel Episode
+dimensions.ThebackbonenetworkadoptsacustomizedGPT-
+2 configuration with parameters fine-tuned only for position Fig. 6. The frame structure of the typical TDD multi-user MIMO and the
+correspondingsignalprocessingproceduresforDRLmethod.
+encoding and layer normalization, while employing a multi-
+task output head strategy that encompasses phase prediction,
+channelestimation,andprecodingprediction,eachtailoredfor Nooptimization:RIMSAconfigurationsaresetrandomly
+specific tasks like phase range constraint and spatial continu- • serve as the baseline.
+ity smoothing. Additionally, a residual optimization module
+To ensure fairness, the above deep learning-based methods
+enhances the architecture with cascaded residual blocks and
+process antenna dimensions in parallel and adopt sum data
+channel attention. This model, comprising tens of million
+rate as the loss function for training.
+parameters, achieves end-to-end latency of less than 20ms on
+an NVIDIA RTX4090 GPU, demonstrating efficient inference
+B. Training and Inference Cost
+performance.Throughitscomprehensivedesign,thisarchitec-
+ture effectively integrates cross-modal feature alignment and In this subsection, we show the training and inference cost
+spatio-temporal dynamics for communication systems. of LLM, GNN, and DRL in controlling the RIMSA.
+TheproposedGNN-basedframeworkforRIMSAoptimiza-
+The model optimization employs a multi-stage training
+tion adopts a multi-head GAT architecture to model spatial
+strategy with key hyper parameters as follows: The optimizer
+is AdamW (β = 0.9, β = 0.999), utilizing gradient correlations among RIMSA elements. The framework con-
+1 2
+tains three key components: a geometric graph constructor
+accumulation over 4 steps to achieve an effective batch size
+of 4096. The learning rate starts at 3 10−4 and is dy- that generates adjacency matrices based on RIMSA element
+× coordinates with 32 32 planar array and 16 8 RF chains,
+namically adjusted using a triangular OneCycle scheduling × ×
+method, whichvaries therate between 3 10−4 and 1 10−5 connecting each element to its horizontal/vertical neighbors;
+× × hybrid node features combining real/imaginary channel com-
+to balance convergence speed and stability. Regularization
+techniques include a weight decay of 1 10−6 for l -norm ponents across 3 users into 6-dimensional feature vectors; a
+2
+× three-layer GAT with 3-head attention and hidden dimension
+penalty and gradient clipping with a threshold of 1.0 to
+as 64 for hierarchical spatial feature extraction. The first
+prevent exploding gradients. The training protocol spans 500
+GAT layer applies LeakyReLU activated multi-head attention
+epochs, with early stopping triggered if the validation SINR
+to project features into 768-D space, followed by ReLU-
+plateaus for 20 consecutive epochs. Mixed-precision training
+activated and linear GAT layers that progressively aggregate
+(FP16/FP32) is implemented via PyTorch AMP (Automatic
+neighbor information. The final phase prediction module uses
+Mixed Precision) to enhance memory efficiency. This config-
+batch normalization and tanh-activated dense layers to map
+uration ensures stable optimization of large-scale parameters
+node embeddings to [ π,π] phase shifts, enabling end-to-end
+while preserving the physical constraints intrinsic to RIMSA- −
+optimization of RIS configurations.
+assisted communication systems.
+The framework introduces two novel design principles:
+To validate the superiority of the proposed method, sev-
+First, a system-level loss function directly maximizes the
+eral model-based and deep learning-based channel prediction
+sum data rate through differentiable ZF precoding simulation.
+methods are implemented as baselines as follows:
+Givenpredictedphases,thelosscomputesequivalentchannels,
+DRL [32]: A deep deterministic policy gradient (DDPG) derives ZF precoding matrices via regularized matrix inver-
+•
+framework, featuring a dual-network architecture (actor- sion, and evaluates SINR-based spectral efficiency through
+critic) for continuous phase-shift optimization. The actor automatic differentiation. Second, a dynamic graph attention
+network uses three fully connected layers to map pilots mechanism adaptively reweights neighbor connections based
+to RIMSA configurations. on channel state differences - elements with highly correlated
+GNN [28]: A graph attention network (GAT) models channels receive stronger attention coefficients. Training em-
+•
+RIMSA elements as nodes in a spatial graph. Each node ploysAdamoptimizationwithbatchsizeas32,usingsumdata
+aggregates features from 4 nearest neighbors, using three rate as the primary metric. The adjacency matrix sparsity (4
+GAT layers with hidden dimension as 64 to capture connections/element) ensures real-time operation with about
+interference correlations. 50 ms inference latency per RIS configuration.
+
+---PAGE---
+
+10
+TABLEII 9
+THEDEPLOYMENTCOSTOFDIFFERENTMETHODSONRIMSACONTROL
+LLM method
+8 GNN method
+Method Parameters Trainingtime Interferencetime DRL method
+Random
+LLM 1.73/84.78M 2.6h 20ms 7
+GNN 2.12/2.12M 4.8h 50ms
+)z
+H
+DRL 2.36/2.36M 7.3h 120ms
+/sp
+b6
+(
+e
+ta
+TABLEIII
+r
+a ta
+d
+5
+THEDETAILSOFLLMWITHDIFFERENTNUMBERSOFGPT-2LAYERS m u
+S4
+Layers Sumdatarate Parameters Interferencetime
+3
+LLM(2) 7.01bps/Hz 1.72/55.37M 13ms
+LLM(4) 9.62bps/Hz 1.73/70.26M 17ms
+LLM(6) 9.79bps/Hz 1.73/84.78M 20ms 2
+15 30 45 60 75 90
+LLM(8) 9.73bps/Hz 1.74/99.12M 28ms
+Pilot length
+Fig. 7. Performance of the proposed methods for RIMSA system with
+differentpilotlength.
+The LLM and GNN methods can directly get the optimal
+RIMSAconfigurations,whileDRLmethodneedsexplorations
+to learn how to control RIMSA. So the training dataset for
+We compare the model training and inference cost of the
+DRL is a little different, but the testing dataset is same as
+proposed method with other baselines to assess the difficulty
+LLM and GNN methods. In DRL simulation based on Fig. 6,
+of deploying the model in RIMSA control, as shown in Tab.
+wemaketwoassumptions:Channelblockcontainsuplinkpilot
+II. All experiments are conducted on the same machine with
+transmissionanddownlinkdatatransmissionphaseswithcon-
+IntelCorei9-14900KCPU,NVIDIAGeForceRTX4090GPU,
+stant channel matrices. Channel episode comprises 20 blocks
+and 128 GB of RAM. Although LLM has the largest total
+where the LoS component (fixed via random user placement)
+parameters as 84.78M, the actual trainable parameters 1.73M
+remainsstatic,whileNLoScomponentsvaryasi.i.d.processes
+are similar to GNN and DRL models since most parameters
+acrossblocks.Thissetupbalancesenvironmentalstabilitywith
+in the LLM are frozen. And LLM method also has the
+dynamic NLoS variations.
+shortest training time as 2.6 hours. It is worth noting that
+The proposed DRL-based optimization framework for LLM inference time is shorter than GNN and DRL thanks to
+RIMSA systems adopts a DDPG architecture to address the inference acceleration specific to the GPT model. Therefore,
+continuous phase-shift optimization problem. The framework LLM has the potential to serve real-time RIMSA control.
+consists of three core components: a channel-aware environ- In addition, we comprehensively evaluated the impact of
+ment that models RIMSA dynamics, an actor-critic network selectingdifferentnumbersofGPT-2layersonRIMSAcontrol
+for joint policy learning and value estimation, and an experi- performance, parameters cost, and inference time, as shown
+encereplaymechanismtostabilizetraining.Thestatespaceis in Tab. III where LLM (n) represents the proposed method
+constructed from received pilot signals and estimated channel with n GPT-2 layers. The network parameters and inference
+matrices obtained through LMMSE estimation using orthogo- time are both increased with the number of GPT-2 layers.
+nal DFT pilots, concatenating real and imaginary components It is worth noting that the proposed model with 6 GPT-2
+into a 768-dimensional vector. The action space defines phase layers performs the best within the testing range, indicating
+shiftsforall1024elementsand128RFchains,boundedwithin that having more layers does not necessarily favor prediction.
+[ π, π] through a tanh-activated actor network. The reward In practical deployment, the selection of the type and size of
+− −
+functionmaximizesthesumdataratebytheagentphase-shift the LLM backbone needs to consider both the requirements
+decisions on RIMSA. for system performance and the constraints of device storage
+To ensure robust learning, a hybrid exploration strategy and computational resources.
+combines warm-up random sampling (1,000 steps) with tem-
+porally correlated Ornstein-Uhlenbeck noise injection, bal-
+C. Performance Evaluation
+ancing exploration-exploitation trade-offs in high-dimensional
+action spaces. And the network architecture employs dual Inthissubsection,weshownumericalresultsontheperfor-
+hidden layers with 1024 neurons each and ReLU activation in manceofRIMSAassistedwirelesscommunicationscontrolled
+bothactorandcriticnetworks,whiletargetnetworksaresoftly by LLM model. In this experiment, the number of training
+updated to mitigate training divergence. Training leverages samples is set as 10,000, the number of validate samples is
+mini-batch SGD with batch size as 64 and Adam optimiz- setas1,000andthenumberoftestingsamplesissetas2,000.
+ers where actor/critic learning rates are set as 10−4/10−3, The Fig. 7 evaluates the sum data rate (bps/Hz) of four
+minimizing the Bellman error via MSE loss on predicted Q- methods LLM, GNN, DRL, and random under varying pilot
+values. Experimental validation confirms convergence within lengths in a large-scale RIMSA environment. Notably, prior
+5,000 episodes, achieving real-time inference latency 120 ms studies have not rigorously tested DRL or GNN in such
+on GPU hardware. complex multi-user, multi-RIMSA-element scenarios, which
+
+---PAGE---
+
+11
+12 3
+11
+LLM method
+2.5 GNN method
+10
+DRL method
+)z LLM method )zH Random
+H /sp
+b (
+e
+ta r
+a
+ta d
+m
+u S
+6
+7
+8
+9 G
+D
+N
+RL
+N
+m
+m
+e
+e
+t
+t
+h
+h
+o
+o
+d
+d /sp
+b ( etar
+atad
+n im
+-x
+aM
+1.
+2
+5
+5
+1
+4
+3 0.5
+16 18 20 22 24 26 15 30 45 60 75 90
+Downlink transmit power P (dBm) Pilot length
+Fig. 8. Performance of the proposed methods for RIMSA system with Fig. 9. Performance of the proposed methods for RIMSA system with
+differenttransmittedpower. differentpilotlength.
+introduceuniquechallengesduetohigh-dimensionalstateand GNN method (green line) follows as a sub-optimal solu-
+action spaces. Among these methods, GNN demonstrates a tion, benefiting from its ability to model spatial interactions
+significant advantage through its graph-structured modeling, among RIMSA elements and users. In contrast, the DRL
+capturing spatial correlations between distributed RIMSA ele- method (blue line) lags significantly, as its high-dimensional
+ments and users, thereby efficiently handling interference and state-action space (due to multi-user, multi-RIMSA-element
+channelstatevariationsevenwithnumerousRIMSAelements. dynamics) hinders effective policy optimization. The LLM
+At longer pilot lengths, GNN achieves near-optimal perfor- spatio-temporal attention mechanisms dynamically prioritize
+mance, as extended pilots provide richer node interaction data criticaltransmissionpaths,outperformingDRLandGNN,un-
+for graph-based optimization. In contrast, DRL struggles due derscoringitsadaptabilitytolargescalemetaelementscontrol.
+totheexponentiallygrowingstate/actionspaces(e.g., (KNt) GNN graph-structured learning captures spatial correlations,
+O
+for K users and N RIMSA elements), which impedes policy ensuring steady performance gains, but its reliance on fixed
+t
+convergence, resulting in subpar performance. This curse of topology limits flexibility compared to LLM context-aware
+dimensionality renders DRL trial-and-error exploration com- optimization.Meanwhile,DRLperformancesaturationreflects
+putationally intractable, failing to adapt to dynamic multi- its inability to handle the combinatorial complexity of large-
+elementinteractions.Thecriticalroleofpilotlengthisevident: scale RIMSA systems, where state spaces grow exponen-
+for GNN, longer pilots enhance its ability to resolve multi- tially with users and elements. These results highlight LLM
+user interference through high-resolution graph embeddings, dominance in high-power RIMSA deployments, while GNN
+narrowing the performance gap with LLM. However, DRL remainsaviablealternativeformoderatescalability.Thestark
+shows minimal gains, as its policy network saturates in high- performancegapsemphasizetheneedforintelligent,topology-
+dimensionalspaces,unabletoexploitadditionalpilotresources adaptive frameworks in next-generation networks.
+effectively. Meanwhile,the LLM method dominatesacross all The Fig. 9 evaluates the max-min data rate (bps/Hz) of
+pilot lengths, attributed to its spatio-temporal attention mech- four methods LLM, GNN, DRL, and random in a RIMSA
+anisms that adaptively prioritize critical RIMSA elements and system as pilot length increases, emphasizing how max-min
+users. The LLM framework excels by adaptively prioritizing optimization addresses communication fairness. The LLM
+criticalRIMSAelementsandusersthroughitsspatio-temporal method (red line) achieves the highest fairness performance,
+attention mechanisms. This capability allows it to reach peak by explicitly optimizing the worst case user rate a critical
+performance in data rates while requiring lower pilot resource metric for equitable service in multi-user networks. The GNN
+consumption, thereby enabling efficient and effective large- method(greenline)followswithsteadygains,whiletheDRL
+scaleRIMSAdeploymentswithouttheneedforexcessivepilot method(blueline)andrandommethod(blackline)lagsignifi-
+lengths. Thus, even under conditions of reduced pilot over- cantly,underscoringtheirlimitationsinbalancingfairnessand
+head, the LLM approach manages to identify and implement efficiency. Max-min optimization is pivotal for fairness as it
+the best possible RIMSA configurations, enhancing overall prioritizestheweakestuserrate,ensuringnouserisleftbehind
+system performance in complex, multi-user environments. due to interference or poor channel conditions; This approach
+The Fig. 8 evaluates the sum data rate (bps/Hz) of three directly tackles fairness challenges in RIMSA systems, where
+methods LLM, GNN, and DRL for a RIMSA system under usersnearcelledgesorblockedbyobstaclesoftensufferfrom
+varying downlink transmit power. The LLM method (red severe rate imbalances. The LLM method excels by lever-
+line) consistently achieves the highest performance, demon- aging spatio-temporal attention mechanisms to dynamically
+strating its robustness in leveraging increased transmit power allocatepilotresourcesandbeamforminggainstounderserved
+for adaptive beamforming and interference management. The users, achieving performance growth and balancing spectral
+
+---PAGE---
+
+12
+9
+11
+8
+10
+)z
+H /sp b ( e
+ta
+r a ta
+d
+7
+8
+9 L
+G D
+L
+N R
+M
+L N m
+m
+m e
+e
+e t
+t
+t h
+h
+h o
+o
+o d
+d
+d
+)z H
+/sp b ( e ta
+r
+a ta d
+m
+5
+6
+7 P
+P P
+i
+i i
+l
+l l
+o
+o o
+t
+t t
+l
+l l
+e
+e e
+n
+n n
+g
+g g
+t
+t t
+h
+h h
+3
+4 6
+0
+5 0
+m u
+u S4
+S 6
+3
+5
+2
+4 0 50 100 150 200 250 300 350 400 450 500
+3 4 5 6 7 8 Training epoch
+User number
+Fig. 11. Performance of LLM for RIMSA system with different training
+Fig. 10. Performance of the proposed methods for RIMSA system with epoch.
+differentusernumbers.
+lotlengths45and30,underscoringthecriticalroleofextended
+efficiencywithfairnessasmorepilotsbecomeavailable.These
+pilots in enhancing channel estimation accuracy and interfer-
+results demonstrate that as highlighted by LLM dominance,
+ence management. Shorter pilots saturate earlier with limited
+showinghowadvancedalgorithmscanmitigateratestarvation
+gains, while longer pilots sustain gradual improvements until
+for disadvantaged users and ensure uniform quality of service
+350 epochs, leveraging additional training to optimize high-
+(QoS),acornerstonefor6Gnetworksdemandingultra-reliable
+dimensionalpilot-resourceinteractions.However,theextended
+and inclusive connectivity.
+training requirement for pilot length 45 highlights a trade-
+The Fig. 10 evaluates the sum data rate (bps/Hz) of three
+offbetweenperformancegainsandcomputationalcomplexity.
+methods in a RIMSA system with user numbers ranging from
+These results validate that longer pilots significantly boost
+3to8,wherepilotlengthisexplicitlysetto15 theusercount
+× RIMSA system performance when paired with LLM adap-
+(e.g., 45 for 3 users), reflecting the practical need to scale
+tive training, but optimal deployment must balance spectral
+pilot resources proportionally with user density for sufficient
+efficiency with training overhead.
+channel estimation accuracy in multi-user environments. The
+LLMmethod(redline)maintainssuperiorperformanceacross
+alluserscales,asitsadaptivespatio-temporalattentiondynam- VI. CONCLUSION
+ically optimizes pilot utilization while avoiding interference
+This paper presents LLM-RIMSA, a new framework that
+saturation despite growing pilot overhead. The GNN method
+integrates LLMs with RIMSA to address the limitations
+(green line) shows steady growth by modeling user-RIMSA
+of conventional model-based optimization and DL in high-
+spatial correlations via graph learning; however, at higher
+dimensional RIMSA control tasks. By resolving critical lim-
+user counts, its fixed graph topology struggles to fully exploit
+itations of conventional RIS designs such as frequency se-
+extended pilot sequences, limiting gains compared to LLM.
+lectivity, propagation delays, and restricted amplitude control,
+In contrast, the DRL method (blue line) suffers from scala-
+RIMSA enables unprecedented flexibility in dynamic beam-
+bility bottlenecks, as the state-action space dimension grows
+forming and multi-user interference suppression. By leverag-
+exponentially with pilot length, rendering policy exploration
+ingthecontextualreasoningandfew-shotlearningcapabilities
+intractable. The 15 pilot-user relationship highlights a fun-
+× of LLMs, the framework eliminates dependency on explicit
+damental trade-off: longer pilots enhance channel estimation
+channel estimation while achieving real-time adaptive opti-
+but demand intelligent methods (like LLM) to mitigate over-
+mization of RIMSA configurations. Simulations demonstrate
+head, while shorter pilots reduce overhead but risk inaccurate
+significantperformancegains,lowtrainingandinferencecosts
+estimation, penalizing fairness and efficiency. The widening
+than traditional DL method.
+performance gaps between methods as users and pilots scale
+This breakthrough transforms RIMSA from passive hard-
+underscore LLM unique ability to balance spectral efficiency
+ware into cognitive entities capable of self-optimization in
+with pilot-resource constraints, making it indispensable for
+complex radio environments. Future work will focus on LLM
+large scale RIMSA deployments.
+deployment for edge devices to advance LLM-driven intelli-
+The Fig. 11 evaluates the sum data rate (bps/Hz) of the
+gent surfaces toward practical 6G applications.
+LLM for the RIMSA system across training epochs (0-500)
+under three pilot lengths: 30 (red), 45 (green), and 60 (blue).
+All curves exhibit a rapid initial improvement in data rate, REFERENCES
+gradually stabilizing after 250 epochs, reflecting the model
+[1] Z. Chen, Z. Zhang, and Z. Yang, “Big AI models for 6G wireless net-
+convergence.Longerpilotsconsistentlyachievehigherperfor-
+works:Opportunities,challenges,andresearchdirections,”IEEEWireless
+mance,withthepilotlength60(blue)curveoutperformingpi- Commun.,earlyaccess,Jul.1,2024,doi:10.1109/MWC.015.2300404.
+
+---PAGE---
+
+13
+[2] J.Bai,Q.Yan,H.-M.WangandY.Liu,“IntelligentReflectingSurface [24] A. Muhammad, M. Elhattab, M. A. Arfaoui, A. Al-Hilo, and C. Assi,
+Aided Green Communication With Deployment Optimization,” IEEE “Age of information optimization in RIS-assisted wireless networks,”
+Trans.Commun.,vol.72,no.8,pp.5130-5144,Aug.2024. IEEETrans.Netw.Ser.Manage.,vol.21,no.1,pp.925-938,Feb.2024.
+[3] T.Gongetal.,“HolographicMIMOcommunications:Theoreticalfoun- [25] R.Zhong,Y.Liu,X.Mu,Y.Chen,andL.Song,“AIempoweredRIS-
+dations, enabling technologies, and future directions,” IEEE Commun. assisted NOMA networks: Deep learning or reinforcement learning?”
+SurveysTuts.,vol.26,no.1,pp.196-257,1stQuart.,2024. IEEEJ.Sel.AreasCommun.,vol.40,no.1,pp.182-196,Jan.2022.
+[4] M. Di Renzo, A. Zappone, M. Debbah, M.-S. Alouini, C. Yuen, J. [26] M. Ahmed et al., “A comprehensive survey of artificial intelligence
+de Rosny, and S. Tretyakov, “Smart radio environments empowered by advances in RIS-assisted wireless networks,” Authorea Preprints, Aug.
+reconfigurable intelligent surfaces: How it works, state of research, and 2024.
+theroadahead,”IEEEJ.Sel.AreasCommun.,vol.38,no.11,pp.2450- [27] C. Huang et al., “Multi-Hop RIS-Empowered Terahertz Communica-
+2525,2020. tions: A DRL-Based Hybrid Beamforming Design,” IEEE J. Sel. Areas
+[5] Q. Wu and R.Zhang, “Intelligent Reflecting Surface Enhanced Wireless Commun.,vol.39,no.6,pp.1663-1677,June2021,
+NetworkviaJointActiveandPassiveBeamforming,”IEEETrans.Wire- [28] T.Jiang,H.V.ChengandW.Yu,“LearningtoReflectandtoBeamform
+lessCommun.,vol.18,no.11,pp.5394-5409,Nov.2019. for Intelligent Reflecting Surface With Implicit Channel Estimation,”
+[6] Q.Wu and R. Zhang, “Joint Active and Passive Beamforming Opti- IEEEJ.Sel.AreasCommun.,vol.39,no.7,pp.1931-1945,July2021,
+mization for Intelligent Reflecting Surface Assisted SWIPT Under QoS [29] J.H. Wanget al.,“Interplay betweenRISand AIin wirelesscommu-
+Constraints,” IEEE J. Sel. Areas Commun., vol.38, no.8, pp.1735-1748, nications: Fundamentals, architectures, applications, and open research
+Aug.2020. problems,”IEEEJ.Sel.AreasCommun.,vol.39,no.8,pp.2271-2288,
+[7] S.ZhangandR.Zhang,“CapacityCharacterizationforIntelligentReflect- Aug.2021.
+ingSurfaceAidedMIMOCommunication,”IEEEJ.Sel.AreasCommun., [30] W.WangandW.Zhang,“IntelligentReflectingSurfaceConfigurations
+vol.38,no.8,pp.1823-1838,Aug.2020. forSmartRadioUsingDeepReinforcementLearning,”IEEEJ.Sel.Areas
+[8] C.Huang,A.Zappone,G.C.Alexandropoulos,M.DebbahandC.Yuen, Commun.,vol.40,no.8,pp.2335-2346,Aug.2022.
+“Reconfigurable Intelligent Surfaces for Energy Efficiency in Wireless [31] Y.Huang,H.-M.Wang,Z.WangandW.Liu,“PilotBackdoorAttack
+Communication,” IEEE Trans. Wireless Commun., vol. 18, no. 8, pp. againstDeepReinforcementLearningEmpoweredIntelligentReflection
+4157-4170,Aug.2019. SurfaceforSmartRadio,”IEEETrans.WirelessCommun.,earlyaccess,
+[9] L. Dong and H. -M. Wang, “Enhancing secure MIMO transmission via Mar.42025,doi:10.1109/TWC.2025.3545066.
+intelligent reflecting surface,” IEEE Trans. Wireless Commun., vol. 19, [32] Z. Zhang, T. Jiang, and W. Yu, “Learning based user scheduling in
+no.11,pp.7543–7556,Nov.2020. reconfigurable intelligent surface assisted multiuser downlink,” IEEE J.
+[10] W. Lv, J. Bai, Q. Yan and H. M. Wang, “RIS-Assisted Green Secure Sel.TopicsSignalProcess.,vol.16,no.5,pp.1026-1039,Aug.2022.
+Communications:ActiveRISorPassiveRIS?,”IEEEWirelessCommun. [33] B. Lim and M. Vu, “Distributed Graph-Based Learning for User
+Lett.,vol.12,no.2,pp.237-241,Feb.2023. Association and Beamforming Design in Multi-RIS Multi-Cell Net-
+[11] S. Zeng et al., “Reconfigurable Intelligent Surfaces in 6G: Reflective, works,” IEEE Trans. Wireless Commun., early access, Mar.24 2025,
+Transmissive,orBoth?,”IEEECommun.Lett.,vol.25,no.6,pp.2063- doi:10.1109/TWC.2025.3551763.
+2067,Jun.2021. [34] Z.Wang,Y.Huang,W.LiuandH.-M.Wang,“MaliciousAttacksand
+[12] N. Shlezinger, O. Dicker, Y. C. Eldar, I. Yoo, M. F. Imani, and D. Defenses for Deep-Reinforcement-Learning-Based Dynamic Spectrum
+R. Smith, “Dynamic metasurface antennas for uplink massive MIMO Access,”IEEEInternetThingsJ,vol.12,no.8,pp.10127-10138,Apr.,
+systems,”IEEETrans.Commun.,vol.67,no.10,pp.6829-6843,2019. 2025.
+[13] M.RezvaniandR.Adve,“Channelestimationfordynamicmetasurface [35] B.-J.Chen,R.Y.Chang,F.-T.ChienandH.V.Poor,“GraphNeural
+antennas,”IEEETrans.WirelessCommun.,vol.23,no.6,pp.5832-5846, Network-BasedJointBeamformingforHybridRelayandReconfigurable
+2024. Intelligent Surface Aided Multiuser Systems,” IEEE Wireless Commun.
+[14] R. Deng, B. Di, H. Zhang, D. Niyato, Z. Han, H. V. Poor, and L. Lett.,vol.12,no.10,pp.1811-1815,Oct.2023
+Song, “Reconfigurable holographic surfaces for future wireless commu- [36] K. Qiu, S. Bakirtzis, I. Wassell, H. Song, J. Zhang and K. Wang,
+nications,”IEEETrans.WirelessCommun.,vol.28,no.6,pp.126-131, “LargeLanguageModel-BasedWirelessNetworkDesign,”IEEEWireless
+2021. Commun.Lett.,vol.13,no.12,pp.3340-3344,Dec.2024
+[15] O¨. T. Demir, E. Bjrnson, and L. Sanguinetti, “Channel modeling and [37] L.Bariah,Q.Zhao,H.Zou,Y.Tian,F.Bader,andM.Debbah,“Large
+channel estimation for holographic massive MIMO with planar arrays,” generativeAImodelsfortelecom:Thenextbigthing?”IEEECommun.
+IEEEWirelessCommun.Lett.,vol.11,no.5,pp.997-1001,2022. Mag.,earlyaccess,Jan.8,2024.
+[16] A. Alkhateeb, O. El Ayach, G. Leus, and R. W. Heath, “Channel [38] H.Duetal.,“EnablingAI-GeneratedContentServicesinWirelessEdge
+estimation and hybrid precoding for millimeter wave cellular systems,” Networks,”IEEEWirelessCommun.,2024,pp.1-9.
+IEEEJ.Sel.TopicsSignalProcess.,vol.8,no.5,pp.831-846,Oct.2014. [39] L. Dong et al., “LAMBO: Large AI Model Empowered Edge Intelli-
+[17] H.Zhou,M.Erol-Kantarci,Y.Liu,andH.V.Poor,“Asurveyonmodel gence,”IEEECommun.Mag.,vol.63,no.4,pp.88-94,April2025,
+based, heuristic, and machine learning optimization approaches in RIS [40] F.Jiangetal.,“LargeLanguageModelEnhancedMulti-AgentSystems
+aided wireless networks,” IEEE Commun. Surveys Tuts., vol. 26, no. 2, for 6G Communications,” IEEE Wireless Commun. , vol. 31, no. 6, pp.
+pp.781-823,2ndQuart.,2024. 48-55,December2024
+[18] J.Bai,H.-M.WangandP.Liu,“RobustIRS-AidedSecrecyTransmis- [41] B. Liu, X. Liu, S. Gao, X. Cheng, and L. Yang, “LLM4CP: Adapting
+sionWithLocationOptimization,”IEEETrans.Commun.,vol.70,no.9, largelanguagemodelsforchannelprediction,”J.Commun.Inf.Networks,
+pp.6149-6163,Sept.2022. vol.9,no.2,pp.113-125,Jun.2024.
+[19] H. -M. Wang, J. Bai and L. Dong, “Intelligent Reflecting Surfaces [42] H. Zhou et al., “Large Language Model (LLM) for Telecommuni-
+AssistedSecureTransmissionWithoutEavesdropper’sCSI,”IEEESignal cations: A Comprehensive Survey on Principles, Key Techniques, and
+Proc.Lett,,vol.27,pp.1300-1304,2020. Opportunities,”IEEECommun.SurveysTuts.,earlyaccess,Sep.232024,
+[20] Z.Peng,R.Weng,C.Pan,G.Zhou,M.D.RenzoandA.L.Swindle- doi:10.1109/COMST.2024.3465447.
+hurst, “Robust Transmission Design for RIS-Assisted Secure Multiuser [43] J. Su et al., “Large language models for forecasting and anomaly
+Communication Systems in the Presence of Hardware Impairments,” detection:Asystematicliteraturereview,”arXiv:2402.10350,2024.
+IEEE Trans. Wireless Commun., vol. 22, no. 11, pp. 7506-7521, Nov. [44] M.Jinetal.,“Time-llm:Timeseriesforecastingbyreprogramminglarge
+2023. languagemodels,”arXiv:2310.01728,2023.
+[21] H. Liu, Y. Zhang, S. Gong, W. Shen, C. Xing and J. An, “Optimal [45] Y. Ren, Y. Chen, S. Liu, B. Wang, H. Yu, and Z. Cui, “TPLLM: A
+Transmission Strategy and Time Allocation for RIS-Enhanced Partially trafficpredictionframeworkbasedonpretrainedlargelanguagemodels,”
+WPSNs,”IEEETrans.WirelessCommun.,vol.21,no.9,pp.7207-7221, arXiv:2403.02221,2024.
+Sept.2022. [46] A. Celik and A. M. Eltawil, “At the dawn of generative AI era: A
+[22] A. L. Moustakas, G. C. Alexandropoulos and M. Debbah, “Reconfig- tutorial-cum-survey on new frontiers in 6G wireless intelligence,” IEEE
+urable Intelligent Surfaces and Capacity Optimization: A Large System OpenJ.Commun.Soc.,vol.5,pp.2433-2489,2024.
+Analysis,”IEEETrans.WirelessCommun.,vol.22,no.12,pp.8736-8750, [47] F.Jiang,Y.Peng,L.Dong,K.Wang,K.Yang,C.Pan,D.Niyato,and
+Dec.2023. O. A. Dobre, “Large language model enhanced multi-agent systems for
+[23] X.Chengetal.,“JointOptimizationforRIS-AssistedWirelessCommu- 6Gcommunications,”IEEEWirelessCommun.,earlyaccess,Aug.2024.
+nications:FromPhysicalandElectromagneticPerspectives,”IEEETrans. [48] J. Shao et al., “WirelessLLM: Empowering Large Language Models
+Commun.,vol.70,no.1,pp.606-620,Jan.2022. TowardsWirelessIntelligence,”J.Commun.Inf.Networks,vol.9,no.2,
+pp.99-112,June2024
+
+---PAGE---
+

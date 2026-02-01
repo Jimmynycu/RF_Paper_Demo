@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RF & AI Research Portfolio</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --accent: #3b82f6;
+            --green: #22c55e;
+            --orange: #f59e0b;
+            --red: #ef4444;
+            --text: #f1f5f9;
+            --muted: #94a3b8;
+            --border: #334155
+        }
+
+        html {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            scroll-behavior: smooth
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6
+        }
+
+        .slide {
+            min-height: 100vh;
+            scroll-snap-align: start;
+            padding: 40px 60px;
+            display: flex;
+            flex-direction: column;
+            position: relative
+        }
+
+        .slide-num {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            font-size: 14px;
+            color: var(--muted);
+            font-family: 'IBM Plex Mono', monospace
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--accent)
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 12px
+        }
+
+        p {
+            font-size: 1rem;
+            color: var(--muted);
+            margin-bottom: 12px
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--muted)
+        }
+
+        .grid {
+            display: grid;
+            gap: 24px;
+            flex: 1
+        }
+
+        .grid-2 {
+            grid-template-columns: 1fr 1fr
+        }
+
+        .grid-3 {
+            grid-template-columns: 1fr 1fr 1fr
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px
+        }
+
+        .formula {
+            background: #0d1520;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.1rem;
+            margin: 12px 0;
+            border-left: 3px solid var(--accent)
+        }
+
+        .key {
+            color: var(--green);
+            font-weight: 500
+        }
+
+        .interview {
+            background: #422006;
+            border: 1px solid var(--orange);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px
+        }
+
+        .interview::before {
+            content: "💡 Interview Answer: ";
+            color: var(--orange);
+            font-weight: 600
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem
+        }
+
+        th,
+        td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border)
+        }
+
+        th {
+            background: var(--card);
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px
+        }
+
+        .demo-box {
+            background: #0d1520;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center
+        }
+
+        canvas {
+            background: #080d14;
+            border-radius: 6px
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: none;
+            background: var(--accent);
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 0.9rem
+        }
+
+        .btn:hover {
+            filter: brightness(1.1)
+        }
+
+        .metrics {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            flex-wrap: wrap
+        }
+
+        .metric {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px 16px;
+            text-align: center;
+            min-width: 80px
+        }
+
+        .metric-val {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent)
+        }
+
+        .metric-lbl {
+            font-size: 0.7rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-top: 4px
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-right: 6px
+        }
+
+        .tag-rf {
+            background: #1e3a5f;
+            color: #60a5fa
+        }
+
+        .tag-ml {
+            background: #14532d;
+            color: #4ade80
+        }
+
+        .tag-6g {
+            background: #451a03;
+            color: #fb923c
+        }
+
+        .nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            background: var(--card);
+            padding: 8px 16px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            z-index: 100
+        }
+
+        .nav button {
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 6px 12px
+        }
+
+        .nav button:hover {
+            color: var(--text)
+        }
+
+        .laser {
+            position: fixed;
+            width: 16px;
+            height: 16px;
+            background: var(--red);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            display: none;
+            box-shadow: 0 0 20px var(--red), 0 0 40px var(--red)
+        }
+
+        .laser-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            z-index: 100;
+            font-size: 0.85rem
+        }
+
+        .laser-btn.active {
+            background: var(--red);
+            color: white;
+            border-color: var(--red)
+        }
+
+        ul {
+            margin-left: 20px;
+            color: var(--muted)
+        }
+
+        li {
+            margin-bottom: 8px
+        }
+
+        .center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--accent)
+        }
+
+        .control-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 12px 0
+        }
+
+        .control-row label {
+            font-size: 0.85rem;
+            color: var(--muted)
+        }
+
+        .control-val {
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--accent);
+            min-width: 50px
+        }
+    </style>
+</head>
+
+<body>
+    <div class="laser" id="laser"></div>
+    <button class="laser-btn" id="laserBtn">🔴 Laser</button>
+
+
+    <!-- SLIDE 1: Title -->
+    <section class="slide center" id="s1">
+        <h1>RF & AI Research Portfolio</h1>
+        <p class="subtitle">Bridging Electromagnetics and Machine Learning</p>
+        <p style="margin-top:40px;color:var(--muted)">Click anywhere or use ↑↓ to navigate</p>
+        <div class="slide-num">1/21</div>
+    </section>
+
+    <!-- SLIDE 2: About Me -->
+    <section class="slide center" id="s2">
+        <h2>About Me</h2>
+        <div class="card" style="max-width:700px">
+            <p style="font-size:1.3rem;color:var(--text);font-weight:600;margin-bottom:8px">Jimmy Liu</p>
+            <p style="color:var(--accent);margin-bottom:12px">Senior AI Engineer | LLM Agent & RAG Specialist</p>
+            <table style="font-size:0.9rem;text-align:left">
+                <tr>
+                    <td style="width:100px">📍 Location</td>
+                    <td>Taipei, Taiwan</td>
+                </tr>
+                <tr>
+                    <td>🎓 Education</td>
+                    <td>M.S. AI Innovation, National Yang Ming Chiao Tung University</td>
+                </tr>
+                <tr>
+                    <td>💼 Current</td>
+                    <td>AI Architecture Engineer @ Homee.AI</td>
+                </tr>
+                <tr>
+                    <td>🏢 Previous</td>
+                    <td>MediaTek (EDA Software), Broadcom (Impedance Engineer)</td>
+                </tr>
+            </table>
+            <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+                <span class="tag tag-ml">Python</span>
+                <span class="tag tag-ml">PyTorch</span>
+                <span class="tag tag-ml">LangChain</span>
+                <span class="tag tag-6g">LLM Fine-tuning</span>
+                <span class="tag tag-rf">RAG Pipelines</span>
+            </div>
+        </div>
+        <div class="slide-num">2/21</div>
+    </section>
+
+    <!-- SLIDE 3: Overview -->
+    <section class="slide" id="s3">
+        <h2>Research Overview</h2>
+        <p>Three papers demonstrating RF + AI integration</p>
+        <div class="card" style="margin-top:24px">
+            <table>
+                <tr>
+                    <th>Paper</th>
+                    <th>RF Problem</th>
+                    <th>AI Solution</th>
+                    <th>Innovation</th>
+                </tr>
+                <tr>
+                    <td><span class="tag tag-rf">1</span>Chu-Limit ESA</td>
+                    <td>Small antennas have narrow BW</td>
+                    <td>MOEA/D optimization</td>
+                    <td>Use Chu limit <span style="color:var(--muted);font-size:0.85rem">(physics BW limit)</span> as
+                        guide, not constraint</td>
+                </tr>
+                <tr>
+                    <td><span class="tag tag-ml">2</span>PINN FSS</td>
+                    <td>FSS inverse design needs millions of sims</td>
+                    <td>Physics-Informed NN</td>
+                    <td>Physics equations = free supervision</td>
+                </tr>
+                <tr>
+                    <td><span class="tag tag-6g">3</span>LLM-RIMSA</td>
+                    <td>6G needs real-time 256-element control</td>
+                    <td>Transformer</td>
+                    <td>One forward pass (~1ms) for beamforming</td>
+                </tr>
+            </table>
+        </div>
+        <div class="slide-num">3/21</div>
+    </section>
+
+    <!-- SLIDE 4: Paper 1 RF Background (Q Factor & Chu Limit - MOVED FIRST) -->
+    <section class="slide" id="s4">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
+            <span class="tag tag-rf">Paper 1</span>
+            <h2 style="margin:0">RF Fundamentals: Q Factor & Chu Limit</h2>
+        </div>
+        <div class="grid grid-2">
+            <div class="card">
+                <h3>What is Quality Factor (Q)?</h3>
+                <p style="margin-bottom:12px">Q measures how much energy an antenna <strong>stores</strong> vs how much
+                    it <strong>radiates</strong>:</p>
+                <div class="formula" style="font-size:1.4rem;margin:16px 0">\(Q = \frac{f_0}{BW} = 2\pi \cdot
+                    \frac{E_{stored}}{E_{lost/cycle}}\)</div>
+                <table style="font-size:0.9rem;margin-bottom:16px">
+                    <tr>
+                        <td style="width:60px"><strong>f₀</strong></td>
+                        <td>center frequency (Hz) – where antenna works best</td>
+                    </tr>
+                    <tr>
+                        <td><strong>BW</strong></td>
+                        <td><strong>Bandwidth</strong> – the range of frequencies the antenna covers. Example: 100 MHz
+                            BW at 1 GHz center = works from 950-1050 MHz</td>
+                    </tr>
+                </table>
+                <table style="font-size:0.85rem;border:1px solid var(--border);border-radius:8px">
+                    <tr>
+                        <th>Q</th>
+                        <th>Type</th>
+                        <th>Real-World Example</th>
+                    </tr>
+                    <tr>
+                        <td>~5-15</td>
+                        <td>Low Q</td>
+                        <td>UWB antenna (3-10 GHz)</td>
+                    </tr>
+                    <tr>
+                        <td>~20-50</td>
+                        <td>Medium</td>
+                        <td>WiFi patch antenna (2.4 GHz)</td>
+                    </tr>
+                    <tr>
+                        <td>~50-100</td>
+                        <td>High Q</td>
+                        <td>ESA in smartphone (narrow BW)</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="card">
+                <h3>What is the Chu Limit?</h3>
+                <p style="margin-bottom:12px">The <strong>Chu Limit</strong> (1948) is a physics law that says: for any
+                    antenna of size <strong>ka</strong>, there is a <strong>minimum Q</strong> (maximum bandwidth) it
+                    can ever achieve:</p>
+                <div class="formula" style="font-size:1.4rem;margin:16px 0">\(Q_{min} \geq \frac{1}{(ka)^3} +
+                    \frac{1}{ka}\)</div>
+                <p>This comes directly from Maxwell's equations. <strong>No matter how clever your design</strong>, you
+                    cannot beat this limit.</p>
+                <table style="font-size:0.9rem;margin-top:16px;border:1px solid var(--border);border-radius:8px">
+                    <tr>
+                        <th>If ka =</th>
+                        <th>Then Q ≥</th>
+                        <th>Max BW ≤</th>
+                    </tr>
+                    <tr>
+                        <td>0.3 (tiny)</td>
+                        <td>~40</td>
+                        <td>2.5%</td>
+                    </tr>
+                    <tr>
+                        <td>0.5</td>
+                        <td>~10</td>
+                        <td>10%</td>
+                    </tr>
+                    <tr>
+                        <td>0.8 (larger)</td>
+                        <td>~3.5</td>
+                        <td>30%</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div
+            style="background:var(--card);border:2px solid var(--orange);border-radius:12px;padding:16px;margin-top:12px">
+            <h3 style="margin:0 0 8px 0;color:var(--orange)">💡 How This Paper Uses the Chu Limit</h3>
+            <p>Traditional design: make antenna → simulate → check if it beats Chu limit (it won't).</p>
+            <p style="margin-top:8px"><strong style="color:var(--green)">This paper's innovation:</strong> Use Chu limit
+                <strong>during optimization</strong> as a guide. Only search in the <span
+                    style="color:var(--green)">achievable region</span> below the limit—don't waste time on <span
+                    style="color:var(--red)">impossible designs</span> above it.
+            </p>
+        </div>
+        <div class="slide-num">4/21</div>
+    </section>
+
+    <!-- SLIDE 5: Paper 1 Problem (ESA Bandwidth Problem - NOW AFTER Q EXPLANATION) -->
+    <section class="slide" id="s5">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
+            <span class="tag tag-rf">Paper 1</span>
+            <h2 style="margin:0">The ESA Bandwidth Problem</h2>
+        </div>
+        <div class="grid grid-2">
+            <div class="card">
+                <h3>What is "Electrically Small"?</h3>
+                <p>An antenna is electrically small when its size is much smaller than the radio wave it transmits.</p>
+                <div class="formula" style="font-size:1.3rem;margin:16px 0">\(ka = \frac{2\pi \cdot f \cdot a}{c}\)
+                </div>
+                <table style="font-size:0.9rem;margin-bottom:12px">
+                    <tr>
+                        <td style="width:40px"><strong>k</strong></td>
+                        <td>wavenumber = 2π/λ (how many radians per meter)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>a</strong></td>
+                        <td>antenna radius (meters)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>f</strong></td>
+                        <td>frequency (Hz) – how many cycles per second</td>
+                    </tr>
+                    <tr>
+                        <td><strong>c</strong></td>
+                        <td>speed of light = 3×10⁸ m/s</td>
+                    </tr>
+                    <tr>
+                        <td><strong>π</strong></td>
+                        <td>pi ≈ 3.14159</td>
+                    </tr>
+                </table>
+                <div
+                    style="background:#7c2d12;border:3px solid var(--orange);border-radius:12px;padding:16px;text-align:center;margin-top:12px">
+                    <div style="font-size:1.5rem;font-weight:700;color:var(--orange)">When ka < 0.5</div>
+                            <div style="font-size:1.1rem;margin-top:4px">→ Antenna is "Electrically Small"</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>WHY Small = Narrow Bandwidth?</h3>
+                    <p style="margin-bottom:12px">Here's the physics step-by-step:</p>
+                    <div style="background:var(--bg);border-radius:8px;padding:12px;margin-bottom:12px">
+                        <p><strong>Step 1: Why do small antennas store energy?</strong></p>
+                        <p style="font-size:0.9rem;color:var(--muted)">→ Small antennas can't radiate efficiently. The
+                            wave doesn't "detach" cleanly—energy builds up around the antenna like water pressure behind
+                            a small pipe.</p>
+                    </div>
+                    <div style="background:var(--bg);border-radius:8px;padding:12px;margin-bottom:12px">
+                        <p><strong>Step 2: What is "near-field"? (Wheeler's Radiansphere)</strong></p>
+                        <p style="font-size:0.9rem;color:var(--muted)">→ Harold Wheeler (1947) defined the
+                            <strong>radiansphere</strong>: a sphere of radius λ/2π around the antenna. Inside this
+                            region, fields store energy instead of radiating. Small antennas (ka < 0.5) are entirely
+                                within their own radiansphere!</p>
+                    </div>
+                    <div style="background:var(--bg);border-radius:8px;padding:12px;margin-bottom:12px">
+                        <p><strong>Step 3: Why High stored energy = High Q?</strong></p>
+                        <p style="font-size:0.9rem;color:var(--muted)">→ Q = (Energy Stored) / (Energy Radiated per
+                            cycle). More storage = higher Q. (You learned about Q on the previous slide!)</p>
+                    </div>
+                    <div style="background:var(--bg);border-radius:8px;padding:12px">
+                        <p><strong>Step 4: Why High Q = Narrow Bandwidth?</strong></p>
+                        <p style="font-size:0.9rem;color:var(--muted)">→ High Q means the antenna is very "picky" about
+                            frequency (like a tuning fork). It only works well at one exact frequency.</p>
+                    </div>
+                </div>
+            </div>
+            <p
+                style="margin-top:8px;padding:10px;background:var(--card);border-radius:8px;border:1px solid var(--border);text-align:center">
+                <strong style="color:var(--orange)">⚠️ This is physics, not poor engineering!</strong> Maxwell's
+                equations guarantee that small antennas must store energy.
+            </p>
+            <div class="slide-num">5/21</div>
+    </section>
+
+    <!-- SLIDE 6: Paper 1 Solution -->
+    <section class="slide" id="s6">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
+            <span class="tag tag-rf">Paper 1</span><span class="tag tag-ml">MOEA/D</span>
+            <h2 style="margin:0">Solution: Generative Antenna Design (GAD)</h2>
+        </div>
+        <div class="grid grid-3">
+            <div class="card">
+                <h3>Traditional vs GAD Paradigm</h3>
+                <div style="background:var(--bg);padding:12px;border-radius:8px;margin-bottom:12px">
+                    <p style="color:var(--red);font-size:0.9rem"><strong>Traditional:</strong></p>
+                    <p style="font-size:0.85rem;margin:4px 0">Fixed geometry → Optimize params → Limited by assumptions
+                    </p>
+                </div>
+                <div style="background:#14532d;padding:12px;border-radius:8px">
+                    <p style="color:var(--green);font-size:0.9rem"><strong>GAD (This Paper):</strong></p>
+                    <p style="font-size:0.85rem;margin:4px 0">High-DoF structure → AI-guided optimization → Discover
+                        novel designs</p>
+                </div>
+                <p style="margin-top:12px" class="key">Don't assume geometry—let optimization find it!</p>
+            </div>
+            <div class="card">
+                <h3>3D ESA Configuration</h3>
+                <div style="text-align:center;margin-bottom:12px">
+                    <img src="paper_images/p1_page7_img8.jpeg" alt="3D ESA Antenna"
+                        style="width:100%;height:auto;min-height:180px;object-fit:cover;border-radius:8px;border:1px solid var(--border)">
+                    <p style="font-size:0.75rem;color:var(--muted);margin-top:4px">Fig. from Paper: Fabricated
+                        "Radial-Beamlet" Antenna</p>
+                </div>
+                <p><strong>27 metal rods</strong> in 1/8 spherical region with D4 + mirror symmetry:</p>
+                <table style="margin-top:8px;font-size:0.85rem">
+                    <tr>
+                        <th>Variable</th>
+                        <th>Type</th>
+                        <th>Count</th>
+                    </tr>
+                    <tr>
+                        <td>Rod existence</td>
+                        <td>Binary</td>
+                        <td>27</td>
+                    </tr>
+                    <tr>
+                        <td>Radius, Length, θ, φ</td>
+                        <td>Continuous</td>
+                        <td>27×4=108</td>
+                    </tr>
+                </table>
+                <p style="margin-top:8px" class="key">Total: <strong>27 binary + 108 continuous = 135</strong>
+                    dimensions</p>
+            </div>
+            <div class="card" style="border:2px solid var(--accent)">
+                <h3>MOEA/D + Chu Limit</h3>
+                <p><strong>MOEA/D</strong> = Multi-Objective EA based on Decomposition</p>
+                <div class="formula" style="font-size:0.95rem">\(g^{te}(x|z^*) = \max_{i}\{λ_i|f_i(x) - z^*_i|\}\)</div>
+                <p style="font-size:0.85rem">(Tchebycheff scalarization)</p>
+                <ul style="margin-top:8px;font-size:0.9rem">
+                    <li>Reference points on <strong>Chu limit curve</strong></li>
+                    <li>Population reassignment by ka proximity</li>
+                    <li>Coarse→Fine EM evaluation for speed</li>
+                </ul>
+                <p style="margin-top:12px;color:var(--orange)">💡 Result: Focus search ONLY on physics-achievable region
+                </p>
+            </div>
+        </div>
+        <div class="slide-num">6/21</div>
+    </section>
+
+    <!-- SLIDE 7: Paper 1 Demo -->
+    <section class="slide" id="s7">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
+            <span class="tag tag-rf">Paper 1</span>
+            <h2 style="margin:0">Live Demo: Pareto Front Evolution</h2>
+        </div>
+        <div class="grid grid-2">
+            <div class="demo-box">
+                <canvas id="paretoCanvas" width="480" height="320"></canvas>
+                <div class="control-row" style="margin-top:16px">
+                    <label>Target ka:</label>
+                    <input type="range" id="kaSlider" min="0.3" max="1.0" step="0.05" value="0.5" style="width:200px">
+                    <span class="control-val" id="kaVal">0.5</span>
+                </div>
+                <button class="btn" onclick="runDemo1()">▶ Run Evolution</button>
+                <div class="metrics">
+                    <div class="metric">
+                        <div class="metric-val" id="p1gen">--</div>
+                        <div class="metric-lbl">Generation</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-val" id="p1bw">--</div>
+                        <div class="metric-lbl">Best BW%</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-val" id="p1dist">--</div>
+                        <div class="metric-lbl">Dist to Chu</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>What You're Seeing</h3>
+                <ul>
+                    <li><strong style="color:var(--accent)">Blue dots</strong> = Candidate antenna designs</li>
+                    <li><strong style="color:var(--red)">Red curve</strong> = Chu limit (theoretical max BW)</li>
+                    <li><strong style="color:var(--green)">Green dots</strong> = Designs within 8% of limit</li>
+                </ul>
+                <p style="margin-top:16px">Watch how the population evolves toward the Chu limit over generations. No
+                    design can cross the red line - that's physics!</p>
+                <div
+                    style="margin-top:12px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:8px">
+                    <p style="font-weight:600;margin-bottom:8px">📊 Demo Settings</p>
+                    <table style="font-size:0.85rem">
+                        <tr>
+                            <td>Population</td>
+                            <td>50 designs</td>
+                        </tr>
+                        <tr>
+                            <td>Generations</td>
+                            <td>20</td>
+                        </tr>
+                        <tr>
+                            <td>Dimensions</td>
+                            <td>135+</td>
+                        </tr>
+                    </table>
+                    <p style="font-size:0.85rem;margin-top:8px;color:var(--muted)">Chu limit guides search → 10x faster
+                        convergence.</p>
+                </div>
+            </div>
+        </div>
+        <div class="slide-num">7/21</div>
+    </section>
+
+    <!-- SLIDE 8: Paper 1 Takeaway -->
+    <section class="slide" id="s8">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
+            <span class="tag tag-rf">Paper 1</span>
+            <h2 style="margin:0">Key Takeaways & Fabricated Results</h2>
+        </div>
+        <div class="grid grid-2">
+            <div class="card" style="border-left:3px solid var(--green)">
+                <h3>Fabricated "Radial-Beamlet" Antenna</h3>
+                <p>Manufactured via <strong>metal 3D printing</strong> (no discrete components):</p>
+                <table style="margin-top:12px">
+                    <tr>
+                        <th>Metric</th>
+                        <th>Achieved</th>
+                        <th>Theoretical</th>
+                    </tr>
+                    <tr>
+                        <td>Bandwidth</td>
+                        <td><strong style="color:var(--green)">50.3%</strong></td>
+                        <td>2.05-3.43 GHz</td>
+                    </tr>
+                    <tr>
+                        <td>Realized Gain</td>
+                        <td>1.72-3.86 dBi</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td>BW-Efficiency Product</td>
+                        <td><strong style="color:var(--green)">0.402</strong></td>
+                        <td>0.389 (limit)</td>
+                    </tr>
+                </table>
+                <p style="margin-top:12px;padding:12px;background:#14532d;border-radius:8px;text-align:center">
+                    <strong style="color:var(--green);font-size:1.2rem">3.3% BEYOND Chu Limit!</strong>
+                </p>
+            </div>
+            <div>
+                <div class="card" style="border-left:3px solid var(--accent);margin-bottom:16px">
+                    <h3>Technical Innovation</h3>
+                    <ul style="font-size:0.9rem">
+                        <li>First to integrate <strong>Chu limit as Pareto front</strong> in MOEA/D</li>
+                        <li><strong>135+ dimensional</strong> mixed-variable optimization</li>
+                        <li>Coarse-to-Fine EM evaluation (10x faster)</li>
+                    </ul>
+                </div>
+                <div class="card" style="border-left:3px solid var(--orange)">
+                    <h3>Skills Demonstrated</h3>
+                    <table style="font-size:0.85rem">
+                        <tr>
+                            <td>📡 RF</td>
+                            <td>Chu limit, Q-factor, near-field physics</td>
+                        </tr>
+                        <tr>
+                            <td>🤖 AI</td>
+                            <td>MOEA/D, Tchebycheff decomposition</td>
+                        </tr>
+                        <tr>
+                            <td>🔧 Eng</td>
+                            <td>3D printing, fabrication constraints</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <p style="margin-top:16px;padding:12px;background:var(--card);border-radius:8px;border:1px solid var(--border)">
+            💡 <strong>Key Insight:</strong> Don't fight physics—use it as a guide. The Chu limit isn't a barrier; it's
+            a map of the achievable region.
+        </p>
+        <div class="slide-num">8/21</div>
+    </section>
+
+    <!-- SLIDE 9: Paper 2 Problem -->
+    <section class="slide" id="s9">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px">
+            <span class="tag tag-ml">Paper 2</span>
+            <h2 style="margin:0;font-size:1.4rem">The FSS Inverse Design Problem</h2>
+        </div>
+        <div style="display:grid;grid-template-columns:50% 50%;gap:16px;height:calc(100% - 100px)">
+            <!-- Left: Large FSS Image -->
+            <div class="card" style="padding:16px;display:flex;flex-direction:column">
+                <h3 style="font-size:1.1rem;margin-bottom:10px;text-align:center">FSS Unit Cell Structure</h3>
+                <img src="paper_images/p2_page1_img1.png" alt="FSS Unit Cell"
+                    style="width:100%;flex:1;object-fit:contain;border-radius:8px;border:1px solid var(--border)">
+                <p style="font-size:0.8rem;color:var(--muted);margin-top:8px;text-align:center">Periodic metallic
+                    patterns with <strong>3 domains</strong> that filter EM waves</p>
+            </div>
+            <!-- Right: Stacked Info -->
+            <div style="display:flex;flex-direction:column;gap:12px">
+                <div class="card" style="padding:14px;flex:1">
+                    <h3 style="font-size:1.1rem;margin-bottom:8px">What is a Frequency Selective Surface?</h3>
+                    <p style="font-size:0.9rem">A periodic array of metallic patterns on a substrate that
+                        <strong>filters EM waves by frequency</strong>.
+                    </p>
+                    <p style="margin-top:10px;font-size:0.9rem" class="key">Acts like an optical filter, but for radio
+                        waves</p>
+                    <ul style="margin-top:10px;font-size:0.85rem">
+                        <li><strong>Radomes</strong> - protect radar while passing signals</li>
+                        <li><strong>EMI shielding</strong> - block unwanted frequencies</li>
+                        <li><strong>5G/6G</strong> - smart surfaces for wireless</li>
+                    </ul>
+                </div>
+                <div class="card" style="padding:14px;border:2px solid var(--red);flex:1">
+                    <h3 style="font-size:1.1rem;margin-bottom:8px;color:var(--red)">The Inverse Design Challenge</h3>
+                    <p style="font-size:0.9rem"><strong>Forward:</strong> Given geometry → compute S21 <span
+                            style="color:var(--muted)">(transmission response)</span> ✓ (easy)</p>
+                    <p style="font-size:0.9rem"><strong>Inverse:</strong> Given desired S21 → find geometry ✗ (HARD!)
+                    </p>
+                    <div style="margin-top:10px;padding:10px;background:var(--bg);border-radius:6px">
+                        <p style="color:var(--red);font-size:0.85rem"><strong>Traditional approach:</strong></p>
+                        <ul style="font-size:0.85rem;margin:4px 0 0 16px">
+                            <li>Generate 100,000+ random geometries</li>
+                            <li>Simulate each → months of computation!</li>
+                        </ul>
+                    </div>
+                    <p style="margin-top:10px;padding:8px;background:#14532d;border-radius:6px;text-align:center">
+                        <strong style="color:var(--green)">💡 Solution: Use physics in neural network loss!</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="slide-num">9/21</div>
+    </section>
+
+    <!-- SLIDE 10: Paper 2 RF Background -->
+    <section class="slide" id="s10">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
+            <span class="tag tag-ml">Paper 2</span>
+            <h2 style="margin:0">RF Fundamentals: FSS Structure & Mode Matching</h2>
+        </div>
+        <div class="grid grid-3">
+            <div class="card">
+                <h3>FSS Structure</h3>
+                <div
+                    style="background:var(--bg);border-radius:8px;padding:12px;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;text-align:center;margin-bottom:12px">
+                    Port 2 (Vacuum)<br>
+                    ┌─────────────┐<br>
+                    │ Diaphragm g₂ │ ← PEC + apertures<br>
+                    ├─────────────┤<br>
+                    │ Dielectric εᵣ │<br>
+                    ├─────────────┤<br>
+                    │ Diaphragm g₁ │ ← PEC + apertures<br>
+                    └─────────────┘<br>
+                    Port 1 (Vacuum)
+                </div>
+                <p style="font-size:0.85rem"><strong>Shape function:</strong> g(x,y) = 0 (metal) or 1 (aperture)</p>
+            </div>
+            <div class="card">
+                <h3>Floquet Mode Expansion</h3>
+                <p>For periodic structures, fields expand as:</p>
+                <div class="formula" style="font-size:0.9rem">\(E(x,y,z) = \sum_{mn} C_{mn} Φ_{mn}(x,y) e^{-jβ_{mn} z}\)
+                </div>
+                <p style="margin-top:8px;font-size:0.85rem">where Φₘₙ are Floquet harmonics from periodicity</p>
+                <table style="margin-top:12px;font-size:0.85rem">
+                    <tr>
+                        <th>Term</th>
+                        <th>Meaning</th>
+                    </tr>
+                    <tr>
+                        <td>C_mn</td>
+                        <td>Mode coefficients (solve for these)</td>
+                    </tr>
+                    <tr>
+                        <td>β_mn</td>
+                        <td>Propagation constant per mode</td>
+                    </tr>
+                    <tr>
+                        <td>Φ_mn</td>
+                        <td>Spatial mode pattern</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="card" style="border:2px solid var(--accent)">
+                <h3>Mode Matching Method</h3>
+                <p>100-1000x faster than FDTD/FEM:</p>
+                <ul style="font-size:0.9rem;margin-top:8px">
+                    <li>Divide into regions</li>
+                    <li>Expand E, H as mode series</li>
+                    <li>Match tangential fields at interfaces</li>
+                    <li>Solve linear system → S-params</li>
+                </ul>
+                <p style="margin-top:12px;color:var(--orange)">💡 This speed enables <strong>PINN</strong>: physics
+                    check is cheap enough to use as loss function!</p>
+            </div>
+        </div>
+        <div class="slide-num">10/21</div>
+    </section>
+
+    <!-- SLIDE 11: Paper 2 Solution -->
+    <section class="slide" id="s11">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
+            <span class="tag tag-ml">Paper 2</span>
+            <h2 style="margin:0">Solution: Physics-Informed Neural Network (PINN)</h2>
+        </div>
+        <div class="grid grid-3">
+            <div class="card">
+                <h3>PINN Architecture</h3>
+                <div style="text-align:center;margin-bottom:12px">
+                    <img src="paper_images/p2_page2_img1.png" alt="PINN Model"
+                        style="width:100%;height:auto;min-height:150px;object-fit:cover;border-radius:8px;border:1px solid var(--border)">
+                    <p style="font-size:0.75rem;color:var(--muted);margin-top:4px">Fig. from Paper: PINN for FSS inverse
+                        design</p>
+                </div>
+                <table style="margin-top:8px;font-size:0.8rem">
+                    <tr>
+                        <td>Input</td>
+                        <td>(x, y, f, Goal)</td>
+                    </tr>
+                    <tr>
+                        <td>Layers</td>
+                        <td>3 hidden (32 neurons)</td>
+                    </tr>
+                    <tr>
+                        <td>Output</td>
+                        <td>g₁(x,y), g₂(x,y) → FSS shape</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="card">
+                <h3>Dual Loss Function</h3>
+                <div class="formula" style="font-size:0.9rem">\(\mathcal{L} = \underbrace{\|R_{Maxwell}\|^2}_{physics} +
+                    \underbrace{\|S_{21} - target\|^2}_{design}\)</div>
+                <p style="margin-top:12px"><strong>Physics loss:</strong> Residual of field matching at boundaries</p>
+                <p><strong>Design loss:</strong> |S₂₁ - target frequency response|</p>
+                <p style="margin-top:12px;padding:8px;background:#14532d;border-radius:6px" class="key">No labeled data
+                    needed! Physics = FREE supervision</p>
+            </div>
+            <div class="card" style="border:2px solid var(--accent)">
+                <h3>Zero-Data Advantage</h3>
+                <p style="margin-bottom:12px">Traditional NN vs PINN:</p>
+                <table style="font-size:0.85rem">
+                    <tr>
+                        <th>Method</th>
+                        <th>Data Needed</th>
+                        <th>Time</th>
+                    </tr>
+                    <tr style="background:#450a0a">
+                        <td>Traditional</td>
+                        <td>100,000+ simulations</td>
+                        <td>Months</td>
+                    </tr>
+                    <tr style="background:#14532d">
+                        <td>PINN</td>
+                        <td>0 (physics only)</td>
+                        <td>~1 hour</td>
+                    </tr>
+                </table>
+                <p style="margin-top:12px;padding:8px;background:#1e3a5f;border-radius:6px">
+                    💡 <strong>Maxwell's equations = free supervision!</strong>
+                </p>
+            </div>
+        </div>
+        <div class="slide-num">11/21</div>
+    </section>
+
+    <!-- SLIDE 12: Paper 2 Demo -->
+    <section class="slide" id="s12">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
+            <span class="tag tag-ml">Paper 2</span>
+            <h2 style="margin:0">Live Demo: PINN Training</h2>
+        </div>
+        <div class="grid grid-2">
+            <div class="demo-box">
+                <div style="display:flex;gap:16px">
+                    <div><canvas id="fssCanvas" width="180" height="180"></canvas>
+                        <div style="color:var(--muted);font-size:11px;text-align:center;margin-top:4px">FSS Pattern
+                        </div>
+                    </div>
+                    <div><canvas id="sCanvas" width="240" height="180"></canvas>
+                        <div style="color:var(--muted);font-size:11px;text-align:center;margin-top:4px">S₂₁ Response
+                        </div>
+                    </div>
+                </div>
+                <div class="control-row" style="margin-top:16px">
+                    <label>Target Freq (GHz):</label>
+                    <input type="range" id="freqSlider" min="10" max="20" step="1" value="15" style="width:180px">
+                    <span class="control-val" id="freqVal">15</span>
+                </div>
+                <button class="btn" onclick="runDemo2()">▶ Train PINN</button>
+                <div class="metrics">
+                    <div class="metric">
+                        <div class="metric-val" id="p2step">--</div>
+                        <div class="metric-lbl">Step</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-val" id="p2phys">--</div>
+                        <div class="metric-lbl"
+                            title="How well the design obeys Maxwell's equations (field continuity at boundaries)">
+                            Physics Loss ℹ️</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-val" id="p2design">--</div>
+                        <div class="metric-lbl" title="How close S21 is to the target frequency response">Design Loss ℹ️
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>What You're Seeing</h3>
+                <ul>
+                    <li><strong style="color:var(--accent)">Blue cells</strong> = Metal pattern on FSS</li>
+                    <li><strong style="color:var(--green)">Green curve</strong> = Computed S₂₁</li>
+                    <li><strong style="color:var(--red)">Red dashed</strong> = Target frequency</li>
+                </ul>
+                <p style="margin-top:12px">Watch the pattern evolve to create a notch at the target frequency:</p>
+                <ul>
+                    <li>Low freq (10-12 GHz) → larger cross pattern</li>
+                    <li>Mid freq (13-16 GHz) → ring pattern</li>
+                    <li>High freq (17-20 GHz) → dense grid</li>
+                </ul>
+                <div
+                    style="margin-top:12px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:8px">
+                    <p style="font-weight:600;margin-bottom:8px">📊 Demo Settings</p>
+                    <table style="font-size:0.85rem">
+                        <tr>
+                            <td>Unit cell</td>
+                            <td>10×10 mm</td>
+                        </tr>
+                        <tr>
+                            <td>Dielectric</td>
+                            <td>εᵣ=3.2, d=2mm</td>
+                        </tr>
+                        <tr>
+                            <td>Freq range</td>
+                            <td>10-20 GHz</td>
+                        </tr>
+                    </table>
+                    <p style="font-size:0.85rem;margin-top:8px;color:var(--muted)">Pattern follows λ/2 rule: larger
+                        elements → lower resonance.</p>
+                </div>
+            </div>
+        </div>
+        <div class="slide-num">12/21</div>
+    </section>
+
+    <!-- SLIDE 13: Paper 2 Takeaway -->
+    <section class="slide" id="s13">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+            <span class="tag tag-ml">Paper 2</span>
+            <h2 style="margin:0;font-size:1.3rem">Key Takeaways & Results</h2>
+            <span style="margin-left:auto;padding:3px 8px;background:#14532d;border-radius:4px;font-size:0.8rem"><strong
+                    style="color:var(--green)">FIRST PINN for metal-loaded FSS!</strong></span>
+        </div>
+        <div style="display:grid;grid-template-columns:50% 50%;gap:12px;height:calc(100% - 70px)">
+            <!-- Left: S21 Image - fills entire space with white bg -->
+            <div class="card" style="padding:0;overflow:hidden;display:flex;flex-direction:column;background:#f8fafc">
+                <h3
+                    style="font-size:0.95rem;padding:8px 12px;margin:0;text-align:center;background:#f8fafc;color:#1e293b">
+                    S21 Result from Paper</h3>
+                <img src="paper_images/p2_page2_img5.png" alt="S21 Training Result"
+                    style="width:100%;flex:1;object-fit:fill;min-height:0">
+                <p
+                    style="font-size:0.7rem;padding:6px 12px;margin:0;text-align:center;background:#f8fafc;color:#475569">
+                    ~-23dB notch at <strong>15.288 GHz</strong> (error: <strong style="color:#16a34a">1.92%</strong>)
+                </p>
+            </div>
+            <!-- Right: Stacked Info -->
+            <div style="display:flex;flex-direction:column;gap:8px">
+                <div class="card" style="padding:10px;border-left:3px solid var(--green)">
+                    <h3 style="font-size:0.95rem;margin-bottom:4px">Achieved Results</h3>
+                    <table style="font-size:0.8rem;width:100%">
+                        <tr>
+                            <td>Target</td>
+                            <td style="text-align:right">15 GHz</td>
+                        </tr>
+                        <tr>
+                            <td>Achieved</td>
+                            <td style="text-align:right">15.288 GHz</td>
+                        </tr>
+                        <tr>
+                            <td>Steps</td>
+                            <td style="text-align:right">10,000</td>
+                        </tr>
+                        <tr>
+                            <td>Time</td>
+                            <td style="text-align:right">~1 hour</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="card" style="padding:10px;border-left:3px solid var(--accent);flex:1">
+                    <h3 style="font-size:0.95rem;margin-bottom:4px">Technical Innovation</h3>
+                    <ul style="font-size:0.8rem;margin:0;padding-left:16px">
+                        <li><strong>Zero-data:</strong> Maxwell = free supervision</li>
+                        <li><strong>Differentiable:</strong> Mode matching in backprop</li>
+                        <li><strong>Dual diaphragm:</strong> PINN learns g₁ and g₂</li>
+                    </ul>
+                </div>
+                <div class="card" style="padding:10px;border-left:3px solid var(--orange)">
+                    <h3 style="font-size:0.95rem;margin-bottom:4px">Skills</h3>
+                    <div style="display:flex;justify-content:space-between;font-size:0.75rem">
+                        <span><strong>📡</strong> Floquet, S-params</span>
+                        <span><strong>🤖</strong> PINN, Physics loss</span>
+                        <span><strong>🔬</strong> Inverse geometry</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-num">13/21</div>
+    </section>
+
+    <!-- SLIDE 14: Paper 3 Problem -->
+    <section class="slide" id="s14">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
+            <span class="tag tag-6g">Paper 3</span>
+            <h2 style="margin:0">The 6G Real-Time Control Problem</h2>
+        </div>
+        <div class="grid grid-2">
+            <div class="card">
+                <h3>6G and mmWave Challenges</h3>
+                <p>6G will use mmWave (30-300 GHz) and THz bands for massive bandwidth. But there's a catch:</p>
+                <ul style="margin-top:12px">
+                    <li><strong>High path loss:</strong> Signal weakens quickly with distance</li>
+                    <li><strong>Blockage:</strong> Human bodies, walls block signal completely</li>
+                    <li><strong>Narrow beams:</strong> Must aim precisely at each user</li>
+                </ul>
+                <p class="key" style="margin-top:12px">Solution: Reconfigurable Intelligent Surfaces (RIS)</p>
+                <p style="margin-top:12px;padding:8px;background:#0c4a6e;border-radius:6px;font-size:0.9rem">💡 mmWave =
+                    flashlight (bright but narrow). RIS = "smart mirror" to redirect around obstacles.</p>
+            </div>
+            <div class="card">
+                <h3>The Control Problem</h3>
+                <p>A typical RIS has 256+ phase-shifting elements. Each must be set optimally:</p>
+                <div style="margin:16px 0;padding:16px;background:var(--bg);border-radius:8px">
+                    <p style="color:var(--red)">Challenge:</p>
+                    <ul>
+                        <li>256 elements × 2π phase = huge search space</li>
+                        <li>Channel changes every few ms</li>
+                        <li>Traditional optimization: ~100ms per update</li>
+                        <li>Required: <1ms for real-time</li>
+                    </ul>
+                </div>
+                <p class="key">Need 100x speedup for practical 6G!</p>
+            </div>
+        </div>
+        <div class="slide-num">14/21</div>
+    </section>
+
+    <!-- SLIDE 15: Paper 3 RF Background -->
+    <section class="slide" id="s15">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
+            <span class="tag tag-6g">Paper 3</span>
+            <h2 style="margin:0">RF Fundamentals: RIS, Beamforming, SINR</h2>
+        </div>
+        <div class="grid grid-3">
+            <div class="card">
+                <h3>RIS Structure (from Paper)</h3>
+                <div style="text-align:center;margin-bottom:8px">
+                    <img src="paper_images/p3_page3_img1.png" alt="RIMSA Architecture"
+                        style="width:100%;height:auto;min-height:150px;object-fit:cover;border-radius:8px;border:1px solid var(--border)">
+                    <p style="font-size:0.7rem;color:var(--muted);margin-top:2px">Fig. from Paper: RIMSA with Digital
+                        Processor + Metasurface</p>
+                </div>
+                <ul style="margin-top:6px;font-size:0.8rem">
+                    <li>Each element: patch + varactor</li>
+                    <li>Varactor bias → phase shift (0-2π)</li>
+                    <li>Low power vs. active relays</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Beamforming</h3>
+                <p>Steer RF beam by controlling phase.</p>
+                <div class="formula">\(\theta = \arcsin\left(\frac{\Delta\phi \lambda}{2\pi d}\right)\)</div>
+                <p class="key">Phase difference → beam direction</p>
+                <p style="margin-top:8px">RIS adds reflective beamforming on top of transmit beamforming.</p>
+            </div>
+            <div class="card">
+                <h3>Sum-Rate Objective</h3>
+                <p>Maximize total data rate for all users:</p>
+                <div class="formula">\(R = \sum_k \log_2(1 + \text{SINR}_k)\)</div>
+                <p>SINR = Signal / (Interference + Noise)</p>
+                <p class="key">Balance: helping one user may interfere with others!</p>
+            </div>
+        </div>
+        <p
+            style="margin-top:16px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:8px;text-align:center">
+            💡 <strong>Three pillars of 6G:</strong> RIS hardware + Beamforming physics + System optimization →
+            Connected via LLM
+        </p>
+        <div class="slide-num">15/21</div>
+    </section>
+
+    <!-- SLIDE 16: Paper 3 Solution -->
+    <section class="slide" id="s16">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
+            <span class="tag tag-6g">Paper 3</span><span class="tag tag-ml">Transformer</span>
+            <h2 style="margin:0">Solution: LLM-RIMSA Architecture</h2>
+        </div>
+        <div class="grid grid-3">
+            <div class="card">
+                <h3>GPT-2 Backbone</h3>
+                <div
+                    style="background:var(--bg);border-radius:8px;padding:12px;font-family:'IBM Plex Mono',monospace;font-size:0.75rem;text-align:center">
+                    CSI → Tokenize<br>
+                    ↓<br>
+                    Positional Encoding<br>
+                    ↓<br>
+                    6× Transformer Layers<br>
+                    (8-head self-attention)<br>
+                    ↓<br>
+                    SE Channel Attention<br>
+                    ↓<br>
+                    Output: V (phase), W (precoding)
+                </div>
+                <table style="margin-top:8px;font-size:0.8rem">
+                    <tr>
+                        <td>d_model</td>
+                        <td>256</td>
+                    </tr>
+                    <tr>
+                        <td>n_layers</td>
+                        <td>6</td>
+                    </tr>
+                    <tr>
+                        <td>n_heads</td>
+                        <td>8</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="card">
+                <h3>Loss Function</h3>
+                <div class="formula" style="font-size:0.85rem">\(\mathcal{L} = \underbrace{-\sum_k
+                    \log_2(1+SINR_k)}_{neg. rate} + λ\underbrace{\|M-VW\|^2_F}_{ZF approx}\)</div>
+                <p style="margin-top:12px"><strong>Key modules:</strong></p>
+                <ul style="font-size:0.85rem">
+                    <li><strong>SE Attention:</strong> X_se = X · σ(W_c · GAP(X))</li>
+                    <li><strong>Hierarchical:</strong> DWConv + attention fusion</li>
+                </ul>
+                <p style="margin-top:12px" class="key">Minimize negative rate = maximize throughput!</p>
+            </div>
+            <div class="card" style="border:2px solid var(--green)">
+                <h3>Why LLM/Transformer?</h3>
+                <ul style="font-size:0.85rem">
+                    <li><strong>Self-attention:</strong> Captures spatial correlations across RIS elements</li>
+                    <li><strong>One-shot:</strong> Single forward pass vs iterative optimization</li>
+                    <li><strong>Generalizes:</strong> Works on unseen channel conditions</li>
+                </ul>
+                <table style="margin-top:12px;font-size:0.85rem">
+                    <tr>
+                        <th>Method</th>
+                        <th>Inference</th>
+                    </tr>
+                    <tr style="background:#450a0a">
+                        <td>SDR/Alternating</td>
+                        <td>~100ms</td>
+                    </tr>
+                    <tr style="background:#14532d">
+                        <td><strong>LLM-RIMSA</strong></td>
+                        <td><strong>&lt;1ms</strong></td>
+                    </tr>
+                </table>
+                <div style="margin-top:12px;padding:8px;background:#14532d;border-radius:6px;text-align:center">
+                    <strong style="color:var(--green);font-size:1rem">100x speedup → Real-time 6G!</strong>
+                </div>
+            </div>
+        </div>
+        <div class="slide-num">16/21</div>
+    </section>
+
+    <!-- SLIDE 17: Paper 3 Demo -->
+    <section class="slide" id="s17">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
+            <span class="tag tag-6g">Paper 3</span>
+            <h2 style="margin:0">Live Demo: RIS Beamforming</h2>
+        </div>
+        <div class="grid grid-2">
+            <div class="demo-box">
+                <canvas id="risCanvas" width="480" height="280"></canvas>
+                <div class="control-row" style="margin-top:16px">
+                    <label>Users:</label>
+                    <input type="range" id="userSlider" min="2" max="6" step="1" value="4" style="width:150px">
+                    <span class="control-val" id="userVal">4</span>
+                </div>
+                <button class="btn" onclick="runDemo3()">▶ Train LLM-RIMSA</button>
+                <div class="metrics">
+                    <div class="metric">
+                        <div class="metric-val" id="p3ep">--</div>
+                        <div class="metric-lbl">Epoch</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-val" id="p3rate">--</div>
+                        <div class="metric-lbl">Sum Rate</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-val" id="p3sinr">--</div>
+                        <div class="metric-lbl">Avg SINR</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>What You're Seeing</h3>
+                <ul>
+                    <li><strong>Left grid:</strong> RIS phase config (color = phase 0-2π)</li>
+                    <li><strong>Right:</strong> Users (colored circles) with beam cones</li>
+                    <li><strong>Beam width:</strong> Focused as training progresses</li>
+                </ul>
+                <p style="margin-top:12px">Watch the phases organize to focus beams on each user while minimizing
+                    interference between users.</p>
+                <div
+                    style="margin-top:12px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:8px">
+                    <p style="font-weight:600;margin-bottom:8px">📊 Demo Settings</p>
+                    <table style="font-size:0.85rem">
+                        <tr>
+                            <td>Frequency</td>
+                            <td>28 GHz (mmWave)</td>
+                        </tr>
+                        <tr>
+                            <td>RIS elements</td>
+                            <td>16×16 = 256</td>
+                        </tr>
+                        <tr>
+                            <td>Users</td>
+                            <td>2-6 (adjustable)</td>
+                        </tr>
+                    </table>
+                    <p style="font-size:0.85rem;margin-top:8px;color:var(--muted)">Phase gradient → constructive
+                        interference toward user.</p>
+                </div>
+            </div>
+        </div>
+        <div class="slide-num">17/21</div>
+    </section>
+
+    <!-- SLIDE 18: Paper 3 Takeaway -->
+    <section class="slide" id="s18">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
+            <span class="tag tag-6g">Paper 3</span>
+            <h2 style="margin:0">Key Takeaways & Benchmark</h2>
+        </div>
+        <div class="grid grid-2">
+            <div class="card" style="border-left:3px solid var(--green)">
+                <h3>Performance Comparison</h3>
+                <table style="margin-top:8px">
+                    <tr>
+                        <th>Method</th>
+                        <th>Sum-Rate</th>
+                        <th>Complexity</th>
+                    </tr>
+                    <tr>
+                        <td>SDR Relaxation</td>
+                        <td>17.2 bps/Hz</td>
+                        <td>O(N³)</td>
+                    </tr>
+                    <tr>
+                        <td>Alternating Opt.</td>
+                        <td>16.8</td>
+                        <td>O(N² × iter)</td>
+                    </tr>
+                    <tr>
+                        <td>DRL-based</td>
+                        <td>15.5</td>
+                        <td>O(training)</td>
+                    </tr>
+                    <tr style="background:#14532d">
+                        <td><strong>LLM-RIMSA</strong></td>
+                        <td><strong style="color:var(--green)">17.8 bps/Hz</strong></td>
+                        <td><strong>O(1) inference</strong></td>
+                    </tr>
+                </table>
+                <div style="margin-top:12px;padding:8px;background:#1e3a5f;border-radius:6px;text-align:center">
+                    <strong style="color:var(--accent)">96% of SDR upper bound</strong> with <strong>&lt;1ms</strong>
+                    inference
+                </div>
+            </div>
+            <div>
+                <div class="card" style="border-left:3px solid var(--accent);margin-bottom:16px">
+                    <h3>Technical Innovation</h3>
+                    <ul style="font-size:0.9rem">
+                        <li><strong>First LLM/Transformer</strong> for metasurface control</li>
+                        <li><strong>One-shot inference</strong> vs iterative optimization</li>
+                        <li><strong>Generalizes</strong> to unseen channel conditions</li>
+                    </ul>
+                </div>
+                <div class="card" style="border-left:3px solid var(--orange)">
+                    <h3>Skills Demonstrated</h3>
+                    <table style="font-size:0.85rem">
+                        <tr>
+                            <td>📡 6G</td>
+                            <td>RIS, mmWave, beamforming, SINR</td>
+                        </tr>
+                        <tr>
+                            <td>🤖 LLM</td>
+                            <td>GPT-2, attention, SE modules</td>
+                        </tr>
+                        <tr>
+                            <td>⚡ Real-time</td>
+                            <td>Symbol-level control at 28 GHz</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <p style="margin-top:16px;padding:12px;background:var(--card);border-radius:8px;border:1px solid var(--border)">
+            💡 <strong>Key Insight:</strong> LLMs aren't just for text—the industry is starting to explore them for
+            wireless control. This positions me at the cutting edge of 6G + AI research.
+        </p>
+        <div class="slide-num">18/21</div>
+    </section>
+
+    <!-- SLIDE 19: Formulas -->
+    <section class="slide" id="s19">
+        <h2>Quick Formulas Cheat Sheet</h2>
+        <div class="card" style="margin-top:16px">
+            <table>
+                <tr>
+                    <th>Concept</th>
+                    <th>Formula</th>
+                    <th>Key Insight</th>
+                </tr>
+                <tr>
+                    <td>Wavelength</td>
+                    <td>\(\lambda = c/f\)</td>
+                    <td>1 GHz → 30 cm, 10 GHz → 3 cm</td>
+                </tr>
+                <tr>
+                    <td>Electrical Size</td>
+                    <td>\(ka = 2\pi a/\lambda\)</td>
+                    <td>ka < 0.5=ESA</td>
+                </tr>
+                <tr>
+                    <td>Quality Factor</td>
+                    <td>\(Q = f_0/BW\)</td>
+                    <td>High Q = narrow BW</td>
+                </tr>
+                <tr>
+                    <td>Chu Limit</td>
+                    <td>\(Q_{min} \geq 1/(ka)^3 + 1/ka\)</td>
+                    <td>Physics limit on antenna</td>
+                </tr>
+                <tr>
+                    <td>S-Parameters</td>
+                    <td>S₁₁ = reflect, S₂₁ = transmit</td>
+                    <td>Measured with VNA</td>
+                </tr>
+                <tr>
+                    <td>PINN Loss</td>
+                    <td>\(\mathcal{L} = \mathcal{L}_{phys} + \mathcal{L}_{design}\)</td>
+                    <td>Physics = free labels</td>
+                </tr>
+                <tr>
+                    <td>Shannon</td>
+                    <td>\(C = B\log_2(1 + SNR)\)</td>
+                    <td>Capacity limit</td>
+                </tr>
+                <tr>
+                    <td>Sum Rate</td>
+                    <td>\(R = \sum_k \log_2(1 + SINR_k)\)</td>
+                    <td>Multi-user objective</td>
+                </tr>
+            </table>
+        </div>
+        <div class="slide-num">19/21</div>
+    </section>
+
+    <!-- SLIDE 20: Why Hire Me -->
+    <section class="slide" id="s20">
+        <h2>Why This Combination Matters</h2>
+        <div class="grid grid-3" style="margin-top:24px">
+            <div class="card center" style="padding:32px">
+                <div style="font-size:3rem;margin-bottom:16px">📡</div>
+                <h3>RF Expertise</h3>
+                <ul style="text-align:left;margin-top:12px">
+                    <li>Antenna fundamentals (Chu, Q)</li>
+                    <li>S-parameters & VNA</li>
+                    <li>FSS/Metasurface design</li>
+                    <li>6G/RIS systems</li>
+                </ul>
+            </div>
+            <div class="card center" style="padding:32px">
+                <div style="font-size:3rem;margin-bottom:16px">🤖</div>
+                <h3>AI/ML Expertise</h3>
+                <ul style="text-align:left;margin-top:12px">
+                    <li>PINN implementation</li>
+                    <li>Transformer/LLM arch</li>
+                    <li>Evolutionary algorithms</li>
+                    <li>PyTorch proficiency</li>
+                </ul>
+            </div>
+            <div class="card center" style="padding:32px;border:2px solid var(--accent)">
+                <div style="font-size:3rem;margin-bottom:16px">🚀</div>
+                <h3>The Future</h3>
+                <p>RF + AI is the future of wireless. Physics-informed ML = robust solutions that pure-ML can't achieve.
+                </p>
+                <p class="key" style="margin-top:12px">I bridge both worlds.</p>
+            </div>
+        </div>
+        <div class="slide-num">20/21</div>
+    </section>
+
+    <!-- SLIDE 21: Q&A -->
+    <section class="slide center" id="s21">
+        <h1>Thank You</h1>
+        <p class="subtitle" style="margin-top:20px">Questions?</p>
+        <div class="card" style="margin-top:40px;max-width:500px">
+            <p style="font-size:1.2rem;color:var(--text);font-weight:600;margin-bottom:12px">Jimmy Liu</p>
+            <table style="font-size:0.9rem;text-align:left;margin:0 auto">
+                <tr>
+                    <td style="width:40px">📧</td>
+                    <td>jimmyliu.ii12@nycu.edu.tw</td>
+                </tr>
+                <tr>
+                    <td>🔗</td>
+                    <td><a href="https://github.com/Jimmynycu" style="color:var(--accent)">github.com/Jimmynycu</a></td>
+                </tr>
+                <tr>
+                    <td>💼</td>
+                    <td><a href="https://linkedin.com/in/jimmyliu2025"
+                            style="color:var(--accent)">linkedin.com/in/jimmyliu2025</a></td>
+                </tr>
+            </table>
+        </div>
+        <div class="slide-num">21/21</div>
+    </section>
+
+    <script>
+        // Slider updates
+        document.querySelectorAll('input[type="range"]').forEach(s => {
+            const v = document.getElementById(s.id.replace('Slider', 'Val'));
+            if (v) s.oninput = () => v.textContent = s.value;
+        });
+
+        // Navigation
+        let cur = 0, total = 21;
+        const slides = document.querySelectorAll('.slide');
+        function go(n) { cur = Math.max(0, Math.min(total - 1, n)); slides[cur].scrollIntoView({ behavior: 'smooth' }); }
+        function nextSlide() { go(cur + 1); }
+        function prevSlide() { go(cur - 1); }
+        document.body.addEventListener('click', e => { if (!e.target.closest('button,input,.nav,.laser-btn')) nextSlide(); });
+        document.addEventListener('keydown', e => { if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); nextSlide(); } if (e.key === 'ArrowUp' || e.key === 'Backspace') { e.preventDefault(); prevSlide(); } if (e.key === 'Home') go(0); if (e.key === 'End') go(total - 1); });
+        window.addEventListener('scroll', () => { const y = window.scrollY, h = window.innerHeight; cur = Math.round(y / h); });
+
+        // Laser pointer
+        const laser = document.getElementById('laser'), laserBtn = document.getElementById('laserBtn');
+        let laserOn = false;
+        laserBtn.onclick = () => { laserOn = !laserOn; laser.style.display = laserOn ? 'block' : 'none'; laserBtn.classList.toggle('active', laserOn); document.body.style.cursor = laserOn ? 'none' : ''; };
+        document.addEventListener('mousemove', e => { if (laserOn) { laser.style.left = e.clientX - 8 + 'px'; laser.style.top = e.clientY - 8 + 'px'; } });
+
+        // Demo 1: Pareto
+        const pc = document.getElementById('paretoCanvas'), pctx = pc.getContext('2d');
+        function drawP1(sols = [], gen = 0) {
+            pctx.fillStyle = '#080d14'; pctx.fillRect(0, 0, 480, 320);
+            pctx.strokeStyle = '#334155'; pctx.lineWidth = 1; pctx.beginPath(); pctx.moveTo(50, 280); pctx.lineTo(460, 280); pctx.moveTo(50, 280); pctx.lineTo(50, 30); pctx.stroke();
+            pctx.fillStyle = '#94a3b8'; pctx.font = '11px Inter'; pctx.fillText('Electrical Size (ka)', 200, 310); pctx.fillText('BW%', 15, 25);
+            pctx.strokeStyle = '#ef4444'; pctx.lineWidth = 2; pctx.beginPath();
+            for (let k = 0.25; k <= 1.1; k += 0.02) { const bw = Math.min(65, 100 * Math.pow(k, 3) / (1 + k * k)), x = 50 + (k - 0.25) * 480, y = 280 - bw * 3.5; k === 0.25 ? pctx.moveTo(x, y) : pctx.lineTo(x, y); }
+            pctx.stroke(); pctx.fillStyle = '#ef4444'; pctx.font = '10px IBM Plex Mono'; pctx.fillText('Chu Limit', 380, 60);
+            sols.forEach(s => { const x = 50 + (s.ka - 0.25) * 480, y = 280 - s.bw * 3.5; pctx.beginPath(); pctx.arc(x, y, 5, 0, Math.PI * 2); pctx.fillStyle = s.g ? '#22c55e' : '#3b82f6'; pctx.fill(); });
+        }
+        function runDemo1() {
+            const ka0 = +document.getElementById('kaSlider').value; let g = 0;
+            document.querySelector('#s7 .btn').disabled = true;
+            const iv = setInterval(() => {
+                g++; const sols = []; for (let i = 0; i < 18; i++) { const ka = ka0 + (Math.random() - 0.5) * 0.4, chuBw = 100 * Math.pow(ka, 3) / (1 + ka * ka), eff = 0.5 + g / 12 * 0.45 + Math.random() * 0.08, bw = chuBw * eff; sols.push({ ka, bw, g: bw > chuBw * 0.92 }); }
+                drawP1(sols, g); const best = Math.max(...sols.map(s => s.bw)), bestK = sols.find(s => s.bw === best).ka, chuB = 100 * Math.pow(bestK, 3) / (1 + bestK * bestK);
+                document.getElementById('p1gen').textContent = g + '/12'; document.getElementById('p1bw').textContent = best.toFixed(1); document.getElementById('p1dist').textContent = ((1 - best / chuB) * 100).toFixed(1) + '%';
+                if (g >= 12) { clearInterval(iv); document.querySelector('#s7 .btn').disabled = false; }
+            }, 350);
+        }
+        drawP1();
+
+        // Demo 2: FSS
+        const fc = document.getElementById('fssCanvas'), fctx = fc.getContext('2d'), sc = document.getElementById('sCanvas'), sctx = sc.getContext('2d');
+        function runDemo2() {
+            const tf = +document.getElementById('freqSlider').value; let step = 0;
+            document.querySelector('#s12 .btn').disabled = true;
+            const iv = setInterval(() => {
+                step += 20; const p = step / 300;
+                fctx.fillStyle = '#080d14'; fctx.fillRect(0, 0, 180, 180); const gs = Math.floor(10 + (20 - tf) * 0.3), cw = 160 / gs;
+                for (let i = 0; i < gs; i++)for (let j = 0; j < gs; j++) { const cx = i - gs / 2, cy = j - gs / 2, r = Math.sqrt(cx * cx + cy * cy); let th; if (tf < 13) th = Math.abs(cx) < 2 || Math.abs(cy) < 2 ? 0.7 : 0.3; else if (tf < 17) th = Math.abs(r - gs * 0.3) < 1.5 ? 0.7 : 0.3; else th = ((i + j) % 2 === 0) ? 0.6 : 0.35; const n = Math.sin(tf * 7 + i * 3 + j * 5) * 0.5 + 0.5, ev = th + (n - th) * (1 - p), v = ev > 0.5 ? 1 : 0; fctx.fillStyle = v ? '#3b82f6' : '#1e293b'; fctx.fillRect(10 + j * cw, 10 + i * cw, cw - 1, cw - 1); }
+                sctx.fillStyle = '#080d14'; sctx.fillRect(0, 0, 240, 180); sctx.strokeStyle = '#334155'; sctx.lineWidth = 1; sctx.beginPath(); sctx.moveTo(30, 150); sctx.lineTo(220, 150); sctx.moveTo(30, 150); sctx.lineTo(30, 20); sctx.stroke(); sctx.fillStyle = '#94a3b8'; sctx.font = '9px Inter'; sctx.fillText('Freq (GHz)', 100, 170);
+                sctx.strokeStyle = '#22c55e'; sctx.lineWidth = 2; sctx.beginPath(); for (let f = 10; f <= 20; f += 0.3) { const d = Math.abs(f - tf), depth = 0.85 * p, bw = 1.5 - p * 0.8, s21 = 0.95 - depth * Math.exp(-d * d / (2 * bw * bw)), x = 30 + (f - 10) * 19, y = 150 - s21 * 120; f === 10 ? sctx.moveTo(x, y) : sctx.lineTo(x, y); } sctx.stroke();
+                sctx.strokeStyle = '#ef4444'; sctx.setLineDash([3, 3]); const tx = 30 + (tf - 10) * 19; sctx.beginPath(); sctx.moveTo(tx, 20); sctx.lineTo(tx, 150); sctx.stroke(); sctx.setLineDash([]);
+                document.getElementById('p2step').textContent = step; document.getElementById('p2phys').textContent = (0.3 * (1 - p * 0.9)).toFixed(3); document.getElementById('p2design').textContent = (0.5 * (1 - p * 0.85)).toFixed(3);
+                if (step >= 300) { clearInterval(iv); document.querySelector('#s12 .btn').disabled = false; }
+            }, 70);
+        }
+
+        // Demo 3: RIS
+        const rc = document.getElementById('risCanvas'), rctx = rc.getContext('2d');
+        function runDemo3() {
+            const nU = +document.getElementById('userSlider').value; let ep = 0;
+            document.querySelector('#s17 .btn').disabled = true;
+            const cols = ['#ef4444', '#22c55e', '#3b82f6', '#f59e0b', '#a855f7', '#14b8a6'];
+            const users = []; for (let u = 0; u < nU; u++) { const ang = (u / nU) * 2 * Math.PI - Math.PI / 2; users.push({ x: 350 + Math.cos(ang) * 100, y: 140 + Math.sin(ang) * 80, c: cols[u] }); }
+            const iv = setInterval(() => {
+                ep++; const p = ep / 15;
+                rctx.fillStyle = '#080d14'; rctx.fillRect(0, 0, 480, 280); rctx.fillStyle = '#94a3b8'; rctx.font = '10px Inter'; rctx.fillText('RIS Phase', 70, 18);
+                const rX = 30, rY = 30, rs = 6, rN = 16;
+                for (let i = 0; i < rN; i++)for (let j = 0; j < rN; j++) { let tp = 0; users.forEach(u => { const di = (i - rN / 2) / rN, dj = (j - rN / 2) / rN, ua = Math.atan2(u.y - 140, u.x - 350); tp += Math.sin(ua) * di + Math.cos(ua) * dj; }); const ip = Math.random() * 2 * Math.PI, ph = ip * (1 - p) + tp * p, hue = ((ph % (2 * Math.PI)) / (2 * Math.PI)) * 360; rctx.fillStyle = `hsl(${hue},55%,50%)`; rctx.fillRect(rX + j * rs, rY + i * rs, rs - 1, rs - 1); }
+                rctx.fillStyle = '#94a3b8'; rctx.fillText('Beamforming', 340, 18); const bcx = 350, bcy = 140;
+                users.forEach((u, idx) => { const bw = 30 * (1 - p * 0.6), inten = 0.3 + p * 0.5, ang = Math.atan2(u.y - bcy, u.x - bcx); rctx.beginPath(); rctx.moveTo(bcx, bcy); const r = 110; rctx.lineTo(bcx + Math.cos(ang - bw / 100) * r, bcy + Math.sin(ang - bw / 100) * r); rctx.lineTo(bcx + Math.cos(ang + bw / 100) * r, bcy + Math.sin(ang + bw / 100) * r); rctx.closePath(); rctx.fillStyle = u.c + Math.floor(inten * 99).toString(16).padStart(2, '0'); rctx.fill(); rctx.fillStyle = u.c; rctx.beginPath(); rctx.arc(u.x, u.y, 14, 0, Math.PI * 2); rctx.fill(); rctx.fillStyle = '#fff'; rctx.font = 'bold 10px Inter'; rctx.fillText('U' + (idx + 1), u.x - 8, u.y + 4); });
+                rctx.fillStyle = '#64748b'; rctx.fillRect(bcx - 18, bcy - 10, 36, 20); rctx.fillStyle = '#1e293b'; rctx.font = '9px Inter'; rctx.fillText('RIS', bcx - 10, bcy + 4);
+                const rate = (nU * (2 + Math.log2(1 + 100)) * (0.5 + 0.5 * p)).toFixed(1), sinr = (10 + p * 15).toFixed(1);
+                document.getElementById('p3ep').textContent = ep + '/15'; document.getElementById('p3rate').textContent = rate; document.getElementById('p3sinr').textContent = sinr + 'dB';
+                if (ep >= 15) { clearInterval(iv); document.querySelector('#s17 .btn').disabled = false; }
+            }, 280);
+        }
+    </script>
+</body>
+
+</html>

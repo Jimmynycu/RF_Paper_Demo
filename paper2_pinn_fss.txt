@@ -1,0 +1,164 @@
+# 2024_CN_Inverse Design of Frequency Selective Surface Using Physics-Informed Neural Networks.pdf
+# Total Pages: 2
+
+
+=== PAGE 1 ===
+
+Inverse Design of Frequency Selective Surface
+Using Physics-Informed Neural Networks
+Yu-Hang Liu, Bing-Zhong Wang, and Ren Wang
+Institute of Applied Physics, University of Electronic Science and Technology of China ,Chengdu, 611731, China
+(bzwang@uestc.edu.cn)
+Abstract—This paper uses Physics-Informed Neural Network
+(PINN) to design Frequency Selective Surface (FSS). PINN
+integratesphysicalinformationintothelossfunction,sotraining
+PINN does not require a dataset, which will be faster than
+traditional neural networks for inverse design. The specific
+implementationprocessofthispaperistoconstructaPINNusing
+field solutions of mode matching method, and given the design
+goal,thePINNcantraintheshapeofthediaphragm.Thesingle
+frequencyFSSthatmeetsthedesigngoalwasdesignedusingthe
+inverse design method proposed in this paper without a dataset,
+verifying the rationality of using PINN to design metasurfaces.
+Using PINN for inverse design is not limited to single frequency
+FSS, but can also be used for more complex metasurface.
+I. INTRODUCTION
+Fig.1. FSSunitcellininfinitearrays.
+In 2019, Raissi et al. [1] first proposed PINN, which
+has since attracted widespread attention. PINN achieves the
+The four sides of the unit cell satisfy periodic boundary
+goal of training without a dataset by incorporating physical
+conditions, and the form of its electromagnetic field solution
+information into the loss function. PINN was first developed
+can be described by the Floquet mode.
+in fluid mechanics, for example, Mehta et al. [2] obtained
+On the domain x∈(0,a),y ∈(0,a), the shape function of
+a variable order fractional model using PINN to predict the
+the two-layer diaphragms is:
+meanvelocitydistributionandReynoldsstressatanyReynolds
+(cid:40)
+number. Gradually, PINN also began to be applied in the 1, Vacuum,z =z
+g (x,y)= i ,i=1,2 (1)
+electromagnetics [3], [4]. Chen and Lu et al. used PINN for i 0, PEC,z =z
+i
+metamaterialdesigntosolvetheproblemofinversescattering
+The incident wave is TE . The mode matching method is
+of dielectric [5]. In addition, Chen et al. also used PINN to 00
+used on both sides of the metal diaphragms to establish the
+solve the inverse design problem of the shape of scatterers in
+interaction relationship between the metal diaphragm and the
+electromagnetic devices [6]. These studies indicate that PINN
+electromagneticfields.Equation(2)showstheprincipleofthe
+can be used for inverse design of electromagnetic structures,
+field solution of the model.
+but current inverse designs are all dielectric-loaded and there
+have been few issues with metal-loaded. (cid:88) (cid:75)(cid:88)
+C (E ,H )=g C (E ,H )
+i t(i) t(i) i+1 t(i+1) t(i+1)
+Based on the advantages of PINN, it can be applied in (2)
+inverse design. In this paper, PINN is used for inverse design where, (cid:80) appliestomodes.C representthemodecoefficients
+i
+of single frequency FSS. In Section II, a method for inverse ofthe(i-th)region,E andH representthetangentialelectro-
+t t
+designing FSS using PINN is proposed. In Section III, the magneticfieldsinFloquetmode. (cid:74) representstheinteraction
+training results are presented and simulated. In Section IV, relationship between the diaphragms and the electromagnetic
+analysis and outlook are conducted on this method. fields: when g = 0, Equation (2) satisfies that the tangential
+electric field is 0; when g = 1, Equation (2) satisfies the
+II. METHOD boundary condition that the tangential electromagnetic fields
+are continuous at the interface of the dielectric and vacuum.
+ThedesignedFSSconsistsofFSSunitcellsarrangedtightly
+Usually, the inverse design goal of FSS can be represented
+toformaninfiniterectangulararray,andtheunitcellisshown
+by S parameters, which can be represented by certain mode
+inFigure1.Thestructureoftheunitcellconsistsofonelayer
+coefficients. The control equation, boundary conditions, and
+ofdielectricandtwolayersofdiaphragm.Thediaphragmsare
+designgoaloftheinversedesignproblemarealreadyincluded
+Perfect Electric Conductor (PEC) with negligible thickness,
+in Equation (2), and the loss function L can be directly
+attached to both sides of the dielectric. The thickness of the
+constructed using the 2-norm of the residual in (2).
+medium in the unit is d, and the relative dielectric constant is
+ε , the cross-section is a square with a side length of a. L=||res(Eq.(2))||2 (3)
+r 2
+4202
+naJ
+8
+]hp-ppa.scisyhp[
+1v68630.1042:viXra
+
+=== PAGE 2 ===
+
+Only g (x,y) in L has not been solved. Using a fully is 15.288GHz, indicating that ϵ=1.92%. The training model
+i
+connected neural network (FCNN) to generate the structure can meet the requirements of the design goal very well, and
+of the metal diaphragms g (x,y), obtaining res(Eq.(2)) by thus we have successfully used the PINN method to inverse
+i
+interacting g (x,y) with the electromagnetic field through design the FSS that matches the design goal.
+i
+(cid:74)
+operator , the final PINN model is shown in Figure 2.
+Fig.2. PINNmodel.
+Aftersettingthedesigngoal,thebackpropagationalgorithm
+is used to correct the mode coefficients and parameters in
+the FCNN until the loss function approaches 0, and then the
+g (x,y) obtained is the final shape of the diaphragms.
+i Fig.4. S21 oftrainingFSS.
+III. EXAMPLE
+IV. CONCLUSION
+Using the PINN model in Section II, an FSS is trained to
+Using PINN, this paper successfully designed the FSS that
+meet the design goal.
+meets the set inverse design goal. Due to the fact that PINN
+A. Train does not require a dataset, it is more efficient than using
+traditional neural networks for inverse design. This paper
+The design goal is to not transmit electromagnetic waves
+introduces PINN into the design of FSS for the first time,
+at a frequency of 15GHz, set |S (12GHz)| = 0.99,
+21 and numerical experiment have proven the correctness of this
+|S (15GHz)| = 0.1, |S (18GHz)| = 0.99 for TE
+21 21 00 method. Although this paper takes FSS as an example, this
+mode at Port 2. In the Equation (2), 121 TE modes and 121
+method is not limited to FSS. In fact, many electromagnetic
+TM modes are used. For dielectric, d = 2mm, ε = 3.2,
+r devicescanbedesignedusingthismethod,whichwillpromote
+a=10mm.IntheFCNN,thereare3hiddenlayers,andeach
+the development of inverse design of electromagnetic devices.
+hidden layer has 32 neurons. The optimizer is Adam.
+Setthetrainingstepsto10k,acceleratebyGPU(A800),and ACKNOWLEDGEMENT
+complete the training in one hour, four minutes, and twelve
+This work was supported in part by the National Nat-
+seconds. Finally, the shape of the FSS diaphragms is shown
+ural Science Foundation of China under Grants 62171081
+in Figure 3.
+and U2341207, the Natural Science Foundation of Sichuan
+Province under Grant 2022NSFSC0039, and the Aeronautical
+Science Foundation of China under Grant 2023Z06208002.
+REFERENCES
+[1] M. Raissi, P. Perdikaris, and G. Karniadakis, “Physics-informed neural
+networks: A deep learning framework for solving forward and inverse
+problems involving nonlinear partial differential equations,” J. Comput.
+Phys.,vol.378,pp.686–707,2019.
+[2] P. P. Mehta, G. Pang, F. Song, and G. E. Karniadakis, “Discovering a
+universalvariable-orderfractionalmodelforturbulentcouetteflowusing
+(a) (b) a physics-informed neural network,” Fract. Calc. Appl. Anal., vol. 22,
+no.6,pp.1675–1688,2019.
+Fig.3. TheshapeofFSSdiaphragms.(a)g1(x,y);(b)g2(x,y).
+[3] Y. Zhang, H. Fu, Y. Qin, K. Wang, and J. Ma, “Physics-informed
+B. Simulation deep neural network for inhomogeneous magnetized plasma parameter
+inversion,” IEEE Antennas and Wireless Propagat. Lett., vol. 21, no. 4,
+Simulate the structure using the frequency domain solver
+pp.828–832,2022.
+of full wave simulation software, and the S 21 at Port 2 was [4] S. Li, Z. Liu, S. Fu, Y. Wang, and F. Xu, “Intelligent beamforming via
+obtained as shown in Figure 4. physics-inspired neural networks on programmable metasurface,” IEEE
+Trans.AntennasPropag.,vol.70,no.6,pp.4589–4599,2022.
+Define the error as Equation (4):
+[5] Y.Chen,L.Lu,G.E.Karniadakis,andL.D.Negro,“Physics-informed
+f −f neuralnetworksforinverseproblemsinnano-opticsandmetamaterials,”
+ϵ= train goal ×% (4) Opt.Express,vol.28,no.8,pp.11618–11633,Apr2020.
+f goal [6] Y. Chen and L. Dal Negro, “Physics-informed neural networks for
+imaging and parameter retrieval of photonic nanostructures from near-
+From Figure 4, it can be seen that the frequency corre-
+fielddata,”APLPhotonics,vol.7,no.1,p.010802,012022.
+sponding to the minimum value of S for the training model
+21

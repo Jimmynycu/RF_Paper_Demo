@@ -1,0 +1,19 @@
+Page 4 :
+Explain what is c what pi what is f what is c 
+When ka < 0.5 means the antenna is electrical small this should be a critical point. So this should be much bigger.
+For the two antenna size compare use two image to showcase 
+
+WHY? section explain not enough "Small antennas store energy in near-field before radiating:"
+why can antenna store energy? why only in near-field? what do you mean before radiating. 
+why High stored energy = high Quality Factor (Q)
+why High Q = sharp resonance = narrow bandwidth
+why Relationship:  (for narrowband)
+
+You need to explain more 
+
+Page 5 :
+
+Equation is too small. why Q measure energy vs storage radiation?
+what is BW??
+what is chu limit ? you didn't explain ????
+what do you my research ????? the wording needs double check.
