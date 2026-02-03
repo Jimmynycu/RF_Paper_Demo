@@ -35,7 +35,8 @@
         .container {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            grid-template-rows: 1fr 1.5fr;
+            /* 3 rows: Top(NextSlide), Middle(Rest of CurrentSlide), Bottom(QA) */
+            grid-template-rows: 2fr 3fr 1.5fr;
             gap: 16px;
             padding: 16px;
             height: 100vh;
@@ -69,14 +70,46 @@
 
         #currentSlide {
             grid-column: 1;
+            /* Span rows 1 and 2 */
             grid-row: 1 / 3;
-            /* Span both rows */
             position: relative;
             overflow: hidden;
         }
 
+        #qaPanel {
+            grid-column: 1;
+            /* Span row 3 only */
+            grid-row: 3;
+            overflow: auto;
+        }
+
+        #qaPanel .qa-content {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: var(--text);
+        }
+
+        #qaPanel ul {
+            margin: 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        #qaPanel li {
+            margin-bottom: 12px;
+            padding: 10px;
+            background: var(--bg);
+            border-radius: 6px;
+            border-left: 3px solid var(--accent);
+        }
+
+        #qaPanel strong {
+            color: var(--accent);
+        }
+
         #nextSlide {
             grid-column: 2;
+            /* Span row 1 only */
             grid-row: 1;
             overflow: hidden;
         }
@@ -96,7 +129,8 @@
 
         #speakerNotes {
             grid-column: 2;
-            grid-row: 2;
+            /* Span rows 2 and 3 */
+            grid-row: 2 / 4;
         }
 
         #speakerNotes .notes-content {
@@ -152,6 +186,13 @@
             <iframe id="currentFrame" src="demo_dashboard.html" scrolling="no"></iframe>
         </div>
 
+        <div class="panel" id="qaPanel">
+            <h3>Potential Questions</h3>
+            <div class="qa-content" id="qaContent">
+                <p>Q&A content will appear here...</p>
+            </div>
+        </div>
+
         <div class="panel" id="nextSlide">
             <h3>Next Slide</h3>
             <div class="slide-counter" id="slideCounter">1 / 21</div>
@@ -171,88 +212,243 @@
         const slideNotes = [
             {
                 title: "Title",
-                notes: "<strong>Welcome!</strong><ul><li>Introduce yourself</li><li>Brief overview: 3 papers bridging RF and AI</li><li>Total time: ~20-25 minutes</li></ul>"
+                notes: "大家好，我是 Jimmy Liu。<br><br>今天的主題是 <strong>「RF & AI Research Portfolio」</strong>，副標題是 Bridging Electromagnetics and Machine Learning。<br><br>我會展示如何將<strong>電磁學 (Electromagnetics)</strong> 與<strong>機器學習 (Machine Learning)</strong> 相結合，來解決傳統 RF 工程中難以突破的問題。<br><br>這個簡報可以用滑鼠點擊或 ↑↓ 鍵來導航。"
             },
             {
                 title: "About Me",
-                notes: "<strong>Professional Background:</strong><ul><li>Current: AI Architecture Engineer at Homee.AI</li><li>Previous: MediaTek (EDA Software), Broadcom (Impedance Engineer)</li><li>M.S. in AI Innovation from NYCU</li><li>Strong intersection of RF hardware experience and modern AI/ML skills</li></ul>"
+                notes: "首先簡單自我介紹。<br><br>我擁有<strong>國立陽明交通大學 AI 創新碩士學位</strong>。目前在 Homee.AI 擔任 <strong>Senior AI Engineer</strong>，專注於 LLM Agent 和 RAG Pipelines。<br><br>之前的經歷：<ul><li><strong>MediaTek (聯發科)</strong> - EDA 軟體開發</li><li><strong>Broadcom (博通)</strong> - 阻抗工程師</li></ul>下方的 tag 展示我的核心技能：Python、PyTorch、LangChain、LLM Fine-tuning、RAG Pipelines。<br><br>今天的演講正是 RF 與 AI 兩種技能的結合。"
             },
             {
                 title: "Research Overview",
-                notes: "<strong>Three Papers Strategy:</strong><ul><li>Paper 1: Physics-informed optimization (Chu limit)</li><li>Paper 2: Zero-data learning (PINN)</li><li>Paper 3: Cutting-edge LLM application in 6G</li><li>Pattern: Progressively moving from traditional optimization → physics-ML hybrid → pure deep learning</li></ul>"
+                notes: "這邊有個表格，整理了我今天要介紹的三篇論文。<br><br><strong>第一篇 (藍色 tag)：</strong>基於 Chu Limit 引導的多目標進化算法，用於生成式寬頻電小天線設計。關鍵技術是 <strong>MOEA/D</strong>，達到了 <strong>50.3%</strong> 的超寬頻寬。<br><br><strong>第二篇 (綠色 tag)：</strong>利用 <strong>PINN (物理信息神經網絡)</strong> 進行 FSS 頻率選擇表面的逆向設計。重點是<strong>完全不需要標註數據</strong>，目標頻率誤差僅 1.92%。<br><br><strong>第三篇 (橙色 tag)：</strong>使用 <strong>GPT-2 Transformer</strong> 來控制 6G RIMSA 智能天線，推理延遲 < 20ms。<br><br>三篇論文代表三種不同的 AI 設計方法：物理信息驅動、數據驅動、語義推理驅動。"
             },
             {
                 title: "RF Fundamentals: Q Factor & Chu Limit",
-                notes: "<strong>Key Teaching Points:</strong><ul><li>Q factor is NOT just an academic metric - it's fundamental to antenna design</li><li>Chu limit comes directly from Maxwell's equations, not empirical</li><li>High Q = narrow bandwidth is a physics constraint, not engineering limitation</li><li>Innovation: Using Chu limit as a GUIDE during optimization, not just validation afterward</li></ul>"
+                notes: "進入第一篇論文前，我們先複習一下 RF 的基本概念。<br><br><strong>左邊卡片講 Q Factor：</strong><br>Q = f₀/BW = 2π × (儲存能量 / 每週期損失能量)。<br>簡單說：<strong>Q 值越高，頻寬越窄</strong>。表格裡有三個例子：UWB 天線 Q 值約 5-15（寬頻），WiFi patch 約 20-50，手機 ESA 約 50-100（窄頻）。<br><br><strong>右邊卡片講 Chu Limit：</strong><br>這是 1948 年提出的物理鐵律：Q<sub>min</sub> ≥ 1/(ka)³ + 1/(ka)。<br>對於 ESA 來說 ka << 1，可簡化為 <strong>Q<sub>min</sub> ≈ 1/(ka)³</strong>。<br>表格顯示：ka=0.3 時最大頻寬只有 2.5%，ka=0.8 時可達 30%。<br><br><strong>底部橙色框是這篇論文的創新點：</strong>傳統方法是設計完再檢查，這篇論文是在優化過程中用 Chu Limit 當地圖，只在可行區域搜索。"
             },
             {
                 title: "The ESA Bandwidth Problem",
-                notes: "<strong>Physics Explanation:</strong><ul><li>Walk through the 4-step physics chain slowly</li><li>Emphasize: This is NOT a design flaw, it's fundamental physics</li><li>Wheeler's radiansphere (1947) is well-tested theory</li><li>Key insight: When ka < 0.5, antenna is inside its own reactive near-field</li></ul>"
+                notes: "這頁解釋為什麼電小天線這麼難做。<br><br><strong>左邊講 ka 的定義：</strong><br>ka = 2πfa/c，當 <strong>ka < 0.5</strong> 時就是電小天線 (ESA)。<br>表格列出了所有變數的意義：k 是波數，a 是天線半徑，f 是頻率，c 是光速。<br><br><strong>右邊講物理原因：</strong>分成四個步驟來解釋。<br><strong>Step 1:</strong> 小天線無法有效輻射，能量堆積在周圍。<br><strong>Step 2:</strong> Wheeler's Radiansphere 概念 - 半徑 λ/2π 的球體內，場儲存能量而不是輻射。<br><strong>Step 3:</strong> 高儲存能量 = 高 Q。<br><strong>Step 4:</strong> 高 Q = 窄頻寬，就像音叉只在一個精確頻率振動。<br><br><strong>底部警告框：</strong>這是物理決定的，不是工程做得不好！"
             },
             {
                 title: "Solution: Generative Antenna Design",
-                notes: "<strong>GAD Paradigm Shift:</strong><ul><li>Traditional: Start with known geometry (patch, dipole) → optimize parameters</li><li>GAD: Start with high degrees of freedom structure → let optimizer discover geometry</li><li>27 rods × 5 params = 135 dimensions is genuinely large-scale</li><li>MOEA/D with Chu limit = physics-informed search space reduction</li></ul>"
+                notes: "這頁展示論文的解決方案，有三張卡片。<br><br><strong>左邊卡片是論文原圖 Fig.1：</strong><br>(a) 說明更多自由度 (DoF) 可以超越傳統設計的性能上限。<br>(b) 用已知的 Pareto Front (Chu Limit) 來引導多目標優化。<br>綠色框強調：<strong>Let physics guide AI search!</strong><br><br><strong>中間卡片是 3D 天線結構：</strong><br>這是實際製作出來的「Radial-Beamlet」天線照片。<br>設計使用 <strong>27 根金屬桿</strong>，變數包括：27 個二進制變數（桿存在與否）+ 108 個連續變數（半徑、長度、θ、φ）= <strong>總共 135 維</strong>。<br><br><strong>右邊卡片是 MOEA/D 算法：</strong><br>藍框是核心：使用 Tchebycheff 分解，reference points 放在 Chu Limit 曲線上，只在物理可行區域搜索。"
             },
             {
                 title: "Live Demo: Pareto Front Evolution",
-                notes: "<strong>Demo Talking Points:</strong><ul><li>Watch dots evolve toward red line (Chu limit)</li><li>None can cross - that's physics!</li><li>Green dots = within 8% of theoretical limit</li><li>In real paper: 10x faster convergence vs. blind search</li><li>Let demo run, explain Pareto optimality while it runs</li></ul>"
+                notes: "現在來看即時演示。<br><br><strong>左邊是互動式圖表：</strong><br><ul><li><strong>紅線</strong> = Chu Limit 理論極限，任何設計都不可能超過</li><li><strong>藍點</strong> = 每一代產生的候選設計</li><li><strong>綠點</strong> = 距離 Chu Limit 8% 以內的優秀設計</li></ul><br>可以調整 Target ka 滑桿來設定目標電氣尺寸。<br><br>點擊 <strong>Run Evolution</strong> 觀察：隨著世代演進，藍點會逐漸往紅線逼近，形成完美的 Pareto Front。<br><br><strong>右邊卡片說明設定：</strong><br>Population 50，Generations 20，Dimensions 135+。<br>Chu Limit 引導讓收斂速度<strong>快 10 倍</strong>。<br><br><strong>重點：</strong>沒有任何設計能突破紅線 - 這是物理！"
             },
             {
                 title: "Key Takeaways & Fabricated Results",
-                notes: "<strong>Impact:</strong><ul><li>50.3% bandwidth is exceptional for electrically small antenna</li><li>Fabricated via metal 3D printing proves manufacturability</li><li>BW-Efficiency product 0.402 vs limit 0.389 = actually beating limit slightly</li><li>Why? Chu limit assumes lossless sphere - real antennas have different constraints</li></ul>"
+                notes: "這頁展示論文的最終成果，有三欄。<br><br><strong>左欄是實體天線照片：</strong><br>使用<strong>金屬 3D 列印</strong>製作的「Radial-Beamlet」天線，旁邊有硬幣當比例尺。<br><br><strong>中欄是測量結果表格：</strong><br><ul><li>頻寬：<strong>50.3%</strong>（2.05-3.43 GHz）</li><li>實現增益：1.72-3.86 dBi</li><li>BW×η 乘積：<strong>0.402</strong></li><li>Chu Limit 理論值：0.389</li></ul>綠框顯示：<strong>超越 Chu Limit 3.3%</strong>（在測量誤差範圍內）！<br><br><strong>右欄是 Fig.16 文獻比較圖：</strong><br>★ 標記是這篇論文的成果，超越了所有先前的 ESA 設計。<br><br><strong>底部結論：</strong>AI + 物理引導 = 最佳設計。不要對抗物理，要利用物理！"
             },
             {
                 title: "The FSS Inverse Design Problem",
-                notes: "<strong>Problem Definition:</strong><ul><li>Forward problem: geometry → S21 (easy, deterministic)</li><li>Inverse problem: S21 → geometry (hard, ill-posed)</li><li>Traditional: Generate thousands of random geometries, simulate all</li><li>Months of computation for one design!</li><li>PINN solution: Use Maxwell's equations AS the loss function</li></ul>"
+                notes: "進入第二篇論文，關於 <strong>FSS 頻率選擇表面</strong>。<br><br><strong>左邊是大張的 FSS Unit Cell 圖片：</strong><br>可以看到這是週期性的金屬圖案，有 <strong>3 個 domains</strong>（區域）來過濾電磁波。<br><br><strong>右上卡片解釋 FSS 是什麼：</strong><br>簡單說，它就像無線電波的濾鏡。應用包括：<ul><li><strong>Radomes</strong> - 保護雷達同時傳遞訊號</li><li><strong>EMI shielding</strong> - 阻擋不想要的頻率</li><li><strong>5G/6G</strong> - 智能表面</li></ul><br><strong>右下紅框解釋逆向設計的難題：</strong><br><ul><li><strong>正向：</strong>給形狀 → 算 S21 ✓ 容易</li><li><strong>逆向：</strong>給想要的 S21 → 找形狀 ✗ 很難！</li></ul>傳統方法需要 10 萬筆模擬數據，要跑好幾個月。<br><br>綠框提示解決方案：<strong>用物理公式當 Loss Function！</strong>"
             },
             {
                 title: "RF Fundamentals: FSS Structure & Mode Matching",
-                notes: "<strong>Mode Matching Method:</strong><ul><li>100-1000x faster than FDTD/FEM simulation</li><li>Key: Periodic structure allows Floquet mode expansion</li><li>Solve linear system of equations instead of full-wave simulation</li><li>Fast enough to use in gradient descent during PINN training</li><li>This speed is WHY PINN is feasible here</li></ul>"
+                notes: "這頁複習 FSS 的電磁學原理，三張卡片。<br><br><strong>左邊卡片是論文 Fig.1 原圖：</strong><br>顯示 FSS unit cell 在無限陣列中的結構，有 3 個 domains。<br>Shape function: g(x,y) = 0 是金屬，1 是孔洞。<br><br><strong>中間卡片是 Floquet Mode Expansion：</strong><br>對於週期結構，電磁場可以展開為 Floquet 諧波的級數：<br>E(x,y,z) = Σ C_mn Φ_mn e^{-jβ_mn z}<br>表格說明各項意義：C_mn 是模式係數，β_mn 是傳播常數，Φ_mn 是空間模式。<br><br><strong>右邊藍框卡片是 Mode Matching Method：</strong><br>這種解析方法比傳統 FDTD/FEM <strong>快 100-1000 倍</strong>！<br>步驟：分割區域 → 展開 E,H → 匹配邊界 → 解線性系統 → 得到 S 參數。<br><br>橙色提示：正因為運算夠快，我們才能用物理計算當 Loss Function！"
             },
             {
                 title: "Solution: Physics-Informed Neural Network",
-                notes: "<strong>PINN Innovation:</strong><ul><li>Dual loss: Physics residual + Design objective</li><li>NO training data needed - physics is free supervision</li><li>Maxwell's equations embedded in backpropagation</li><li>Network learns to satisfy both physics AND design goal</li><li>First time PINN applied to metal-loaded FSS inverse design</li></ul>"
+                notes: "這頁是論文的核心創新：<strong>PINN</strong>，三張卡片。<br><br><strong>左邊卡片是 PINN 架構圖：</strong><br>Input: (x, y, f, Goal)<br>Layers: 3 hidden layers (32 neurons)<br>Output: g₁(x,y), g₂(x,y) → FSS 形狀<br><br><strong>中間卡片是 Dual Loss Function：</strong><br>L = ||R_Maxwell||² (physics) + ||S21 - target||² (design)<br><ul><li><strong>Physics Loss：</strong>場匹配的殘差</li><li><strong>Design Loss：</strong>與目標頻率響應的差距</li></ul>綠框重點：<strong>不需要標註數據！物理 = 免費的監督！</strong><br><br><strong>右邊藍框卡片是 Zero-Data 優勢：</strong><br>表格對比：<ul><li>傳統方法：需要 10 萬+ 模擬，耗時數月</li><li>PINN：0 筆數據，約 1 小時</li></ul><strong>Maxwell 方程 = 免費的老師！</strong>"
             },
             {
                 title: "Live Demo: PINN Training",
-                notes: "<strong>Demo Observations:</strong><ul><li>Pattern evolves from random to structured</li><li>Low freq → large cross, High freq → dense grid</li><li>S21 curve shows notch forming at target frequency</li><li>Physics loss + Design loss both decreasing = convergence</li><li>~1 hour training vs months of traditional simulation</li></ul>"
+                notes: "現在來看 PINN 的即時演示。<br><br><strong>左邊有兩個 canvas：</strong><br><ul><li><strong>左邊 FSS Pattern：</strong>藍色方塊代表金屬圖案</li><li><strong>右邊 S₂₁ Response：</strong>綠線是計算出的傳輸響應，紅虛線是目標頻率</li></ul><br>可以調整 <strong>Target Freq 滑桿</strong>（10-20 GHz），觀察不同頻率需要的圖案：<ul><li>低頻（10-12 GHz）→ 較大的十字圖案</li><li>中頻（13-16 GHz）→ 環形圖案</li><li>高頻（17-20 GHz）→ 密集網格</li></ul><br>點擊 <strong>Train PINN</strong>，觀察神經網路從隨機雜訊開始，慢慢「長」出正確的圖案，同時 S21 曲線在目標頻率形成深谷。<br><br><strong>右邊說明設定：</strong>Unit cell 10×10 mm，介電常數 εr=3.2，厚度 d=2mm。<br><br>這一切<strong>完全沒有使用預先生成的數據庫</strong>！"
             },
             {
                 title: "Key Takeaways & Results",
-                notes: "<strong>Achievements:</strong><ul><li>Target 15 GHz, achieved 15.288 GHz (1.92% error)</li><li>10,000 training steps, ~1 hour total time</li><li>Zero training data required</li><li>Mode matching in backprop is novel contribution</li><li>Shows PINN can handle dual-diaphragm complex structure</li></ul>"
+                notes: "這頁展示論文成果，最上面有綠色 tag 標示：<strong>FIRST PINN for metal-loaded FSS!</strong><br><br><strong>左欄是 Fig.4 S21 響應圖：</strong><br>可以看到在 15.288 GHz 有一個清晰的 Notch。目標是 15 GHz，誤差僅 <strong>1.92%</strong>。<br><br><strong>中欄是 Fig.3 PINN 輸出的 FSS 幾何：</strong><br>顯示 g₁(x,y) 和 g₂(x,y) 兩個 diaphragm 的形狀，這是神經網路自己「學」出來的！<br><br><strong>右欄分成三個小卡片：</strong><br><ul><li><strong>Results 表格：</strong>目標 15 GHz，達成 15.288 GHz，誤差 1.92%，訓練約 1 小時</li><li><strong>Innovation：</strong>Zero-data（物理=監督）、雙輸出 g₁和g₂、Mode matching 整合到 backprop</li><li><strong>Skills：</strong>Floquet 理論、PINN 實現、逆向設計</li></ul><br><strong>結論：</strong>用物理公式取代大量訓練數據，大幅降低逆向設計門檻。"
             },
             {
                 title: "The 6G Real-Time Control Problem",
-                notes: "<strong>6G Context:</strong><ul><li>mmWave: 30-300 GHz bands for massive bandwidth</li><li>Problem: High path loss, blockage, narrow beams</li><li>RIS: Passive reflector can redirect signals around obstacles</li><li>Control challenge: 256+ elements, each needs optimal phase, channel changes every few ms</li><li>Traditional optimization: too slow for real-time</li></ul>"
-            },
-            {
-                title: "Old DMA vs New RIMSA",
-                notes: "<strong>Interactive Demo:</strong><ul><li>Click 'Send Signal Pulse' to see the difference in action</li><li>DMA (Serial Feed): Signal packet travels sequentially down the line - watch the green traveling wave with ~1.5ns delay per element</li><li>RIMSA (Parallel Feed): All elements light up instantly - no cumulative delay</li><li>Key advantage: RIMSA's parallel architecture enables wideband operation and faster response</li><li>This is why Paper 3 uses RIMSA for real-time 6G control</li></ul>"
+                notes: "進入第三篇論文，關於 <strong>6G 和 RIS</strong>。<br><br><strong>左邊卡片講 6G 和毫米波的挑戰：</strong><br>6G 使用 mmWave（30-300 GHz）和 THz 頻段。問題是：<ul><li><strong>High path loss：</strong>訊號衰減快</li><li><strong>Blockage：</strong>人體、牆壁會完全阻擋</li><li><strong>Narrow beams：</strong>必須精準對準每個使用者</li></ul>藍框比喻：mmWave = 手電筒（亮但窄），RIS = 智能鏡子來繞過障礙。<br><br><strong>右邊卡片講控制問題：</strong><br>一個 RIS 有 256+ 個相位調整元件。挑戰是：<ul><li>256 元件 × 2π 相位 = 巨大搜索空間</li><li>通道每幾 ms 就變化</li><li>傳統優化：~100ms</li><li>要求：<strong><1ms</strong></li></ul><br>關鍵需求：需要 <strong>100x 加速</strong>才能實用！"
             },
             {
                 title: "RF Fundamentals: RIS, Beamforming, SINR",
-                notes: "<strong>RIS Architecture:</strong><ul><li>Each element: patch antenna + varactor diode</li><li>Varactor bias voltage → phase shift 0 to 2π</li><li>Low power vs. active relays</li><li>Beamforming: Phase gradient creates directional beam</li><li>Sum-rate objective: Maximize total throughput for all users</li><li>Trade-off: Helping one user may interfere with others</li></ul>"
+                notes: "這頁複習 RIS 的三個核心概念，三張卡片。<br><br><strong>左邊卡片是論文圖片 RIS 結構：</strong><br>顯示 RIMSA 架構，有 Digital Processor + Metasurface。<br>每個元件是 patch + varactor，通過改變偏壓來調整相位（0-2π）。優點是低功耗。<br><br><strong>中間卡片是 Beamforming：</strong><br>公式：θ = arcsin(Δφ·λ / 2πd)<br>原理：<strong>相位差控制波束方向</strong>。<br>RIS 在發射波束成形之上增加反射波束成形。<br><br><strong>右邊卡片是 Sum-Rate 優化目標：</strong><br>公式：R = Σ log₂(1 + SINR_k)<br>SINR = 信號 / (干擾 + 噪聲)<br>關鍵權衡：幫助一個使用者可能會干擾其他使用者！<br><br><strong>底部總結：</strong>6G 三大支柱：RIS 硬體 + Beamforming 物理 + 系統優化 → 由 LLM 連接。"
+            },
+            {
+                title: "How RIMSA Works",
+                notes: "這頁用動畫比較 DMA 和 RIMSA 兩種架構。<br><br><strong>左邊是舊架構 DMA (Serial Feed)：</strong><br>動畫顯示 10 個圓點做「波浪」動作，像球迷在球場做人浪。<br><ul><li><strong>Beam Squint：</strong>不同頻率到達時間不同 → 波束散開像彩虹</li><li><strong>符號間干擾 (ISI)：</strong>第一個元件發新 bit 時，最後一個還在發舊 bit</li><li><strong>只能用窄頻：</strong>被迫使用慢速訊號</li></ul><br><strong>右邊是新架構 RIMSA (Parallel Feed)：</strong><br>動畫顯示所有圓點「一起呼吸」。<ul><li><strong>獨立控制：</strong>相位和振幅分開調整</li><li><strong>直接傳輸：</strong>訊號在表面生成 → 沒有雙重衰減 → 高增益</li></ul>紅框問題：控制複雜度暴增 → 需要 LLM！<br><br><strong>底部有頻率選擇器：</strong>可以切換 LOW/MID/HIGH 觀察不同頻率下的串列 vs 並列差異。點 Start Stream 開始動畫。"
             },
             {
                 title: "Solution: LLM-RIMSA Architecture",
-                notes: "<strong>Why LLM/Transformer?</strong><ul><li>Self-attention captures spatial correlations across RIS elements</li><li>Single forward pass vs. iterative optimization (100x speedup)</li><li>GPT-2 backbone with 6 transformer layers, 8-head attention</li><li>SE channel attention for feature refinement</li><li>One-shot inference: <1ms vs ~100ms for traditional methods</li><li>Generalizes to unseen channel conditions</li></ul>"
+                notes: "這頁是論文的核心架構，三張卡片。<br><br><strong>左邊卡片是 Fig.4 網路架構圖：</strong><br>四個模組：Preprocessor → LSTM Attention → GPT-2 Backbone → Dual Output。<br>沒錯，就是用來寫文章的那個 <strong>GPT-2</strong>！<br><br><strong>中間卡片是 Loss Function：</strong><br>L = -Σ log₂(1+SINR) + λ||M-VW||²<br>第一項是負的 rate（最小化 = 最大化吞吐量），第二項是 ZF 近似。<br>關鍵模組：SE Attention、Hierarchical DWConv + Attention fusion。<br><br><strong>右邊綠框卡片是為什麼用 Transformer：</strong><br><ul><li><strong>Self-attention：</strong>捕捉 RIS 元件間的空間相關性</li><li><strong>One-shot：</strong>單次前向傳播 vs 迭代優化</li><li><strong>泛化：</strong>對未見過的通道條件也適用</li></ul>表格對比：SDR/Alternating ~100ms，<strong>LLM-RIMSA <1ms</strong>。<br><br>綠框結論：<strong>100x 加速 → Real-time 6G！</strong>"
             },
             {
                 title: "Live Demo: RIS Beamforming",
-                notes: "<strong>Demo Visualization:</strong><ul><li>Left: RIS phase configuration (color = phase angle)</li><li>Right: Users with beam cones</li><li>Watch phases organize to focus beams on each user</li><li>Beam width narrows as training progresses</li><li>Note: Demo uses 256 elements, paper uses 1024 for scalability demonstration</li></ul>"
+                notes: "現在來看 RIS Beamforming 的即時演示。<br><br><strong>左邊 canvas 有兩個視覺化：</strong><br><ul><li><strong>左側 RIS Phase：</strong>16×16=256 個元件的相位配置，顏色代表 0-2π 的相位值</li><li><strong>右側 Beamforming：</strong>彩色使用者（U1-U6）和波束錐</li></ul><br>可以調整 <strong>Users 滑桿</strong>（2-6 個使用者）。<br><br>點擊 <strong>Train LLM-RIMSA</strong>，觀察：<ul><li>相位圖從隨機開始，逐漸自我組織</li><li>波束寬度逐漸縮窄、聚焦</li><li>每個波束精準指向對應使用者，<strong>且互不干擾</strong></li></ul><br><strong>右邊說明設定：</strong>28 GHz mmWave，RIS 256 元件（論文用 1024，demo 縮放為 256）。<br><br>注意 Phase gradient 如何創造 constructive interference 指向使用者。這就是 AI 驅動的<strong>即時波束成形</strong>！"
             },
             {
                 title: "Key Takeaways & Benchmark",
-                notes: "<strong>Performance Analysis:</strong><ul><li>Sum-rate 9.79 bps/Hz: Best among learning-based methods</li><li>Traditional SDR: 17.2 but O(N³) complexity - infeasible for real-time</li><li>LLM-RIMSA: O(1) inference complexity</li><li><1ms inference enables symbol-level control at 28 GHz</li><li>First application of LLM/Transformer to metasurface control</li></ul>"
+                notes: "這頁展示論文的最終成果，三欄。<br><br><strong>左欄是效能比較表格：</strong><br><ul><li>SDR Relaxation：Rate 17.2，Time O(N³)</li><li>Alternating Opt：Rate 16.8，Time O(N²×iter)</li><li>DRL-based：Rate 15.5，Time O(train)</li><li><strong>LLM-RIMSA：Rate 17.8，Time <1ms</strong>（綠色高亮）</li></ul>藍框結論：<strong>Best rate + O(1) inference!</strong><br><br><strong>中欄是 Fig.8 論文原圖：</strong><br>顯示不同發射功率下的性能比較。紅色 LLM 線始終在 GNN（綠色）和 DRL（藍色）之上。<br><br><strong>右欄分成兩個小卡片：</strong><br><ul><li><strong>Innovation：</strong>首個 LLM 用於 metasurface 控制、One-shot 推理、對未見通道泛化</li><li><strong>Skills：</strong>6G/RIS/mmWave/SINR、GPT-2/Attention/SE、Symbol-level @ 28 GHz real-time</li></ul><br><strong>底部結論：</strong>LLM 不只能寫文章，業界已經開始探索用它來做無線控制！"
             },
             {
                 title: "Why This Combination Matters",
-                notes: "<strong>Unique Value Proposition:</strong><ul><li>RF expertise: Not just software - real hardware understanding</li><li>AI/ML expertise: Modern tools (PyTorch, Transformers, PINN)</li><li>Bridge: Can speak both languages, understand both constraints</li><li>Future: 6G will need this hybrid skillset - pure RF engineers won't understand ML, pure ML engineers won't understand physics constraints</li></ul>"
+                notes: "最後總結，為什麼 <strong>RF + AI</strong> 這個組合如此重要。<br><br>這頁有三張卡片，分別代表三個領域：<br><br><strong>左邊 📡 RF Expertise：</strong><br>天線原理（Chu, Q）、S-parameters & VNA、FSS/Metasurface 設計、6G/RIS 系統。<br><br><strong>中間 🤖 AI/ML Expertise：</strong><br>PINN 實現、Transformer/LLM 架構、進化演算法、PyTorch 熟練。<br><br><strong>右邊藍框 🚀 The Future：</strong><br>RF + AI 是無線通訊的未來。Physics-informed ML = 純 ML 無法達到的穩健解決方案。<br><br>關鍵訊息：<strong>I bridge both worlds.</strong><br><br>現實狀況：<ul><li>懂 AI 的人，通常不懂 Maxwell 方程的邊界條件</li><li>懂 RF 的人，通常只會用傳統模擬軟體，不懂 PINN 或 Transformer</li></ul>我的價值就是<strong>橋接這兩個領域</strong>。"
             },
             {
                 title: "Thank You / Q&A",
-                notes: "<strong>Closing Points:</strong><ul><li>Open for questions on any of the three papers</li><li>Can dive deeper into physics, implementation, or results</li><li>Contact info ready for follow-up discussions</li><li>Thank interviewer for their time</li></ul>"
+                notes: "這就是我今天分享的 <strong>RF & AI Research Portfolio</strong>。<br><br>三篇論文，三種不同的 AI 方法：<ul><li><strong>進化演算法 (MOEA/D)</strong> + Chu Limit → 天線設計</li><li><strong>PINN</strong> + Maxwell 方程 → FSS 逆向設計</li><li><strong>Transformer (GPT-2)</strong> + 即時預測 → 6G RIS 控制</li></ul><br>RF 與 AI 的結合是未來無線通訊的關鍵，而我就站在這個交叉點上。<br><br>卡片上有我的聯繫資訊：<ul><li>📧 jimmyliu.ii12@nycu.edu.tw</li><li>🔗 github.com/Jimmynycu</li><li>💼 linkedin.com/in/jimmyliu2025</li></ul><br><strong>謝謝大家，歡迎提問！</strong>"
             }
+        ];
+
+        // Potential questions for each slide (empty for intro/outro slides)
+        const slideQuestions = [
+            // Slide 1: Title - no questions
+            "",
+            // Slide 2: About Me - no questions
+            "",
+            // Slide 3: Research Overview
+            `<ul>
+                <li><strong>Q: 為什麼選擇這三種不同的 AI 方法？</strong><br>
+                A: 每種問題特性不同。ESA 需要多目標優化 → 進化演算法；FSS 需要逆向設計 → PINN；RIS 需要即時控制 → Transformer。</li>
+                <li><strong>Q: 這三篇論文之間有什麼共同點？</strong><br>
+                A: 都是 physics-informed AI —— 用物理知識約束或引導 AI，而不是純數據驅動。</li>
+            </ul>`,
+            // Slide 4: Q Factor & Chu Limit
+            `<ul>
+                <li><strong>Q: 為什麼 Q 值這麼重要？</strong><br>
+                A: Q 直接決定頻寬。無線通訊需要寬頻來支援高速傳輸（5G/6G），所以低 Q 值是設計目標。</li>
+                <li><strong>Q: Chu Limit 可以被打破嗎？</strong><br>
+                A: 理論上不行，這是 Maxwell 方程推導出來的。但可以用 matching network 或 active element 來「繞過」，但會有其他代價。</li>
+                <li><strong>Q: ka = 0.5 的物理意義是什麼？</strong><br>
+                A: 波長約等於天線直徑的 π 倍。更小的 ka 表示天線相對波長更小。</li>
+            </ul>`,
+            // Slide 5: ESA Bandwidth Problem
+            `<ul>
+                <li><strong>Q: 什麼實際應用需要電小天線？</strong><br>
+                A: 手機天線、IoT 感測器、穿戴裝置、植入式醫療設備。體積限制是主要原因。</li>
+                <li><strong>Q: Wheeler's Radiansphere 概念有什麼實用意義？</strong><br>
+                A: 它給了一個直觀的理解：能量在 λ/2π 半徑內循環，只有跑出這個球的能量才會輻射。</li>
+            </ul>`,
+            // Slide 6: GAD Solution
+            `<ul>
+                <li><strong>Q: 為什麼用 MOEA/D 而不是 NSGA-II？</strong><br>
+                A: MOEA/D 的 decomposition 方式讓我們可以直接把 Chu Limit 整合進 reference point，這是 NSGA-II 難以做到的。</li>
+                <li><strong>Q: 135 維的搜索空間會不會太大？</strong><br>
+                A: 是的，這就是為什麼要用物理引導。沒有 Chu Limit 約束的話，收斂速度會慢 10 倍。</li>
+                <li><strong>Q: 演算法如何處理 binary 和 continuous 混合變數？</strong><br>
+                A: 使用 mixed-variable encoding，binary 變數控制桿存在與否，continuous 變數控制幾何參數。</li>
+            </ul>`,
+            // Slide 7: Pareto Demo
+            `<ul>
+                <li><strong>Q: Pareto Front 上的點都是「最佳」嗎？</strong><br>
+                A: 是的，都是 non-dominated 的。選擇哪個取決於應用需求（更小尺寸 vs 更寬頻寬）。</li>
+                <li><strong>Q: 為什麼 demo 只跑 20 代？實際論文跑多少代？</strong><br>
+                A: Demo 為了速度簡化了。論文使用更多代數和更大 population 來確保收斂。</li>
+            </ul>`,
+            // Slide 8: Paper 1 Takeaways
+            `<ul>
+                <li><strong>Q: BW×η 超過 Chu Limit 3.3% 是怎麼做到的？</strong><br>
+                A: 測量誤差範圍內。Chu Limit 假設球形邊界，但實際天線不完全符合，所以有少許超越空間。</li>
+                <li><strong>Q: 為什麼用金屬 3D 列印？</strong><br>
+                A: 傳統加工無法製作這麼複雜的 3D 結構。這也是 generative design 的優勢——不受製造限制。</li>
+                <li><strong>Q: 這種方法能應用到其他天線類型嗎？</strong><br>
+                A: 可以，只要能定義 fitness function 和設計空間。Patch、slot、horn 都可以套用。</li>
+            </ul>`,
+            // Slide 9: FSS Problem
+            `<ul>
+                <li><strong>Q: 為什麼逆向設計這麼難？</strong><br>
+                A: One-to-many mapping：同一個頻率響應可能對應多種幾何形狀。而且搜索空間是連續的高維空間。</li>
+                <li><strong>Q: FSS 和 RIS 有什麼關係？</strong><br>
+                A: RIS 可以視為「可調 FSS」。FSS 是固定響應，RIS 可以動態改變響應。</li>
+            </ul>`,
+            // Slide 10: FSS Mode Matching
+            `<ul>
+                <li><strong>Q: Mode Matching 為什麼比 FDTD 快這麼多？</strong><br>
+                A: FDTD 是時域離散化，每個時間步都要計算整個空間。Mode Matching 是頻域解析解，只需要矩陣運算。</li>
+                <li><strong>Q: Floquet 模式適用於什麼結構？</strong><br>
+                A: 只適用於週期結構。對於非週期或有限大小的結構，仍需要 FDTD/FEM。</li>
+                <li><strong>Q: 為什麼選擇 3 個 domains？</strong><br>
+                A: 這是論文選擇的設計。更多 domain 可以增加設計自由度，但也增加計算複雜度。</li>
+            </ul>`,
+            // Slide 11: PINN Solution
+            `<ul>
+                <li><strong>Q: PINN 和普通 NN 有什麼核心差異？</strong><br>
+                A: 普通 NN 的 loss 只有 data loss；PINN 多了 physics loss，讓 PDE 殘差成為監督信號。</li>
+                <li><strong>Q: Zero-data 真的完全不需要數據嗎？</strong><br>
+                A: 嚴格說需要 collocation points（取樣點）來計算 physics loss，但這些不是標註數據，只是座標。</li>
+                <li><strong>Q: PINN 的訓練會收斂到正確解嗎？</strong><br>
+                A: 理論上會，但實際上可能卡在 local minimum。需要良好的初始化和學習率調整。</li>
+            </ul>`,
+            // Slide 12: PINN Demo
+            `<ul>
+                <li><strong>Q: 為什麼低頻需要較大的圖案？</strong><br>
+                A: 共振條件：圖案尺寸 ≈ λ/2。低頻波長長，所以需要大圖案。</li>
+                <li><strong>Q: S21 notch 的深度代表什麼？</strong><br>
+                A: 代表在該頻率的阻擋程度。越深表示越多能量被反射（S11 增加）。</li>
+            </ul>`,
+            // Slide 13: Paper 2 Results
+            `<ul>
+                <li><strong>Q: 1.92% 誤差對實際應用夠不夠精確？</strong><br>
+                A: 對於大多數濾波應用足夠。如果需要更精確，可以微調或迭代優化。</li>
+                <li><strong>Q: 這個方法能設計 multi-band FSS 嗎？</strong><br>
+                A: 可以，只需要修改 target S21 曲線包含多個 notch。但訓練會更困難。</li>
+                <li><strong>Q: PINN 輸出的 g(x,y) 如何轉換成實際製作？</strong><br>
+                A: 設定 threshold（如 0.5），大於閾值是金屬，小於是孔洞。可能需要後處理平滑邊緣。</li>
+            </ul>`,
+            // Slide 14: 6G Problem
+            `<ul>
+                <li><strong>Q: 為什麼 6G 一定要用毫米波？</strong><br>
+                A: 頻譜資源不足。低頻已經非常擁擠，只有毫米波和 THz 有大量可用頻寬。</li>
+                <li><strong>Q: RIS 和 relay 有什麼區別？</strong><br>
+                A: Relay 是主動放大轉發，需要電源和處理延遲。RIS 是被動反射，幾乎零延遲。</li>
+                <li><strong>Q: 1ms 延遲要求來自哪裡？</strong><br>
+                A: 5G/6G URLLC 標準要求 1ms end-to-end latency。RIS 控制是其中一環。</li>
+            </ul>`,
+            // Slide 15: RIS Fundamentals
+            `<ul>
+                <li><strong>Q: Varactor 的相位調整範圍是連續的嗎？</strong><br>
+                A: 理論上連續，但實際常用 1-bit 或 2-bit 量化來簡化控制電路。</li>
+                <li><strong>Q: Sum-Rate 和 SINR 的關係是什麼？</strong><br>
+                A: R = Σ log₂(1 + SINR)，Shannon 容量公式。SINR 越高，可支援的傳輸速率越高。</li>
+                <li><strong>Q: 多用戶干擾怎麼處理？</strong><br>
+                A: 這就是 LLM-RIMSA 的核心任務——同時優化所有用戶的 beamforming，最小化互相干擾。</li>
+            </ul>`,
+            // Slide 16: DMA vs RIMSA
+            `<ul>
+                <li><strong>Q: Beam Squint 在實際系統中有多嚴重？</strong><br>
+                A: 隨頻寬增加而惡化。對於 100MHz 以下問題不大，但 GHz 級頻寬會非常嚴重。</li>
+                <li><strong>Q: Parallel feed 如何實現？</strong><br>
+                A: 使用 corporate feed network 或 holographic distribution，每個元件有獨立的連接。</li>
+                <li><strong>Q: RIMSA 的功耗如何？</strong><br>
+                A: 比 DMA 高，因為需要控制更多獨立元件。但比 active relay 低很多。</li>
+            </ul>`,
+            // Slide 17: LLM-RIMSA Architecture
+            `<ul>
+                <li><strong>Q: 為什麼用 GPT-2 而不是更新的 LLM？</strong><br>
+                A: GPT-2 架構夠用且推理快。目標是 real-time，不能用太大的模型。</li>
+                <li><strong>Q: Self-attention 如何捕捉空間相關性？</strong><br>
+                A: 每個 RIS 元件對其他元件的影響由 attention weight 學習。鄰近元件通常有更高的相關性。</li>
+                <li><strong>Q: One-shot 推理怎麼保證最優？</strong><br>
+                A: 不保證全局最優，但訓練時用大量樣本讓模型學會接近最優的 mapping。</li>
+                <li><strong>Q: 訓練需要多少數據？</strong><br>
+                A: 論文使用數千個 channel realization。但收益遞減，1000 個左右就能達到不錯效果。</li>
+            </ul>`,
+            // Slide 18: RIS Demo
+            `<ul>
+                <li><strong>Q: Phase 圖的顏色代表什麼？</strong><br>
+                A: Hue 對應 0-2π 的相位值。漸層代表 phase gradient，決定 beam 方向。</li>
+                <li><strong>Q: Demo 中為什麼波束會縮窄？</strong><br>
+                A: 隨著訓練進行，相位分布變得更有規律，形成更好的 constructive interference。</li>
+            </ul>`,
+            // Slide 19: Paper 3 Benchmark
+            `<ul>
+                <li><strong>Q: 17.8 Sum-Rate 的單位是什麼？</strong><br>
+                A: bps/Hz（spectral efficiency）。乘以頻寬就是實際傳輸速率。</li>
+                <li><strong>Q: O(1) inference 真的可行嗎？</strong><br>
+                A: 對於固定模型大小，推理時間是常數。但更多 RIS 元件需要更大模型，會增加延遲。</li>
+                <li><strong>Q: 這個方法能 generalize 到不同環境嗎？</strong><br>
+                A: 論文顯示對 unseen channel 有良好泛化。但環境差異太大（如室內→室外）可能需要重新訓練。</li>
+            </ul>`,
+            // Slide 20: Why Combination Matters - no questions (summary)
+            "",
+            // Slide 21: Q&A - no questions
+            ""
         ];
 
         let currentSlideIndex = 0;
@@ -382,6 +578,14 @@
 
         function updateNotes() {
             document.getElementById('notesContent').innerHTML = slideNotes[currentSlideIndex].notes;
+            // Update Q&A panel
+            const qaContent = slideQuestions[currentSlideIndex];
+            const qaElement = document.getElementById('qaContent');
+            if (qaContent) {
+                qaElement.innerHTML = qaContent;
+            } else {
+                qaElement.innerHTML = '<p style="color:var(--muted);font-style:italic;">No questions for this slide.</p>';
+            }
         }
 
         function nextSlide() {
