@@ -1,7 +1,7 @@
 # Interview Presentation Critical Review & Preparation Guide
 
 > **Generated:** 2026-02-01  
-> **Presentation:** RF & AI Research Portfolio (21 slides)  
+> **Presentation:** Antenna AI Engineer Interview (21 slides)  
 > **Purpose:** Prepare for technical interview questions based on three research papers
 
 ---

@@ -1,4 +1,4 @@
-# RF & AI Research Portfolio - Slide Summary
+# Antenna AI Engineer Interview - Slide Summary
 
 ## Overview
 21-slide presentation covering 3 research papers bridging RF engineering and AI/ML.
